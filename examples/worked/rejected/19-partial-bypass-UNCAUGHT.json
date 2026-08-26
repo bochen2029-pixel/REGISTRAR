@@ -1,0 +1,64 @@
+{
+  "$comment": "FIXTURE 19 — FICTIONAL — AND IT IS NOT REFUSED. Two ways past `totality on provision`, which keys on a literal `__partial__` marker at the top level of a value. Row one annotates its own omission as FALSE — the gate tests truthiness, so declaring the partiality is a BYPASS. Row two nests the marker one level down, where the gate does not look. Together with 14, this says the gate does not detect partiality at all: it detects a self-report, and a self-report can be wrong in either direction.",
+  "$status": "UNCAUGHT — retained as an open exposure",
+  "$found_by": "Fork C adversarial sweep, 2026-08-26; verified by hand",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — no real data)"
+  },
+  "rows": [
+    {
+      "target": "recovery.or_availability",
+      "value": {
+        "hospital": "1147",
+        "cross_clamp_window": {
+          "opens": "06:00"
+        },
+        "__partial__": false
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "observation",
+          "source": "OR corr. hospital 1147",
+          "says": "recovery cases are accommodated in the 06:00-10:00 block"
+        }
+      ],
+      "shadow_run": {
+        "cases": 41,
+        "would_have_matched": 39,
+        "would_have_missed": 2,
+        "window": "2025-09-01/2026-02-28"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    },
+    {
+      "target": "recovery.team_mobilisation",
+      "value": {
+        "team": "in_house",
+        "detail": {
+          "or_scheduled_to_incision_minutes": 120,
+          "__partial__": true
+        }
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape 2025, n=57",
+          "says": "p75 elapsed was 118 minutes"
+        }
+      ],
+      "shadow_run": {
+        "cases": 57,
+        "would_have_matched": 43,
+        "would_have_missed": 14,
+        "window": "2025-01-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

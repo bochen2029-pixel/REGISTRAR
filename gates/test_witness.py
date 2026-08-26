@@ -174,6 +174,45 @@ def test_the_uncaught_fixture_is_retained_and_uncaught():
           "10:00" in json.dumps(doc["rows"][0]["evidence"]), True)
 
 
+def test_uncaught_fixtures_are_still_uncaught():
+    """
+    Every *UNCAUGHT* fixture must STILL pass every gate.
+
+    This test fails in BOTH directions, and that is the point:
+
+      · if a fixture starts being caught, the exposure closed — **promote it**
+        to a witness, rename it, and say which gate closed it. Leaving a caught
+        fixture labelled UNCAUGHT would be a standing lie about coverage.
+      · if the file disappears, someone deleted an exposure rather than fixing
+        it, which is the failure mode this whole fork exists to prevent.
+
+    A fixture retained as a known hole is only honest while the hole is real.
+    """
+    print("\nthe known exposures are still exposures")
+    ambient = {"shadow-run fidelity", "totality on provision"}
+    found = sorted(f for f in os.listdir(REJECTED) if "UNCAUGHT" in f)
+    check("at least seven are retained", len(found) >= 7, True)
+
+    for f in found:
+        r = validate(load_patch(os.path.join(REJECTED, f)), load_targets())
+        tripped = [g for s, g, _ in r.rows if s != GREEN and g not in ambient]
+        check(f"{f[:34]} still silent", tripped, [])
+
+
+def test_every_uncaught_fixture_explains_itself():
+    """
+    A fixture nobody can read is a fixture nobody will act on. Each must say
+    what it is, that it is uncaught, and who found it.
+    """
+    print("\nand each says what it is")
+    for f in sorted(f for f in os.listdir(REJECTED) if "UNCAUGHT" in f):
+        with open(os.path.join(REJECTED, f), encoding="utf-8") as fh:
+            doc = json.load(fh)
+        check(f"{f[:30]} declares UNCAUGHT", "UNCAUGHT" in doc.get("$status", ""), True)
+        check(f"{f[:30]} names its finder", bool(doc.get("$found_by")), True)
+        check(f"{f[:30]} says FICTIONAL", "FICTIONAL" in doc.get("$comment", ""), True)
+
+
 def test_coverage_is_reported_not_asserted():
     """The battery's own coverage is a number this repository must print, not a
     property it may assume."""
@@ -194,6 +233,8 @@ if __name__ == "__main__":
               test_immutability_is_unreachable_from_a_patch,
               test_structural_entanglements_are_declared,
               test_the_uncaught_fixture_is_retained_and_uncaught,
+              test_uncaught_fixtures_are_still_uncaught,
+              test_every_uncaught_fixture_explains_itself,
               test_coverage_is_reported_not_asserted):
         t()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")

@@ -1,0 +1,52 @@
+{
+  "$comment": "FIXTURE 18 — FICTIONAL — AND IT IS NOT REFUSED. Two rows in one patch set the SAME target to contradictory values, each independently well-evidenced. Local invertibility reports GREEN because the inverse chain is correct: the algebra is perfectly satisfied while the patch asserts two incompatible facts about one building, and the second silently wins. NOTHING REQUIRES A `supersedes` FIELD — the worked example uses one by convention only, so the convention is doing work the schema does not. Every gate reads a row at a time; no gate reads the patch.",
+  "$status": "UNCAUGHT — retained as an open exposure",
+  "$found_by": "Fork C adversarial sweep, 2026-08-26; verified by hand",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — no real data)"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk 2025-07-01..2025-12-31, n=134",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    },
+    {
+      "target": "intake.after_hours_owner",
+      "value": "on_duty_supervisor",
+      "inverse": "house_coordinator",
+      "evidence": [
+        {
+          "kind": "document",
+          "source": "ops/SOP-14-referral-intake.md#L88",
+          "says": "unclaimed after-hours referrals escalate to the on-duty supervisor"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

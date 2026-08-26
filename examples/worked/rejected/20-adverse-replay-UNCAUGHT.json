@@ -1,0 +1,54 @@
+{
+  "$comment": "FIXTURE 20 — FICTIONAL — AND IT IS NOT REFUSED. Row one's own shadow run says the row is WRONG 131 TIMES IN 134 — the site's tape contradicts it, the arithmetic closes, and every gate passes. The shadow-run gate asks only whether a denominator EXISTS, never what it SAYS. Row two makes `cases` a string, which turns off divergence checks 2 and 5 wholesale via `isinstance(cases, int)`: 900 matched plus 900 missed against '134' closes to nothing and nobody notices. A number's TYPE is doing load-bearing work that nothing checks.",
+  "$status": "UNCAUGHT — retained as an open exposure",
+  "$found_by": "Fork C adversarial sweep, 2026-08-26; verified by hand",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — no real data)"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk 2025-07-01..2025-12-31, n=134",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 3,
+        "would_have_missed": 131,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    },
+    {
+      "target": "triage.callback_practice",
+      "value": {
+        "callback_within_minutes": 12
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape 2025-Q4",
+          "says": "p75 elapsed to second contact was 12 minutes"
+        }
+      ],
+      "shadow_run": {
+        "cases": "134",
+        "would_have_matched": 900,
+        "would_have_missed": 900,
+        "window": "2025-10-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

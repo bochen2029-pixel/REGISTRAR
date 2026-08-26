@@ -1,0 +1,74 @@
+{
+  "$comment": "FIXTURE 17 — FICTIONAL — AND IT IS NOT REFUSED. Every row here reports GREEN on the signature gate, which says 'every row carries a named human'. It carries a non-empty string. `AGENTS.md` has a machine leave `author` EMPTY precisely so the middle state can mean 'not yet signed' — and a machine that writes anything at all in that field converts PASS-UNVERIFIED into GREEN and signs on a human's behalf. The gate that exists to make the signature the output commit is defeated by a hyphen.",
+  "$status": "UNCAUGHT — retained as an open exposure",
+  "$found_by": "Fork C adversarial sweep, 2026-08-26; verified by hand",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — no real data)"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk 2025-07-01..2025-12-31, n=134",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "system"
+    },
+    {
+      "target": "triage.ruleout_authority",
+      "value": "charge_nurse",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "document",
+          "source": "ops/SOP-09.md#L44",
+          "says": "the charge nurse may rule out without escalation overnight"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "AI assistant (automated patch generation)"
+    },
+    {
+      "target": "lapse.threshold",
+      "value": {
+        "minutes_without_progression": 90
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape 2025, n=63",
+          "says": "51 non-converted referrals showed no transition for more than 90 minutes"
+        }
+      ],
+      "shadow_run": {
+        "cases": 63,
+        "would_have_matched": 51,
+        "would_have_missed": 12,
+        "window": "2025-01-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "-"
+    }
+  ]
+}
