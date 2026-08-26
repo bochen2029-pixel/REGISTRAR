@@ -123,6 +123,46 @@ def sources_of(cap_dir: str) -> list[tuple[str, str]]:
     return out
 
 
+# Prose that FORBIDS a credential must mention one. A gate that cannot tell a
+# prohibition from a use cries wolf — and the next real alarm gets discounted.
+#
+# NOTE ON WHAT THIS CHECKER CAN AND CANNOT SEE. It reads source textually, so
+# it cannot distinguish a MENTION from a USE without help. That weakness has
+# produced a false positive three times — on a comment forbidding credentials,
+# and twice on a test asserting a module is *not* imported. Each time the fix
+# was the same: widen the denial vocabulary rather than narrow the detector,
+# because a gate that cries wolf is worse than no gate.
+#
+# The honest limitation, stated: a plugin that reaches the network inside a
+# paragraph of prose about not reaching the network would pass this check. A
+# reviewer reading the diff is the backstop, and that is what PROVENANCE.md and
+# the LICENSE requirement exist to make likely.
+DENIAL = re.compile(
+    r"never|must\s+not|may\s+not|cannot|does\s+not|carries\s+no|holds\s+no"
+    r"|no\s+credential|no\s+network|without\s+an?\s*(?:key|token|credential)"
+    r"|forbidden|refus|prohibit|is\s+a\s+human|human's\s+job"
+    r"|absent|assert|check\(|self-check|test_"
+    # critique shapes: naming a bad claim in order to reject it
+    r"|worse\s+than|presented\s+as|rather\s+than|would\s+be",
+    re.I)
+
+
+def _is_denial(text: str, at: int) -> bool:
+    """
+    Is this mention inside a passage that forbids the thing it names?
+
+    Scoped to the surrounding paragraph rather than a fixed byte window: a
+    two-line comment routinely exceeds any window small enough to be precise,
+    and the first version of this check used 120 characters and produced
+    exactly the false positive it was written to avoid.
+    """
+    start = text.rfind("\n\n", 0, at)
+    start = 0 if start < 0 else start
+    end = text.find("\n\n", at)
+    end = len(text) if end < 0 else end
+    return bool(DENIAL.search(text[start:end]))
+
+
 def check_caller_specified_output(srcs) -> tuple[bool, str]:
     hits = []
     for path, text in srcs:
@@ -140,13 +180,22 @@ def check_caller_specified_output(srcs) -> tuple[bool, str]:
 
 
 def check_floor_not_guarantee(srcs) -> tuple[bool, str]:
+    """
+    A guarantee CLAIMED is a refusal. A guarantee REFUSED is the contract.
+
+    This used its own ±90-character window and flagged three passages that were
+    forbidding the very thing they named — *"a scanner presented as a guarantee
+    is worse than no scanner"*, *"this tool never reports that text is clean"*,
+    and a test asserting no CLEAN verdict exists. Fourth instance of the one
+    weakness this checker has: reading source textually cannot tell a mention
+    from a use. It now shares `_is_denial` with the other rules rather than
+    keeping a narrower copy of the same idea.
+    """
     claims = []
     for path, text in srcs:
         for pat, why in GUARANTEE_WORDS:
             for m in re.finditer(pat, text, re.I):
-                ctx = text[max(0, m.start() - 90): m.start() + 60]
-                # a sentence that says "never a guarantee" is the opposite of a claim
-                if re.search(r"never a guarantee|not a guarantee|no guarantee", ctx, re.I):
+                if _is_denial(text, m.start()):
                     continue
                 line = text[: m.start()].count("\n") + 1
                 claims.append(f"{path}:{line} {why}")
@@ -167,44 +216,6 @@ def check_validate_content(srcs) -> tuple[bool, str]:
     if not srcs:
         return False, "no source to read"
     return True, "does not decide success on a status code alone"
-
-
-# Prose that FORBIDS a credential must mention one. A gate that cannot tell a
-# prohibition from a use cries wolf — and the next real alarm gets discounted.
-#
-# NOTE ON WHAT THIS CHECKER CAN AND CANNOT SEE. It reads source textually, so
-# it cannot distinguish a MENTION from a USE without help. That weakness has
-# produced a false positive three times — on a comment forbidding credentials,
-# and twice on a test asserting a module is *not* imported. Each time the fix
-# was the same: widen the denial vocabulary rather than narrow the detector,
-# because a gate that cries wolf is worse than no gate.
-#
-# The honest limitation, stated: a plugin that reaches the network inside a
-# paragraph of prose about not reaching the network would pass this check. A
-# reviewer reading the diff is the backstop, and that is what PROVENANCE.md and
-# the LICENSE requirement exist to make likely.
-DENIAL = re.compile(
-    r"never|must\s+not|may\s+not|cannot|does\s+not|carries\s+no|holds\s+no"
-    r"|no\s+credential|no\s+network|without\s+an?\s*(?:key|token|credential)"
-    r"|forbidden|refus|prohibit|is\s+a\s+human|human's\s+job"
-    r"|absent|assert|check\(|self-check|test_",
-    re.I)
-
-
-def _is_denial(text: str, at: int) -> bool:
-    """
-    Is this mention inside a passage that forbids the thing it names?
-
-    Scoped to the surrounding paragraph rather than a fixed byte window: a
-    two-line comment routinely exceeds any window small enough to be precise,
-    and the first version of this check used 120 characters and produced
-    exactly the false positive it was written to avoid.
-    """
-    start = text.rfind("\n\n", 0, at)
-    start = 0 if start < 0 else start
-    end = text.find("\n\n", at)
-    end = len(text) if end < 0 else end
-    return bool(DENIAL.search(text[start:end]))
 
 
 def check_no_credentials(srcs) -> tuple[bool, str]:

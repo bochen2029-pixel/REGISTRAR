@@ -132,7 +132,21 @@ capabilities:
           medical record numbers, donor identifiers, a hospital name bound to an
           event, and any combination that re-identifies. A single unusual case
           is re-identifiable from timing alone.
-    binding: null
+    binding:
+      version: "0.1"
+      source: forge/plugins/phi_scan/src/phi_scan.py
+      pin: "sha256:732bb5facd20ad196c59ca95f9efdfbae758015523476099e632398bae67df08"
+      entry: "python forge/plugins/phi_scan/src/phi_scan.py"
+      licence: MIT
+      provenance: forge/plugins/phi_scan/PROVENANCE.md
+      note: >
+        CLEAN-ROOM. The surveyed prior art contributed VOCABULARY and no code —
+        its detection was five regexes against this domain's PHI list. Three
+        verdicts and none of them is CLEAN: NONE_DETECTED says the rungs that
+        RAN found nothing, and DEGRADED says a rung did not run and its silence
+        carries no information. The prior art conflated those, returning zero
+        spans both for a clean document and for a classifier that failed to
+        load. 48 assertions.
 
   - id: search
     required: false
