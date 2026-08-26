@@ -419,11 +419,19 @@ immutable:
   - core/                          # L0 — federal law
   - clinical/                      # L1 — clinical invariant
   - gates/                         # the battery you are graded by
+  - conformance/                   # the battery ABOVE this file. §0 says trust it over me.
   - schema/                        # the contract you are validated against
   - fixtures/                      # synthetic cases
+  - examples/                      # incl. rejected/ — the UNCAUGHT exposures live here, not fixtures/
+  - floor/                         # the deterministic null
   - profiles/                      # what mounts where
+  - tools/                         # cite.py, pin_chassis.py, worktree.py
+  - corpus/                        # pinned sources and their manifest
+  - adapters/                      # L3 shells; bindings are null BY DESIGN
+  - CHASSIS.pin.json               # the pin itself
   - deepseek-harness-master/       # the pinned chassis. NEVER write inside it — see FORKS.md.
   - AGENTS.md                      # this file
+  - SPEC.md
   - PROVENANCE.md
 
 append_only:

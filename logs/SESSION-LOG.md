@@ -568,3 +568,61 @@ inspect history · `registrar-orientation` left accurate and **not** softened ·
 degrades into *the wrong answer is what you read first*.
 
 ---
+
+## 2026-08-26 · session `opus5-intake` · CORRECTION C10 — the copyright characterisation was unsupported
+
+**Corrects a claim I put in the amended message of `f446eab`, which cannot be reworded because
+`3df83c4` now sits on top of it and rewording would rewrite another session's hash.** New entry, with the
+reason — house law, applied to the exact case that motivated it.
+
+### What I wrote, and why it was wrong
+
+`f446eab`'s message splits the 55 leaked paths as:
+
+> `40 files, ~793 KB — OPTN Policy, a publisher's copyrighted document`
+
+**I had no basis for "a publisher's copyrighted document."** It is a legal characterisation, stated in the
+present indicative, with no source — the same defect class an eight-agent panel had just caught me making
+four times in one commit. The operator challenged it, correctly, on the grounds that the text was downloaded
+from a public website.
+
+### What checking actually shows `[D — not a legal opinion, and this repository does not render one]`
+
+- OPTN policies are published at `optn.transplant.hrsa.gov`, which redirects to **hrsa.gov** — the Health
+  Resources and Services Administration, a **US federal agency**.
+- OPTN policies take effect through **42 CFR 121.4**: the Board develops them, **the Secretary of HHS
+  reviews and approves them**, and they carry regulatory consequence. That is already tier 2–4 of this
+  repository's own authority chain.
+- Two doctrines cut against copyrightability on those facts: **17 U.S.C. § 105** (works of the US
+  Government) and the **government edicts doctrine**, which *Georgia v. Public.Resource.Org* (2020)
+  extended beyond statutes to material carrying the force of law.
+
+**Not established, and therefore not claimed:** whether UNOS asserts copyright over the compilation, or
+whether the distributed PDF carries a notice. `hrsa.gov` returned 403 and the searches did not resolve it.
+**Publicly downloadable is not the same as redistributable**, so the opposite assertion would be the same
+error inverted. The honest state is: *no basis for the exposure claim, and the available evidence points
+away from it.*
+
+### What survives, and it is cleaner than what I claimed
+
+**The repository states in public that it does not redistribute the corpus, and its history does.** The
+`hygiene · corpus not redistributed` gate reports GREEN over 831 KB because it inspects the working tree and
+not the history. That is a claim-versus-artifact mismatch — this project's entire subject — and **it does not
+depend on the copyright question at all.** The Texas Health & Safety Code files are a government edict by any
+reading; the OPTN files are very likely one too. The defect is the disagreement between what a surface says
+and what the artifact holds.
+
+**Consequence for the remediation question:** the case for rewriting published history is materially weaker
+than I presented it. It should be decided on hygiene and on the stated-position mismatch, **not** on a
+copyright exposure I asserted without support. Still the operator's call; my framing of it was wrong and is
+withdrawn.
+
+### The pattern, stated once
+
+Five instances in one session of a single error: **a claim in the present indicative, with no source, in a
+document about drift.** Four were caught by the panel; the fifth by the operator. The through-line is not
+carelessness about facts — every underlying fact I checked was right. It is carelessness about *register*:
+asserting characterisations at the same confidence as measurements. `[M]` was always applied honestly here;
+what went untagged was everything that was not a number.
+
+---

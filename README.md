@@ -204,20 +204,28 @@ nothing at hour two of a workup and a page at hour nine when the OR window is cl
 right in both cases, which is why every alert configuration in this category is a permanent, unwinnable
 tuning project and why people mute things.
 
-Measured on a reference bench: the best fixed threshold caught **36 of 39** planted moments and was deaf
-exactly where it mattered; the same system at zero bias fired **921 times per stream hour**, at a
-deduplication ratio of **1.07** — roughly **59 distinct, individually defensible conditions per hour**. The
-flood is **breadth, not repetition**, so you cannot dedupe it away, cool it with a refractory period, or
-filter it from outside. Absorbed into weights instead, the rate moved **63.4% → 6.7%** per decision boundary
-with the catches kept.
+`[M — every figure in the next paragraph was measured in ANOTHER DOMAIN, on dev streams, on one consumer
+card. None of it was measured on donor cases. Transfer here is a bet in every case, the deterministic floor
+is the null it has to beat, and if the floor wins that funeral prints.]`
 
-`[M — measured in another domain, on other streams, on one consumer card. Transfer to donor cases is a bet in
-every case, and the deterministic floor is the null it has to beat. If the floor wins, that funeral prints.]`
+Measured on that reference bench: the best fixed threshold caught **36 of 39** planted moments and was deaf
+exactly where it mattered. At zero bias the same system fired **921 times per stream hour** — and separately,
+at its own grain, produced roughly **59 distinct conditions per hour**, each individually defensible, at a
+deduplication ratio of **1.07**. *(Three measurements with three denominators, not one derivation — 921 and
+1.07 do not yield 59, and a surface that implies they do has fused a rate with a distinctness count.)* The
+flood is therefore **breadth, not repetition**, so you cannot dedupe it away, cool it with a refractory
+period, or filter it from outside. Absorbed into weights instead, the rate moved **63.4% → 6.7%** per
+decision boundary with the catches kept.
 
-**And it cuts opposite to intuition on compliance.** The decision-support carve-out turns on presenting the
-basis so a professional can independently review it. An alarm presents a number. The temporal closure
-presents **the argmin path** — the chain of constraints that produced the deadline, recovered from the same
-computation. *The path is the citation.*
+**And there is an argument that it cuts opposite to intuition on compliance** — that a derivation is a better
+fit for the clinical-decision-support posture than an alarm is, because an alarm presents a number while the
+temporal closure presents **the argmin path**, the chain of constraints that produced the deadline, recovered
+from the same computation. *The path is the citation.*
+
+> `[D — AND READ THIS BEFORE RELYING ON IT.]` The sentence above is **this project's reading**, not a legal
+> determination and not a regulatory status. **No CDS, Cures Act or FDA source is among this repository's five
+> pinned sources**, so it is not one of the 44 byte-exact citations and nothing here verifies it. Device
+> status is decided by your own regulatory counsel on your own facts. This repository does not assert one.
 
 ---
 
@@ -226,7 +234,8 @@ computation. *The path is the citation.*
 A wall is not a dead end, and this is the part that decides whether a three-person IT function actually
 finishes.
 
-`forge/plugins.yml` declares **capabilities, not files** — chunk, phi_scan, search, fetch, render. Nothing is
+`forge/plugins.yml` declares **capabilities, not files** — chunk, phi_scan, search, fetch, render, read and
+reach, with `attest` declared `not_mountable` because *a fence a site can swap is not a fence*. Nothing is
 vendored, for three reasons and the third is the one that matters: a vendored copy is a fork that drifts and
 inherits its source's coupling; a plugin mounted at completion time is not redistributed, so only the
 interface ships; and **your tools are as good as ours** — the forge declares what it needs done and does not
@@ -258,15 +267,20 @@ material, and no writes outside the fit.
 REGISTRAR ships no plugin system of its own. **It is a distribution** — a pinned runtime, packages beside it,
 and a profile that mounts only what an electronic donor record needs.
 
-The runtime is [**Cordis**](https://github.com/deepseek-ai/deepseek-harness) (MIT), the effect and coeffect
-kernel formalised in *A Programming Paradigm for Spatiotemporal Composability* (Peking University and
-DeepSeek-AI). The algebra in [`SPEC.md` §3](SPEC.md) is that kernel's semantics with this domain's objects
-substituted in, implemented directly in `core/algebra.py` with no runtime dependency today.
+The runtime is the **DeepSeek harness** — [`@deepseek-ai/dsh-root`](https://github.com/deepseek-ai/deepseek-harness)
+v0.1.1-rc.2, MIT. That is what `CHASSIS.pin.json` pins, at `dsh-v0.1.1-rc.2 @ b150a551b8d4`.
+
+Its kernel is **Cordis** — v4.0.1, MIT, upstream [cordiverse/cordis](https://github.com/cordiverse/cordis),
+authored by **Shigma** and vendored inside the harness — the effect and coeffect kernel formalised in
+*A Programming Paradigm for Spatiotemporal Composability* (Peking University and DeepSeek-AI). The algebra in
+[`SPEC.md` §3](SPEC.md) is that kernel's semantics with this domain's objects substituted in, implemented
+directly in `core/algebra.py` with **no runtime dependency today**.
 
 **Two maturity facts, deliberately kept apart:**
 
-- **The kernel is `cordis` v4.0.1**, with roughly four years and several thousand community plugins behind it
-  (Koishi lineage) before it was adopted here. This is where the guarantees live.
+- **The kernel is `cordis` v4.0.1**, with several years and a large community plugin ecosystem behind it
+  (Koishi lineage) before it was adopted here. This is where the guarantees live. `[D — from the upstream
+  project's own history; this repository has not audited that ecosystem and carries no count for it.]`
 - **The harness built on it is a release candidate** and says so. That is the layer a distribution composes
   down — pinned and vendored, never tracked.
 
@@ -300,7 +314,8 @@ Co-tenancy A resident sharing a card with a loaded workstation does NOT run at
            card. [M] Size for the card being shared, not the card on paper.
 Record     append-only, hash-chained, exportable in full at any time
 Harness    whichever your team already uses. this repo is written for it.
-Runtime    cordis (MIT) — pinned and vendored, composed to a profile, never forked
+Runtime    @deepseek-ai/dsh-root v0.1.1-rc.2 (MIT), pinned and vendored in place;
+           kernel is cordis v4.0.1 (MIT, cordiverse/cordis). Composed, never forked.
 Network    none required. air-gapped is a supported configuration.
 ```
 
@@ -309,10 +324,12 @@ PHI, nothing to protect and nothing to negotiate. A local open-weight model on y
 site* — your SOPs, your tickets, your configs, your tape. It never egresses. Unplug the network cable and it
 behaves identically.
 
-**That split is what makes this procurement-viable at the organisations it targets, not merely tidy.**
-HIPAA-ready enterprise tiers on frontier harnesses carry seat minimums a forty-person OPO cannot clear — but
-the frontier route here reads only public MIT source, so **no BAA is required for it at all.** `[D — confirm
-against current vendor terms and with your own counsel.]`
+**That split is what may make this procurement-viable at the organisations it targets, not merely tidy.**
+`[D — and every clause of this paragraph is your counsel's call, not this file's.]` Some HIPAA-ready
+enterprise tiers on frontier harnesses have carried seat minimums a forty-person OPO would struggle to clear
+— check current terms, they move. And **if** the frontier route reads only public MIT source with no PHI in
+the context, then on that route there may be nothing for a BAA to cover. **This repository does not determine
+that for you, and the split only holds while the discipline below holds.**
 
 > **Corollary, and it is uncomfortable:** [`AGENTS.md`](AGENTS.md) §3 is therefore the single load-bearing
 > compliance document in this repository. One person pasting an SOP into a frontier harness collapses the
@@ -347,9 +364,9 @@ re-derive them rather than trusting this file.**
 
 | | | how to check |
 |---|---|---|
-| Tracked files | **128** | `git ls-files \| wc -l` |
+| Tracked files | **133** | `git ls-files \| wc -l` |
 | Assertions | **396** across 11 test modules | run each `test_*.py` |
-| Conformance | **49 GREEN · 8 PASS-UNVERIFIED · 0 FAILED** — *exits non-zero, deliberately* | `python conformance/run.py` |
+| Conformance | **50 GREEN · 9 PASS-UNVERIFIED · 0 FAILED** — *exits non-zero, deliberately* | `python conformance/run.py` |
 | Gates | **16**, each naming its defect in words | `python gates/validate_patch.py …` |
 | Citations byte-exact | **44 / 44** | `python tools/cite.py --check` |
 | Public sources pinned by sha256 | **5** | `corpus/MANIFEST.json` |

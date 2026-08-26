@@ -30,7 +30,7 @@ wins, the funeral prints and that rung dies. A roadmap that cannot lose is a bro
 | the algebra | `mount`/`retire`/T3 computed — the invertibility gate **decides** |
 | the floor | the temporal closure; the argmin path *is* the citation |
 | gates | **sixteen**, three states, defects named in words |
-| the kit | `elicit/` 20 questions · a worked patch · **four refused drafts** |
+| the kit | `elicit/` 20 questions · a worked patch · **22 adversarial fixtures — 15 refused, 7 retained UNCAUGHT** |
 | profiles | `edr` ⊂ `forge`, checked not trusted |
 | percepts + switch | six ported laws · `off` is inert · fails toward inert |
 | provenance | byte-match or refused · sunset detection · `[M]` |
@@ -38,7 +38,7 @@ wins, the funeral prints and that rung dies. A roadmap that cannot lose is a bro
 | Not built | Why it matters |
 |---|---|
 | ~~`adapters/`~~ | **the SHAPE now exists** — contract, `lab/` worked, battery. Bindings `null`. |
-| `clinical/` gaps | the 2.9 panel remainder, 2.11 per-organ, 2.5 hemodilution |
+| `clinical/` gaps | **two**, named in the file: viability criteria, per-organ required information. *(2.9 panel and 2.5 hemodilution closed 2026-08-26.)* |
 | `t_cold_ischemia` | clinical literature, not policy |
 | ~50 jurisdiction rows | **theirs, not ours** — contributed upstream |
 | the resident | gated on F-PATCH-DELTA |
@@ -58,7 +58,7 @@ lifecycle, which is law and identical everywhere.
 
 Four things are waiting on this directory:
 
-- **`elicit/` asks four tier-4 questions and nothing catches the answers.** `SPEC.md` §5 promises *"typed
+- **`elicit/` asks five tier-4 questions and nothing catches the answers.** `SPEC.md` §5 promises *"typed
   shells with conformance tests, so completing one is filling a shape rather than inventing one."* **There is
   no shape.**
 - **Cordis has no reason to exist yet.** Seven long-lived connectors that must load, fail, reload and unload
@@ -157,7 +157,7 @@ Concurrent, partitioned by write surface, contract in [`FORKS.md`](FORKS.md).
 |---|---|---|---|
 | **mainline** | [`plans/MAINLINE_f-patch-delta.md`](plans/MAINLINE_f-patch-delta.md) | pre-register the falsifier, then run arms ① and ② | `experiments/` |
 | **A** | [`plans/FORK-A_plugins.md`](plans/FORK-A_plugins.md) | fold the estate tools in as forge capabilities; mount the first two as dsh plugins | `forge/plugins/`, `forge/dsh/` |
-| **C** ✅ | [`plans/FORK-C_witnesses.md`](plans/FORK-C_witnesses.md) | **a witness for every gate** — DONE: 9 witnessed, 3 entangled, 1 undecidable; **7 exposures found and retained** | `examples/worked/rejected/`, `gates/test_*.py` |
+| **C** ✅ | [`plans/FORK-C_witnesses.md`](plans/FORK-C_witnesses.md) | **a witness for every gate** — DONE against the 13-gate battery of the branch point: 9 witnessed, 3 entangled, 1 undecidable; **7 exposures found and retained.** *Current figures are in the status table above and under* **What would kill it** *— at 16 gates: 12 witnessed · 2 incidental · 1 unwitnessed · 1 undecidable, and* **six** *live exposures (one since closed by gate 14).* | `examples/worked/rejected/`, `gates/test_*.py` |
 
 All three dated `2026-08-26`, branch point `9a1a5f7`. **Each plan is self-contained** — a session with no
 prior context can pick one up and work from it. The shared constraints live in [`FORKS.md`](FORKS.md) and
@@ -172,7 +172,7 @@ mount without SPDX.
 
 **Fork C, and why it earned a whole session:** at the branch point the battery shipped with **four**
 adversarial fixtures and most of its gates had no evidence they could fire — and the four that existed were
-written by the same author as the gates they tested. That is `SPEC.md` §14's *first-ranked* risk, unmeasured.
+written by the same author as the gates they tested. That is `internal` §14's *first-ranked* risk, unmeasured.
 **Counts as of the branch point are deliberately not restated here; the current ones are in the table above
 and the update under *What would kill it*.** **And it makes the falsifier stronger:** F-PATCH-DELTA
 grades against these gates, so a weak battery makes its verdict weak in the same proportion — a pass could
@@ -348,14 +348,22 @@ gates had no witness — that was the exposure**, and the fixtures that existed 
 as the gates they tested.
 
 > **Updated `2026-08-26`, after Fork C.** The sentence above described the state at the three-way branch point
-> and is kept because it is the reason the fork was launched. **Now: sixteen gates, nine witnessed, three
-> entangled with a structural floor, one undecidable from a file — and seven exposures found and RETAINED**
+> and is kept because it is the reason the fork was launched. **Now: sixteen gates — twelve cleanly
+> witnessed, two incidental, one unwitnessed, one undecidable from a file (and three that cannot be isolated
+> BY CONSTRUCTION, each saying why) — plus seven exposures found and RETAINED**
 > as fixtures that pass (`examples/worked/rejected/*UNCAUGHT*`). The risk did not go away; **it got measured,
-> and it changed shape — from most of the battery having no evidence it could fire, to seven NAMED holes
-> that no semantic gate catches.** All seven currently trip a floor gate for being minimal — *and conformance says in words that
-> this is not closure.* **The next move on this risk is a well-formed variant of each of the seven: if one
-> passes clean, that is the highest-priority gate in the project, identified by measurement rather than
-> intuition.**
+> and it changed shape — from most of the battery having no evidence it could fire, to NAMED holes
+> that no semantic gate catches.**
+>
+> **Corrected `2026-08-26`, later: SIX are live, not seven.** `20-adverse-replay-UNCAUGHT` was **closed by
+> gate 14** (schema conformance) — the fixture carries `shadow_run.cases` as a string where the schema types
+> it an integer, and nothing in the tree validated against `patch.schema.json` until that gate existed, which
+> is exactly why the hole was open. **It is a witness for gate 14 now, not a hole**, and it is kept under its
+> original filename rather than renamed, per `gates/test_witness.py:218`. *A fixture retained as a known hole
+> is only honest while the hole is real.* The remaining six all trip a floor gate for being minimal — **and
+> that is not closure**, because a floor gate fires on any minimal fragment by construction. **The next move
+> is a well-formed variant of each of the six: if one passes clean, that is the highest-priority gate in the
+> project, identified by measurement rather than intuition.**
 
 **2 · The completability bet fails.** F-PATCH-DELTA returns *confidently wrong*. **Then the honest product is
 the spine plus a human implementation guide, and the page says so.**
