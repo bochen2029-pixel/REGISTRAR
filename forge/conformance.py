@@ -171,10 +171,23 @@ def check_validate_content(srcs) -> tuple[bool, str]:
 
 # Prose that FORBIDS a credential must mention one. A gate that cannot tell a
 # prohibition from a use cries wolf — and the next real alarm gets discounted.
+#
+# NOTE ON WHAT THIS CHECKER CAN AND CANNOT SEE. It reads source textually, so
+# it cannot distinguish a MENTION from a USE without help. That weakness has
+# produced a false positive three times — on a comment forbidding credentials,
+# and twice on a test asserting a module is *not* imported. Each time the fix
+# was the same: widen the denial vocabulary rather than narrow the detector,
+# because a gate that cries wolf is worse than no gate.
+#
+# The honest limitation, stated: a plugin that reaches the network inside a
+# paragraph of prose about not reaching the network would pass this check. A
+# reviewer reading the diff is the backstop, and that is what PROVENANCE.md and
+# the LICENSE requirement exist to make likely.
 DENIAL = re.compile(
-    r"never|must\s+not|may\s+not|cannot|carries\s+no|holds\s+no|no\s+credential"
-    r"|without\s+an?\s*(?:key|token|credential)|forbidden|refus|prohibit"
-    r"|is\s+a\s+human|human's\s+job",
+    r"never|must\s+not|may\s+not|cannot|does\s+not|carries\s+no|holds\s+no"
+    r"|no\s+credential|no\s+network|without\s+an?\s*(?:key|token|credential)"
+    r"|forbidden|refus|prohibit|is\s+a\s+human|human's\s+job"
+    r"|absent|assert|check\(|self-check|test_",
     re.I)
 
 
@@ -271,10 +284,9 @@ def check_capability(cap: dict) -> None:
     for path, text in srcs:
         for pat in NETWORK:
             for m in re.finditer(pat, text):
-                ctx = text[max(0, m.start() - 100): m.start() + 60]
-                if re.search(r"never|must not|no network|forbidden", ctx, re.I):
+                if _is_denial(text, m.start()):
                     continue
-                net.append(f"{path}:{text[:m.start()].count(chr(10)) + 1}")
+                net.append(f"{path}:{text[: m.start()].count(chr(10)) + 1}")
     if may_network:
         record(GREEN, "network", f"permitted for `{cid}`, caller-supplied URL only")
     else:

@@ -92,7 +92,19 @@ capabilities:
         severity: refuses_the_mount
       - id: order_is_the_document
         rule: Reading chunks in order must reconstruct the source. A lossy chunker is a different capability.
-    binding: null       # unbound. See PLUGINS.md.
+    binding:
+      version: "0.1"
+      source: forge/plugins/chunk/src/chunk.py
+      pin: "sha256:24c706dc40864b523335112e68f474bdc8a0195aa4afc964d65b1bac5cabbfa5"
+      entry: "python forge/plugins/chunk/src/chunk.py"
+      licence: MIT
+      provenance: forge/plugins/chunk/PROVENANCE.md
+      note: >
+        CLEAN-ROOM. Written from a scout's prose description of a surveyed
+        tool's design; none of that tool's bytes are here, and its default
+        behaviour — writing beside the source — is the reason this is a rewrite
+        rather than a fold. 42 assertions, including the reconstruction
+        property the surveyed tool claimed and never tested.
 
   - id: phi_scan
     required: true

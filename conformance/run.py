@@ -625,6 +625,30 @@ def check_no_redistribution() -> None:
            else "only the manifest and the citations are committed")
 
 
+# ── 6j · the forge plugins ──────────────────────────────────────────────────
+def check_forge_plugins() -> None:
+    """A bound plugin that violates a refusing rule does not mount."""
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "forge", "conformance.py")],
+                       capture_output=True, text=True, encoding="utf-8", env=env)
+    tail = [ln for ln in (r.stdout or "").splitlines() if "GREEN ·" in ln]
+    detail = tail[-1].strip() if tail else "no output"
+    if r.returncode == 3:
+        record(UNVERIFIED, "forge · plugin bindings", "pyyaml unavailable")
+    elif r.returncode == 1:
+        bad = [ln.strip() for ln in r.stdout.splitlines() if "FAILED " in ln]
+        record(FAILED, "forge · plugin bindings", bad[0] if bad else detail)
+    elif r.returncode == 2:
+        record(UNVERIFIED, "forge · plugin bindings", f"{detail} — capabilities unbound")
+    else:
+        record(GREEN, "forge · plugin bindings", detail)
+
+    t = subprocess.run([sys.executable, os.path.join(ROOT, "forge", "test_conformance.py")],
+                       capture_output=True, text=True, encoding="utf-8", env=env)
+    last = ((t.stdout or "").strip().splitlines() or ["no output"])[-1]
+    record(GREEN if t.returncode == 0 else FAILED, "forge · the gate refuses", last)
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -668,6 +692,7 @@ def main() -> int:
         ("percepts and the switch", check_percepts),
         ("the nested chassis", check_chassis),
         ("the L3 adapters", check_adapters),
+        ("the forge plugins", check_forge_plugins),
         ("redistribution", check_no_redistribution),
         ("hygiene", check_no_site_data),
     ):
