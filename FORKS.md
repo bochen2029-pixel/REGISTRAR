@@ -180,3 +180,40 @@ delta between the two runs is itself informative.**
   and hygiene checks exist for the ones that matter.
 - **Weaken a gate to make a fixture pass.** If a gate is wrong, fix the gate and say so in the commit — that
   has happened three times already and each was worth recording.
+
+---
+
+## A collision that happened, recorded so it does not happen twice
+
+**`2026-08-26`, commit `1c29b74`, Fork A.** I staged with `git add -A` and swept up **~2,000 lines of
+in-flight, uncommitted work belonging to two other forks** — mainline's `experiments/F-PATCH-DELTA/site/`
+(a synthetic site and its builder) and Fork C's `gates/witness.py` plus six adversarial fixtures.
+
+**Nothing was lost.** The files are intact and pushed. But they are committed under a message describing
+Fork A's work, so **the provenance in `git log` is wrong for those twenty-three files**, and Fork C in
+particular may pull to find its working tree already committed by somebody else.
+
+**The cause was not the partition — it was `git add -A`.** The write-surface table above told me exactly
+which paths were mine, and a blanket stage ignored it. A partition that is only honoured by intention is not
+a partition.
+
+### The rule that follows
+
+> **Stage your owned paths explicitly. Never `git add -A` while another session is working.**
+
+```bash
+git add forge/ plans/FORK-A_plugins.md          # Fork A
+git add experiments/                            # mainline
+git add gates/witness.py examples/worked/rejected/  # Fork C
+```
+
+**And check before you commit:**
+
+```bash
+git status --short                    # is anything staged that you do not own?
+git diff --cached --stat              # look at it, do not skim it
+```
+
+**Not rewritten.** The history stands and this note explains it, because force-pushing a rewrite while two
+sessions hold the same working tree would cost more than the misattribution does — and because corrections
+here are new entries with the reason, never quiet edits that make a past state unreconstructable.
