@@ -587,6 +587,40 @@ state-law leg needs ~50 statutes that exist and belong to the OPOs operating und
 `design-choice` — **no source exists; the state is ours.** One is waiting for work. The other is waiting for
 nothing.
 
+### 2026-08-26 · the plate had drifted, and drift is the recurring failure
+
+**The public page claimed nine gates in its diagram and twelve in its file tree. The repository had sixteen.**
+It claimed 41 citations against 44, and reported the conformance battery at `27 G · 4 PU · 0 F` against
+`49 G · 8 PU · 0 F`.
+
+**And the row that mattered most was empty.** *Harness-authored patch vs. the true operational delta —
+`bet · the falsifier`.* **It had run.** `S = 0.57`, pre-registered, with a floor of `0.47` and zero
+fabrications, and the page had been saying for hours that it was unrun.
+
+**All corrected, deploy `dd786ded`, verified 3/3 live.** The completion rows now sit on the plate with the
+floor arm beside them, because **a score without the arm it must beat is not a measurement** — and the row
+for a *real* delta was added back, empty, because that is the one that still matters.
+
+**The caveat is on the plate at the same weight as the number:** a synthetic corpus written by someone who
+knew the answers **bounds the kit from above** — a pass is necessary and not sufficient, a failure would have
+been decisive — and the two unplanted corpus defects the candidate found are named in the same paragraph.
+
+#### Why this is worth a provenance entry rather than a commit message
+
+**This is the third drift of the same kind in one day.** The hardware claim asked for 24–32 GB while
+everything was proven on 16. The corpus gitignore covered a location while the rule was about content. Now
+the plate lagged the battery by four gates and a whole experiment.
+
+**Each was a claim that was true when written and stopped being true while nobody was looking at it** — and
+none was caught by a check, because *this repository has no gate on its own public surface.* Every drift so
+far has been caught by a person noticing.
+
+**Named here so it is not filed as three accidents.** The honest options are a conformance check that reads
+the deployed page and compares its counts to the battery's, or a discipline that the plate is updated in the
+same commit as the thing it describes. **The second is what this project already claims to do — *the plate
+changes first and the prose follows* — and it has now failed three times, which is the argument for the
+first.**
+
 ---
 
 ### Design choices, marked as such
