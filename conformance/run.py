@@ -489,8 +489,23 @@ def check_chassis() -> None:
         record(UNVERIFIED, "chassis · present", "not on disk — nothing to pin or exclude")
         return
 
-    record(UNVERIFIED, "chassis · present but unpinned",
-           "vendored in place; no .git, so no assertable SHA — internal §14 item 1")
+    # PINNED 2026-08-26. internal §14 item 1, closed.
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "pin_chassis.py"), "--check"],
+                       capture_output=True, text=True, encoding="utf-8",
+                       env=dict(os.environ, PYTHONIOENCODING="utf-8"))
+    if r.returncode == 0:
+        import json as _j
+        with open(os.path.join(ROOT, "CHASSIS.pin.json"), encoding="utf-8") as fh:
+            pin = _j.load(fh)
+        v = pin["verification"]
+        record(GREEN, "chassis · pinned and unmodified",
+               f"{pin['upstream']['tag']} @ {pin['upstream']['commit'][:12]} — "
+               f"{v['identical']:,}/{v['upstream_files']:,} files byte-identical")
+    elif r.returncode == 2:
+        record(UNVERIFIED, "chassis · pinned", "pin recorded; tree not on disk — fetch and --verify")
+    else:
+        record(FAILED, "chassis · pinned and unmodified",
+               "the local tree does not match the pin — compose, never fork")
 
     # the hazard: unpinned third-party code shipping from an MIT repo
     r = subprocess.run(["git", "ls-files", "deepseek-harness-master"],

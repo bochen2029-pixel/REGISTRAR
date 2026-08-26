@@ -1,0 +1,62 @@
+{
+  "$comment": "The pin for the vendored-in-place harness. internal/SPEC.internal.md §14 item 1, CLOSED 2026-08-26. This file is committed; the 68 MB tree it describes is not — a clone fetches it at this tag and verifies against these digests. Unpinned third-party code must never become load-bearing, and until this file existed it was one .gitignore line away from doing so.",
+
+  "component": "@deepseek-ai/dsh-root",
+  "version": "0.1.1-rc.2",
+  "licence": "MIT",
+
+  "upstream": {
+    "repository": "https://github.com/deepseek-ai/deepseek-harness",
+    "tag": "dsh-v0.1.1-rc.2",
+    "commit": "b150a551b8d465e31e418e1b2eaf5e79bbb7d28e",
+    "default_branch": "master",
+    "tarball": "https://codeload.github.com/deepseek-ai/deepseek-harness/tar.gz/refs/tags/dsh-v0.1.1-rc.2",
+    "tarball_sha256": "142e2f67db41425e8a96a265f77d94997d6e222c9817075b9f34dfc9653bbf75",
+    "tarball_bytes": 14615770
+  },
+
+  "verification": {
+    "method": "file-for-file sha256 against the upstream tag's tarball, excluding node_modules, .git, dist, .turbo, .cache",
+    "verified": "2026-08-26",
+    "upstream_files": 7895,
+    "identical": 7895,
+    "differing": 0,
+    "missing_locally": 0,
+    "tree_digest_upstream": "93b068a3bfe583d4d060aec012c44cc33049ec8252eac1ba48447ec8674221dd",
+    "tree_digest_local": "3adc89c9d13610f62781e9ac4194b935c719cd5804f05262553f8036deac30a9",
+    "note": "EVERY upstream file matches byte for byte. The two tree digests differ only because the local copy carries seven additional files, enumerated below and each accounted for."
+  },
+
+  "local_additions": {
+    "count": 7,
+    "benign": true,
+    "why": "Five are CLAUDE.md files that are BYTE-IDENTICAL to the AGENTS.md upstream ships beside them — a local tooling convention that mirrors one filename to another. Two are AGENTS.md fixtures under examples/acp-agent/tests/snapshots/, excluded from the upstream export rather than absent from it. None modifies upstream code.",
+    "files": [
+      "CLAUDE.md",
+      "packages/CLAUDE.md",
+      "vendor/CLAUDE.md",
+      "examples/CLAUDE.md",
+      ".agents/notes/implemented/CLAUDE.md",
+      "examples/acp-agent/tests/snapshots/agent-instructions/workspace/AGENTS.md",
+      "examples/acp-agent/tests/snapshots/agent-instructions/workspace/nested/AGENTS.md"
+    ]
+  },
+
+  "maturity": {
+    "$comment": "Two facts, deliberately kept apart, because they carry different risk.",
+    "kernel": "cordis v4.0.1 — vendored inside this tree. Roughly four years and several thousand community plugins behind it in the Koishi ecosystem before it was adopted here. THIS IS WHERE THE ALGEBRA OF SPEC.md §3 LIVES.",
+    "harness": "0.1.1-rc.2 — a release candidate, and it says so. This is the layer a distribution composes down, and it is why the pin exists rather than a version range."
+  },
+
+  "posture": {
+    "vendored_in_place": true,
+    "tracked_by_git": false,
+    "wired": false,
+    "note": "The tree sits in the repository root and is gitignored. A conformance gate FAILS if any of it is ever staged: an MIT repository must not ship third-party code it has not pinned. Now that it is pinned, the remaining reasons not to track it are size and the fact that a fetch-and-verify is reproducible while a 68 MB commit is merely large.",
+    "compose_never_fork": "No upstream file is modified, and the verification above is what proves that rather than asserts it. A fork would inherit permanent maintenance and destroy the upgrade path; a pinned tree composed to a profile does not."
+  },
+
+  "reverify": [
+    "python tools/pin_chassis.py --check"
+  ]
+}
