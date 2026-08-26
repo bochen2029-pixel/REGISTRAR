@@ -42,13 +42,13 @@
     },
     "holds": {
       "type": "array",
-      "description": "Targets the author CONSIDERED and DECLINED, with the reason. Optional, and the most reviewable part of a patch: without it, a completion that smoothed over a contradiction and one that never saw it produce identical output. `sources contradict, unresolved` is a finding about the organisation, not a gap in the work. OPTN Policy 2.3(4) requires the same discipline at the record layer — document what is unavailable AND why — and this applies it to the completion.",
+      "description": "Targets the author CONSIDERED and DECLINED, with the reason. Optional, and the most reviewable part of a patch: without it, a completion that smoothed over a contradiction and one that never saw it produce identical output. `sources contradict, unresolved` is a finding about the organisation, not a gap in the work. OPTN Policy 2.3(4) requires the same discipline at the record layer — document what is unavailable AND why — and this applies it to the completion. FIELD SHAPE ADOPTED FROM AN INDEPENDENT COMPLETION RUN (F-PATCH-DELTA arm 2, 2026-08-26) rather than invented here: that harness separated `reason` from `detail` and added `tier` unprompted, and its shape was better than the one this schema first proposed. Letting the measurement inform the contract is the point of running it.",
       "items": {
         "type": "object",
         "required": [
           "target",
           "searched",
-          "why"
+          "reason"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -69,7 +69,7 @@
           "why": {
             "type": "string",
             "minLength": 3,
-            "description": "Why it came back empty, in words a reviewer can act on."
+            "description": "Alias for `reason`, accepted because a patch written before 2026-08-26 had no declared field at all. Prefer `reason`."
           },
           "class": {
             "enum": [
@@ -80,6 +80,22 @@
               "ambiguous_needs_human"
             ],
             "description": "The kind of decline. `sources_contradict` is the highest-value one and should never be silently resolved."
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "description": "Why it came back empty, in one line a reviewer can act on."
+          },
+          "detail": {
+            "type": "string",
+            "maxLength": 4000,
+            "description": "The explanation behind `reason` — what the material actually said, and what a human would need to resolve it."
+          },
+          "tier": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6,
+            "description": "The authority tier a resolution would require (core/authority/). A tier-1 blank is a different problem from a tier-6 one, and a reviewer triages by it."
           }
         }
       }

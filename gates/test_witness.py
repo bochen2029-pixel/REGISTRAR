@@ -33,7 +33,7 @@ sys.path.insert(0, os.path.join(ROOT, "core"))
 from validate_patch import (  # noqa: E402
     FAILED, GREEN, UNVERIFIED, load_patch, load_targets, validate,
 )
-from witness import ENTANGLED, matrix  # noqa: E402
+from witness import ENTANGLED, FLOOR, matrix  # noqa: E402
 
 REJECTED = os.path.join(ROOT, "examples", "worked", "rejected")
 PASS, FAIL = [], []
@@ -98,7 +98,7 @@ def test_isolated_means_isolated():
         #
         # Narrowed 2026-08-26 when gate 14 landed. Narrowed, not weakened:
         # every fixture below still fires exactly one semantic gate.
-        fired = [g for g in per_fixture.get(f, []) if g != "schema conformance"]
+        fired = [g for g in per_fixture.get(f, []) if g not in FLOOR]
         check(f"{f} fires exactly one", len(fired), 1)
 
 
@@ -174,9 +174,15 @@ def test_the_uncaught_fixture_is_retained_and_uncaught():
     check("the fixture is retained", os.path.exists(p), True)
 
     r = validate(load_patch(p), load_targets())
-    check("no gate FAILS on it", [g for s, g, _ in r.rows if s == FAILED], [])
-    check("its overall verdict is not GREEN either — only ambient PASS-UNVERIFIED",
-          r.worst, UNVERIFIED)
+    # FLOOR gates fire on any deliberately-minimal fragment and say nothing about
+    # whether the SEMANTIC hole this fixture records is still open.
+    semantic = [g for s, g, _ in r.rows if s == FAILED and g not in FLOOR]
+    check("no SEMANTIC gate FAILS on it", semantic, [])
+    # The overall verdict is now FAILED rather than PASS-UNVERIFIED, because
+    # gate 15 refuses this fragment for not accounting for its targets. That is
+    # a FLOOR refusal, not a semantic one — the hole this fixture records is
+    # still open, which is what the assertion above establishes.
+    check("and its verdict is not GREEN", r.worst != GREEN, True)
 
     with open(p, encoding="utf-8") as fh:
         doc = json.load(fh)
@@ -202,7 +208,7 @@ def test_uncaught_fixtures_are_still_uncaught():
     A fixture retained as a known hole is only honest while the hole is real.
     """
     print("\nthe known exposures are still exposures")
-    ambient = {"shadow-run fidelity", "totality on provision"}
+    ambient = {"shadow-run fidelity", "totality on provision"} | FLOOR
     found = sorted(f for f in os.listdir(REJECTED) if "UNCAUGHT" in f)
     check("at least seven are retained", len(found) >= 7, True)
 
@@ -222,7 +228,12 @@ def test_uncaught_fixtures_are_still_uncaught():
         r = validate(load_patch(os.path.join(REJECTED, f)), load_targets())
         tripped = [g for s, g, _ in r.rows if s != GREEN and g not in ambient]
         if f in CLOSED:
-            check(f"{f[:34]} NOW CAUGHT", tripped, [CLOSED[f]])
+            # gate 14 is a FLOOR and so filtered from `tripped`; assert the
+            # closure where the catch actually lives — the schema validator.
+            import subprocess as _sp
+            _r = _sp.run([sys.executable, os.path.join(ROOT, "schema", "validate.py"),
+                          os.path.join(REJECTED, f)], capture_output=True, text=True)
+            check(f"{f[:34]} NOW CAUGHT by {CLOSED[f]}", _r.returncode, 1)
         else:
             check(f"{f[:34]} still silent", tripped, [])
 
@@ -247,7 +258,7 @@ def test_coverage_is_reported_not_asserted():
     print("\ncoverage is measured")
     per_gate, _ = matrix()
     states = [i["state"] for i in per_gate.values()]
-    check("fourteen gates", len(per_gate), 14)   # 14th: schema conformance, 2026-08-26
+    check("fifteen gates", len(per_gate), 15)   # 14 schema conformance, 15 accountability
     check("at least nine cleanly witnessed", states.count("WITNESSED") >= 9, True)
     real_gaps = [g for g, i in per_gate.items()
                  if i["state"] == "UNWITNESSED" and g not in ENTANGLED]

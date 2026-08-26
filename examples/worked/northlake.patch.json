@@ -261,5 +261,104 @@
       "author": "M. Okonkwo — Quality Director",
       "$note": "The one row here with a real inverse rather than null, because it REPLACES an earlier value of 240. A correction is a new row that supersedes, never an edit to an old one — and the inverse is the previous value, so retirement of this row restores 240 rather than leaving the target undefined."
     }
-  ]
+  ],
+  "holds": [
+    {
+      "target": "intake.timely_referral_definition",
+      "tier": 1,
+      "class": "sources_contradict",
+      "reason": "THE AGREEMENTS DISAGREE WITH EACH OTHER AND WITH THE SOP.",
+      "searched": "ops/SOP-14-referral-intake.md, contracts/hospital-agreements/ (14 of 19 present)",
+      "detail": "Three agreements say 60 minutes, two say 'promptly', and nine are silent. SOP-14 asserts one hour site-wide. 486.322(a) requires the AGREEMENT to define it and sets no federal figure, so there is nothing to fall back on. A single site-wide number would be wrong at five hospitals and unfounded at nine. This is the first deadline on every case and it needs the five missing agreements plus a decision from Clinical Operations."
+    },
+    {
+      "target": "triage.ruleout_authority",
+      "tier": 2,
+      "class": "ambiguous_needs_human",
+      "reason": "The SOP and the rota describe different people.",
+      "searched": "ops/SOP-09-triage.md, the call rotation, ruleout records by role and hour",
+      "detail": "SOP-09 assigns judgment-based ruleouts to the medical director. The rotation lists no physician between 23:00 and 06:00. Records show 31 overnight ruleouts, all by coordinators. A ruleout is terminal, so encoding either reading would be encoding a decision nobody has made."
+    },
+    {
+      "target": "transport.perfusion",
+      "tier": 3,
+      "class": "no_evidence",
+      "reason": "No perfusion arrangement exists in any material reviewed.",
+      "searched": "contracts/, the case tape (no perfusion events), every SOP",
+      "detail": "Nothing to encode. Either the site does not use machine perfusion, or the arrangement lives somewhere not provided. Asked and unanswered as of this draft."
+    },
+    {
+      "target": "transport.providers",
+      "tier": 3,
+      "class": "no_evidence",
+      "reason": "Contracts name providers; nothing gives door-to-door figures.",
+      "searched": "contracts/transport-2024.pdf, dispatch records, the case tape",
+      "detail": "The agreements specify response-to-pickup, not door-to-door, and the tape does not carry transport timestamps. A door-to-door figure stated here would be invented. The providers themselves are not a variation point the closure consumes."
+    },
+    {
+      "target": "evaluation.imaging_route",
+      "tier": 3,
+      "class": "no_evidence",
+      "reason": "No standing imaging arrangement is documented.",
+      "searched": "the integration inventory, PACS configuration, workup records",
+      "detail": "Studies appear to be obtained case by case. Whether that is a policy or a gap is not something this material answers."
+    },
+    {
+      "target": "authorization.esignature_vendor",
+      "tier": 3,
+      "class": "no_evidence",
+      "reason": "The vendor is visible; the workflow is not.",
+      "searched": "the integration inventory, signed artifacts in the record",
+      "detail": "A vendor name alone does not constrain anything the seed models. What matters — whether capture is interfaced or manual — is not recorded anywhere reviewed."
+    },
+    {
+      "target": "allocation.credentials",
+      "tier": 3,
+      "class": "phi_adjacent_declined",
+      "reason": "Not written down, and not appropriate to elicit this way.",
+      "searched": "the integration inventory, the identity provider",
+      "detail": "Access arrangements are a security matter for the site's own IT function to record directly. A completion should not be enumerating who holds allocation credentials."
+    },
+    {
+      "target": "intake.channel",
+      "tier": 3,
+      "class": "ambiguous_needs_human",
+      "reason": "The inventory is stale relative to the tape.",
+      "searched": "the integration inventory, intake records by hospital and channel",
+      "detail": "The inventory lists two interfaced hospitals; the tape shows referrals arriving by interface from a third. Either the inventory has not been updated or the tape is mislabelled. Encoding either would encode the discrepancy."
+    },
+    {
+      "target": "evaluation.on_site_vs_remote",
+      "tier": 2,
+      "class": "no_evidence",
+      "reason": "The tape records what happened, not where it was done from.",
+      "searched": "the staffing model, the case tape",
+      "detail": "Event location is not captured. The staffing model implies predominantly on site, but implication is not evidence and this row would rest on nothing."
+    },
+    {
+      "target": "management.protocol_variant",
+      "tier": 2,
+      "class": "requires_tier_1_5_change",
+      "reason": "Any answer here is a clinical determination.",
+      "searched": "clinical protocol documents, medical director standing orders",
+      "detail": "The standing orders reference standard adult targets without stating whether the site maintains a variant. Resolving it is the medical director's, not a completion's."
+    },
+    {
+      "target": "management.escalation_ladder",
+      "tier": 2,
+      "class": "sources_contradict",
+      "reason": "The written ladder and the observed one differ.",
+      "searched": "ops/SOP-22-authorization.md, escalation threads, the call rotation",
+      "detail": "The SOP lists four levels; threads show three, with the second routinely skipped. Unlike the after-hours owner, there is no clean majority — the pattern varies by shift. Needs someone who works those shifts."
+    },
+    {
+      "target": "authorization.approach_sequence",
+      "tier": 2,
+      "class": "no_evidence",
+      "reason": "Approach documentation records the outcome, not the sequence.",
+      "searched": "ops/SOP-22-authorization.md, approach documentation on the case tape",
+      "detail": "The SOP describes an in-person default. The tape records who authorised and when, not how the approach was structured. Nothing to replay against."
+    }
+  ],
+  "$holds_note": "TWELVE DECLINES, AND THEY ARE HALF THE PRODUCT. Added 2026-08-26, after gate 15 showed this example — the file everyone is told to copy — was SILENT on twelve of twenty declared targets while demonstrating none of the discipline it teaches. A target with no row and no hold is indistinguishable from one nobody looked at. Note what the declines carry: two sources_contradict entries that are findings ABOUT THE ORGANISATION rather than gaps in the work, one phi_adjacent_declined, and one requires_tier_1_5_change that is a clinical determination no completion may make. The tier field triages them — a tier-1 blank on the first deadline of every case is a different problem from a tier-3 one about an e-signature vendor."
 }

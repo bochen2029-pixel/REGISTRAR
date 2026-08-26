@@ -656,6 +656,13 @@ def check_schema() -> None:
     AGAINST IT — which is why two defects sat in it undetected until an
     independent completion run reported them. This runs it.
     """
+    # every declared target accounted for, in the example everyone copies
+    sys.path.insert(0, os.path.join(ROOT, "gates"))
+    from accountability import validate as _acct
+    from validate_patch import load_patch as _lp
+    _st, _m = _acct(_lp(os.path.join(ROOT, "examples", "worked", "northlake.patch.json")))
+    record(_st, "schema · nothing silent", "; ".join(_m)[:120])
+
     r = subprocess.run([sys.executable, os.path.join(ROOT, "schema", "validate.py"), "--self"],
                        capture_output=True, text=True, encoding="utf-8",
                        env=dict(os.environ, PYTHONIOENCODING="utf-8"))

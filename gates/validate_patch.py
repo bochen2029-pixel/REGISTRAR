@@ -242,6 +242,22 @@ def validate(patch: dict, targets: dict) -> Result:
     except Exception as _exc:
         r.add(UNVERIFIED, "schema conformance", f"validator unavailable: {_exc}")
 
+    # 11d · accountability — a row or a hold for every declared target
+    #
+    # SILENCE IS NOT AN ANSWER. A target with neither could mean the harness
+    # looked and found nothing, that it never looked, or that the site has no
+    # local variation there — and a reviewer cannot tell which. The absences are
+    # where the risk is, and nothing checked them until 2026-08-26.
+    #
+    # Found by measurement: F-PATCH-DELTA's arm-2 candidate accounted for 20 of
+    # 20 unprompted, and the worked example was silent on 12 of 20.
+    try:
+        from accountability import validate as _acct
+        _st, _msgs = _acct(patch)
+        r.add(_st, "accountability", "; ".join(_msgs)[:200])
+    except Exception as _exc:
+        r.add(UNVERIFIED, "accountability", f"unavailable: {_exc}")
+
     # 12 · signature — the output commit
     unsigned = [row.get("target") for row in rows if not str(row.get("author") or "").strip()]
     if unsigned:

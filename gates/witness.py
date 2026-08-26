@@ -74,7 +74,15 @@ WITNESSED, INCIDENTAL, UNWITNESSED, UNDECIDABLE = (
 # `schema conformance` landed 2026-08-26, after nothing in the tree had ever
 # validated against `patch.schema.json` — which is why two defects sat in that
 # schema undetected until an independent completion run reported them.
-FLOOR = {"schema conformance"}
+#
+# `accountability` landed the same day and is a floor for a different reason:
+# it asks whether every declared target got a row or a hold, which is a property
+# of a FINISHED patch. **An adversarial fixture is deliberately a fragment** —
+# one row, one defect — so it fails accountability by construction, and that
+# failure says nothing about the gate the fixture exists to witness. The gate is
+# not weakened for fixtures; it is excluded from the isolation measurement,
+# which is a different question.
+FLOOR = {"schema conformance", "accountability"}
 
 # Gates that CANNOT be isolated, and why. Recording this is not an excuse — it
 # is the finding. A fixture author who does not know these will chase an
