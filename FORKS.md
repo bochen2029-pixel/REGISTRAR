@@ -217,3 +217,39 @@ git diff --cached --stat              # look at it, do not skim it
 **Not rewritten.** The history stands and this note explains it, because force-pushing a rewrite while two
 sessions hold the same working tree would cost more than the misattribution does — and because corrections
 here are new entries with the reason, never quiet edits that make a past state unreconstructable.
+
+
+### It happened again, in the other direction — `2026-08-26`, commit `df3527c`
+
+**Fork C wrote `plans/PROPOSAL_read-and-reach.md`, staged it by name, and another session's blanket stage
+swept it into `df3527c` ("Close the loop: the kit now asks for what gate 15 requires") before Fork C could
+commit.** Fork C's `git commit` then reported *"nothing to commit, working tree clean."*
+
+**Nothing was lost.** The file is intact and pushed. The provenance is wrong for it, and — the part worth
+noticing — **Fork C had followed the rule.** It staged one path by name and checked `git diff --cached`
+first. Complying did not protect it, because the rule binds the session that *stages*, and any session can
+still sweep a neighbour's staged work.
+
+### What that says about the rule
+
+**The staging rule has the same defect the partition had.** Fork A's note above says it exactly:
+
+> *A partition that is only honoured by intention is not a partition.*
+
+**A staging rule that is only honoured by intention is not a rule either.** It reduces collisions; it cannot
+prevent them, because three sessions share one working tree and one index. The failure mode is not
+carelessness — **it is that `git add -A` in session A is indistinguishable, from session B's side, from
+session B's own staging.**
+
+### The structural fix, when someone has room for it
+
+Not another paragraph in this file. **Separate worktrees, or a pre-commit hook that refuses a commit touching
+paths outside the committing fork's declared partition.** Either makes the boundary a fact rather than an
+agreement — which is this repository's own law 9, applied to its own process:
+
+> **Hazards unreachable, never forbidden.** *If a rule can only be enforced by asking people to follow it, it
+> is not enforced.*
+
+**Not rewritten, for the same reason as last time**: force-pushing a rewrite while sessions hold the same
+tree costs more than the misattribution, and corrections here are new entries with the reason rather than
+quiet edits.
