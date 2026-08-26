@@ -501,6 +501,31 @@ def check_chassis() -> None:
            if tracked else "untracked; provenance must be established before it can")
 
 
+# ── 6i · the L3 adapters ────────────────────────────────────────────────────
+def check_adapters() -> None:
+    """
+    L3 is the largest single share of the six years. The seed ships the SHELL
+    and its battery; the site binds the integration it actually has.
+    """
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "adapters", "conformance.py")],
+                       capture_output=True, text=True, encoding="utf-8", env=env)
+    tail = [ln for ln in r.stdout.splitlines() if "adapter(s)" in ln]
+    detail = tail[-1].strip() if tail else "no adapters declared"
+
+    if r.returncode == 3:
+        record(UNVERIFIED, "adapters · declarations", "pyyaml unavailable — not checked")
+    elif r.returncode == 1:
+        bad = [ln.strip() for ln in r.stdout.splitlines() if "FAILED " in ln]
+        record(FAILED, "adapters · declarations", bad[0] if bad else detail)
+    elif r.returncode == 2:
+        record(UNVERIFIED, "adapters · declarations",
+               f"{detail} — shells declared, no binding; a real integration needs "
+               f"specs an OPO holds")
+    else:
+        record(GREEN, "adapters · declarations", detail)
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -542,6 +567,7 @@ def main() -> int:
         ("the profiles", check_profiles),
         ("percepts and the switch", check_percepts),
         ("the nested chassis", check_chassis),
+        ("the L3 adapters", check_adapters),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

@@ -1,0 +1,170 @@
+# REGISTRAR · L3 adapter · reference laboratory
+# ─────────────────────────────────────────────────────────────────────────────
+# THE WORKED ONE. Copy the shape, not the content.
+#
+# Chosen first because it is the highest-leverage adapter in the domain and the
+# most tractable: serology gates the match run (OPTN 2.6.A — blood type by two
+# samples PRIOR TO the match run; 486.344(c)(4) — results documented BEFORE
+# recovery), so the reference lab's latency propagates into every downstream
+# deadline on the case.
+#
+# It is also where the sharpest row in the worked example lives:
+#
+#     "THE MOST IMPORTANT ROW IN THIS FILE. The contract says four hours. The
+#      laboratory takes six. A fit built on the contract would compute deadlines
+#      that are two hours optimistic on every case — and would be wrong in the
+#      direction that loses organs."
+#
+# This adapter exists to make that measurable rather than remembered.
+
+schema_version: 0.1
+adapter: lab
+layer: L3
+status: SPEC          # the shell is real; the binding is null
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 1 · WHAT IT INGESTS
+# ─────────────────────────────────────────────────────────────────────────────
+ingests:
+  source: a reference laboratory's result interface
+  transport: null       # site-declared: HL7 v2 over MLLP, a REST poll, SFTP drop, a portal
+  format: null          # site-declared, WITH ITS VERSION
+  note: >
+    "our reference lab" is not an answer. WHICH laboratory, WHICH interface, at
+    WHAT version. Two labs on the same vendor at different versions are two
+    adapters — pretending otherwise is how a fit silently stops fitting.
+  binding: null
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2 · WHICH LIFECYCLE ELEMENTS IT MAY PRODUCE
+#     A CLOSED LIST. And note: elements, never transitions. The adapter
+#     observes; the spine decides whether a guard is satisfied.
+# ─────────────────────────────────────────────────────────────────────────────
+produces:
+  - element: serology_complete
+    guards: [donor_management -> allocation]
+    provenance: OPTN Policy 2.9 · 42 CFR 486.344(c)
+  - element: typing_complete
+    guards: [donor_management -> allocation]
+    provenance: >
+      OPTN Policy 2.6.A — "blood type is determined by testing at least two
+      donor blood samples PRIOR TO THE MATCH RUN", and the two samples must be
+      drawn on separate occasions, at different collection times, submitted
+      separately. TWO ALIQUOTS OF ONE DRAW DO NOT SATISFY THIS, and an adapter
+      that reports a single accession as two results has defeated the rule.
+
+may_not_produce:
+  - any transition          # the spine decides, always
+  - any L0, L1 or L4 write
+  - any clinical determination
+  - a value it did not receive
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3 · FAILURE MODES — named individually, not "handles errors"
+# ─────────────────────────────────────────────────────────────────────────────
+failure_modes:
+
+  - id: malformed
+    what: a message that does not parse
+    must: >
+      Reject it, name the defect, and emit a percept. NEVER partially parse.
+      A half-read result is a fabricated clinical fact wearing the formatting
+      of a real one.
+    universal: true
+
+  - id: late
+    what: a result arriving after the deadline it was supposed to inform
+    must: >
+      Accept it, record it, and record that it was late. **This is the normal
+      case in this domain, not the edge** — the whole reason floor/closure.py
+      exists is that the failure is almost always the interval.
+    universal: true
+
+  - id: post_disposition
+    what: a result arriving after the case closed
+    must: >
+      Accept and report it. OPTN Policy 2.12 REQUIRES post-procurement results
+      be obtained and reported — "disposition does not close the case." An
+      adapter that drops these is non-compliant, not merely lossy.
+    universal: true
+
+  - id: conflicting
+    what: two results for the same determination that disagree
+    must: >
+      Report BOTH and resolve NEITHER. OPTN 2.6.B: conflicting or indeterminate
+      subtype results "must not be reported to the OPTN and the deceased donor
+      must be allocated based on the primary blood type." **A conflict is
+      withheld, not adjudicated** — and an adapter that picks the more recent
+      result has made a clinical decision it may not make.
+
+  - id: missing_field
+    what: an expected field is absent
+    must: >
+      Record the ABSENCE and its reason. OPTN 2.3(4) requires exactly this at
+      the record layer. **Never default. Never infer.** An adapter that fills a
+      missing result with a plausible value has fabricated a clinical fact.
+
+  - id: silent_stall
+    what: the interface stops delivering and says nothing
+    must: >
+      Detectable. A lab that has gone quiet and a lab with nothing to report
+      look identical, and conflating them is the same error as conflating a
+      stalled resident with a quiet one (percepts/switch.py).
+    note: this is why `latency` below is observed rather than assumed
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 4 · LATENCY — the point of the whole adapter
+# ─────────────────────────────────────────────────────────────────────────────
+latency:
+  contracted: null      # what the agreement says
+  observed:   null      # what the tape says — p75 and p90, with n
+  feeds_closure: true
+  rule: >
+    THE OBSERVED FIGURE IS AUTHORITATIVE, AND THE CONTRACTED ONE IS CITED SO
+    THE GAP IS VISIBLE. A fit built on the contract computes every deadline
+    optimistic, in the direction that loses organs. Encode what happens; cite
+    what was promised, so it can be renegotiated.
+  percentile_rule: >
+    Use p75 or higher, and p90 where the figure feeds a LATEST SAFE START.
+    A latest-start computation must assume the worst case or it is not a
+    guarantee. A threshold at the median is breached half the time by
+    construction.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 5 · THE NULL — what this replaces
+#     Keyed `beats` and not `null`: bare `null:` is a YAML reserved word and
+#     parses as the None KEY, so the field silently disappears. Found by the
+#     conformance battery on the first run of the first adapter, which is
+#     exactly when a trap like this should be found.
+# ─────────────────────────────────────────────────────────────────────────────
+beats:
+  what: >
+    A coordinator watches the lab portal and retypes results into the record.
+  beats_it_by: >
+    Latency becomes MEASURED rather than remembered, so the closure can compute
+    a real deadline instead of an optimistic one; and a late or post-disposition
+    result is caught rather than missed.
+  kill_condition: >
+    If retyping catches effectively everything this does — because volume is low
+    enough that a person never misses one — **the adapter is a liability**: it
+    adds a failure mode and a maintenance burden to a process that already
+    works. Print the funeral and delete it.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6 · PROVENANCE
+# ─────────────────────────────────────────────────────────────────────────────
+provenance:
+  format_knowledge: null
+  rule: >
+    Vendor PUBLIC documentation, a published standard, or an interface
+    specification the site holds — and if the last, it stays at the site and
+    never enters this repository. PROVENANCE.md §4: another vendor's product
+    examined by screenshot, trial account, or reverse engineering is
+    inadmissible here exactly as it is for L0.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE BINDING — null, deliberately
+# ─────────────────────────────────────────────────────────────────────────────
+binding: null
+# version · source · sha256 · entry · SPDX licence.
+# A binding without a licence cannot mount into an MIT tree.
