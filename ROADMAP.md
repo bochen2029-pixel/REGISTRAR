@@ -100,9 +100,23 @@ it, so no future adapter can lose a field the same way.
 just mean the schema is fillable by anyone**) · **② prompted harness** on public material for a second OPO ·
 **③ resident** — later, and arm 2 is its null.
 
-**Expect the pre-registration to surface a problem**, which is why it is cheap: how much public material for a
-second OPO actually exists? A website, an annual report, CMS data. If that is too thin, **the test is unfair
-and a negative result is uninformative — and finding that out costs an afternoon rather than a weekend.**
+**It surfaced one, and it was worse than "thin" — `2026-08-26`.** `experiments/F-PATCH-DELTA/PREREGISTRATION.md`
+§0, reproducible via `audit_public_material.py`:
+
+> **0 of 13 evidence items in the worked example are public. 0 of 20 elicit questions name a public source.**
+
+They name the case tape (×11), SOPs, the call rotation, service-desk history, written hospital agreements,
+and lab and transport contracts. **None publishable — and that is the thesis rather than an oversight.** An
+OPO's public surface describes *what it is*, not *how it runs*.
+
+**So the experiment as specified would have measured the material, not the harness**, and a negative result
+would have been uninformative. **Arm ② is now a synthetic site with a known delta**, with its cost stated up
+front: *it tests whether the KIT is completable, not whether a REAL OPO is legible.* **A pass is necessary
+and not sufficient; a failure is decisive.** Grading against STA was considered and **refused** — the ground
+truth would be recollection of a former employer's design, which `PROVENANCE.md` §4 makes inadmissible.
+
+**PRE-REGISTERED.** Gate battery pinned at `87c463d`. Rubric, thresholds, and invalidation conditions all
+fixed before any corpus was written.
 
 **Pin the chassis.** Blocking, and it now blocks *wiring* rather than acquisition — the bytes are already
 here. `internal` §14 item 1. **Unpinned third-party code must not become load-bearing.**
