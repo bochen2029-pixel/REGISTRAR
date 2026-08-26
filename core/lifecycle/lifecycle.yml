@@ -1,0 +1,424 @@
+# REGISTRAR · L0 · the mandated case lifecycle
+# ─────────────────────────────────────────────────────────────────────────────
+# The deceased-donor case, as a state machine. This is the spine the whole
+# system is built on, and it is L0: immutable, byte-identical at every OPO,
+# because it is law rather than design.
+#
+# READ THIS BEFORE USING THE FILE
+#
+#   Every state and transition carries `provenance`. Where `locator` reads
+#   TODO-VERIFY, the authority is named but the exact citation has not been
+#   verified against live text by this project yet. Per PROVENANCE.md §2, such
+#   an element is NOT implemented — it is a TODO. Do not treat an unverified
+#   row as a compliance statement, and do not build a validator that enforces
+#   one until its locator is filled.
+#
+#   `local_variation` is the important field. It enumerates what the mandated
+#   layer deliberately does NOT determine — and each entry is therefore an L2
+#   or L3 patch target. THE SEED TELLS THE COMPLETION WHERE TO LOOK. If a
+#   state has no local_variation, there is nothing at that state for a site to
+#   author, and a patch row targeting it fails the blast-radius gate.
+#
+# schema_version is this file's own contract, not the patch schema's.
+
+schema_version: 0.1
+layer: L0
+status: SPEC                      # structure drafted; locators unverified
+generated: 2026-08-25
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PATHWAYS
+#   The two recognised deceased-donor pathways. They share most of the spine
+#   and diverge between death determination and recovery.
+# ─────────────────────────────────────────────────────────────────────────────
+pathways:
+  DBD:
+    name: donation after brain death
+    provenance: { authority: OPTN Policy, locator: TODO-VERIFY }
+  DCD:
+    name: donation after circulatory death
+    provenance: { authority: OPTN Policy, locator: TODO-VERIFY }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# STATES
+# ─────────────────────────────────────────────────────────────────────────────
+states:
+
+  - id: referral_received
+    name: Referral received
+    description: >
+      A hospital reports a death or imminent death to the OPO. This is the
+      reference point of the case clock; every downstream deadline is measured
+      from it or from an event it precedes.
+    terminal: false
+    provenance:
+      - authority: 42 CFR 486 Subpart G
+        establishes: donor-hospital referral obligation and OPO response duties
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation:
+      - id: intake.channel
+        note: which lanes referrals actually arrive on (interfaced, phone, fax-to-email) and per donor hospital
+        layer: L3
+      - id: intake.after_hours_owner
+        note: who owns an out-of-hours referral in practice, as distinct from the binder
+        layer: L2
+
+  - id: referral_triaged
+    name: Referral triaged
+    description: >
+      Initial clinical screen against ruleout criteria. The case either advances
+      to evaluation or terminates as medically unsuitable.
+    terminal: false
+    provenance:
+      - authority: OPTN Policy
+        establishes: medical suitability screening criteria
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation:
+      - id: triage.ruleout_authority
+        note: which role may rule out without escalation, and at what hour
+        layer: L2
+      - id: triage.callback_practice
+        note: observed callback behaviour where the first contact does not reach a decision-maker
+        layer: L2
+
+  - id: evaluation
+    name: Donor evaluation
+    description: >
+      Chart review, laboratory studies, serology, typing, imaging, and
+      organ-specific assessment. Runs concurrently with several downstream
+      states rather than strictly before them.
+    terminal: false
+    concurrent_with: [ death_determination, authorization, donor_management ]
+    provenance:
+      - authority: OPTN Policy
+        establishes: required donor testing and documentation
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation:
+      - id: evaluation.reference_lab
+        note: which laboratory, which assay panel, and its actual turnaround
+        layer: L3
+      - id: evaluation.imaging_route
+        note: how imaging is obtained and transferred from each donor hospital
+        layer: L3
+      - id: evaluation.on_site_vs_remote
+        note: whether workup is conducted on site or remotely, and by which role
+        layer: L2
+
+  - id: death_determination
+    name: Death determination
+    description: >
+      Declaration of death by the donor hospital, by neurologic criteria (DBD)
+      or circulatory criteria (DCD). Performed by the hospital's clinicians.
+      The OPO records it; the OPO does not participate in it.
+    terminal: false
+    provenance:
+      - authority: 42 CFR 486 Subpart G
+        establishes: separation of death determination from donation activity
+        locator: TODO-VERIFY
+        accessed: null
+    constitutional_note: >
+      REGISTRAR never determines or asserts death. It records a determination
+      made and attributed elsewhere. See SPEC.md §8, prohibition 2.
+    local_variation: []          # no site authors anything here, by design
+
+  - id: authorization
+    name: Authorization
+    description: >
+      First-person authorization is verified, or authorization is sought from
+      the legally authorized party. The authorization artifact is the object
+      every downstream step depends on.
+    terminal: false
+    provenance:
+      - authority: 42 CFR 486 Subpart G
+        establishes: authorization requirements and documentation
+        locator: TODO-VERIFY
+        accessed: null
+      - authority: state anatomical gift act (UAGA as adopted)
+        establishes: who may authorize, and the standing of first-person authorization
+        locator: TODO-VERIFY
+        accessed: null
+        note: >
+          Varies by state. This is a rare case where L0 is not byte-identical
+          nationally; the variation is statutory rather than operational, so it
+          belongs in the seed as a jurisdiction table, NOT in a site patch.
+    local_variation:
+      - id: authorization.approach_sequence
+        note: observed order of approach (in person, telephonic) and who accompanies
+        layer: L2
+      - id: authorization.second_person_rule
+        note: local practice on a second requester, and the conditions triggering it
+        layer: L2
+      - id: authorization.esignature_vendor
+        note: how the artifact is captured and stored
+        layer: L3
+
+  - id: donor_management
+    name: Donor management
+    description: >
+      Physiologic management to preserve organ function between authorization
+      and recovery. Clinical decisions are made by clinicians; the record
+      carries protocol adherence and the measurements it is graded on.
+    terminal: false
+    concurrent_with: [ evaluation, allocation ]
+    provenance:
+      - authority: OPTN Policy
+        establishes: donor management goals and reportable measurements
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation:
+      - id: management.protocol_variant
+        note: which management protocol is in local use and who may deviate
+        layer: L2
+      - id: management.escalation_ladder
+        note: the escalation path as practised, not as written
+        layer: L2
+
+  - id: allocation
+    name: Allocation
+    description: >
+      The match run is executed and offers are issued through the national
+      system. REGISTRAR does not run allocation and does not rank candidates.
+      It records readiness, offers, and responses.
+    terminal: false
+    provenance:
+      - authority: OPTN Policy
+        establishes: allocation sequence and offer procedure
+        locator: TODO-VERIFY
+        accessed: null
+    constitutional_note: >
+      Allocation belongs to OPTN and executes in their systems. See SPEC.md §8,
+      prohibitions 1 and 6.
+    requires_elements: [ serology_complete, typing_complete, authorization_valid ]
+    local_variation:
+      - id: allocation.offer_window_practice
+        note: observed elapsed time from match run to primary acceptance
+        layer: L2
+      - id: allocation.credentials
+        note: endpoints and credentials for the national system
+        layer: L3
+
+  - id: recovery
+    name: Surgical recovery
+    description: >
+      Operative recovery of authorized organs. Cross-clamp starts the cold
+      ischemia clock for each organ independently.
+    terminal: false
+    provenance:
+      - authority: OPTN Policy
+        establishes: recovery documentation and organ disposition recording
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation:
+      - id: recovery.or_availability
+        note: >
+          the donor hospital's actual OR availability window. Frequently the
+          binding constraint on the whole case, and almost never written down.
+        layer: L2
+      - id: recovery.team_mobilisation
+        note: elapsed time from OR scheduled to incision, by team
+        layer: L3
+
+  - id: packaging_transport
+    name: Packaging and transport
+    description: >
+      Preservation, packaging, labelling and transport to the accepting centre.
+      Chain of custody is conserved and must be continuous.
+    terminal: false
+    provenance:
+      - authority: OPTN Policy
+        establishes: packaging, labelling and chain-of-custody requirements
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation:
+      - id: transport.providers
+        note: carriers, modes, and observed door-to-door times by destination
+        layer: L3
+      - id: transport.perfusion
+        note: machine perfusion availability and local practice
+        layer: L3
+
+  - id: disposition
+    name: Disposition
+    description: >
+      Each organ's outcome is recorded: transplanted, or not, with the reason.
+      Per-organ, not per-case.
+    terminal: false
+    grain: per_organ
+    provenance:
+      - authority: OPTN Policy
+        establishes: disposition reporting and reason codes
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation: []
+
+  - id: reporting_closed
+    name: Reporting closed
+    description: >
+      Mandated reporting is complete and the case is closed. The tape remains
+      readable and exportable forever; closure is a state, not a deletion.
+    terminal: true
+    provenance:
+      - authority: 42 CFR 486 Subpart G
+        establishes: OPO reporting obligations
+        locator: TODO-VERIFY
+        accessed: null
+    local_variation: []
+
+  # ── non-conversion terminals ───────────────────────────────────────────────
+  # Every one of these is a case that did not become a transplant. Together
+  # they are the numerator's complement, and the missed-referral audit is a
+  # question about how cases arrive here.
+
+  - id: ruled_out_medical
+    name: Ruled out — medically unsuitable
+    terminal: true
+    provenance: [ { authority: OPTN Policy, establishes: suitability criteria, locator: TODO-VERIFY, accessed: null } ]
+    local_variation: []
+
+  - id: authorization_declined
+    name: Authorization declined
+    terminal: true
+    provenance: [ { authority: 42 CFR 486 Subpart G, establishes: authorization outcome recording, locator: TODO-VERIFY, accessed: null } ]
+    local_variation: []
+    constitutional_note: >
+      No REGISTRAR component participates in, scripts, prompts, or observes the
+      family approach. See SPEC.md §8, prohibition 3.
+
+  - id: no_organs_recovered
+    name: No organs recovered
+    terminal: true
+    provenance: [ { authority: OPTN Policy, establishes: disposition reason codes, locator: TODO-VERIFY, accessed: null } ]
+    local_variation: []
+
+  - id: referral_lapsed
+    name: Referral lapsed
+    description: >
+      A referral that never reached a decision. This state exists because a
+      case that quietly stops moving is a distinct and measurable failure, and
+      one no form catches — it has no event, only an absence.
+    terminal: true
+    provenance:
+      - authority: derived
+        establishes: >
+          Not a mandated state. Introduced so that non-progression is
+          representable rather than invisible. Marked as a design choice, per
+          PROVENANCE.md §5.
+        kind: design-choice
+        locator: n/a
+        accessed: 2026-08-25
+    local_variation:
+      - id: lapse.threshold
+        note: when a site considers a referral lapsed rather than open
+        layer: L2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TRANSITIONS
+#   guard = the element set that must be complete before the transition is
+#   legal. Guards are L0. A site may not relax one.
+# ─────────────────────────────────────────────────────────────────────────────
+transitions:
+  - { from: referral_received,   to: referral_triaged,      guard: [] }
+  - { from: referral_received,   to: referral_lapsed,       guard: [], note: "absence, not event" }
+  - { from: referral_triaged,    to: evaluation,            guard: [] }
+  - { from: referral_triaged,    to: ruled_out_medical,     guard: [ ruleout_reason ] }
+  - { from: evaluation,          to: death_determination,   guard: [] }
+  - { from: death_determination, to: authorization,         guard: [ death_recorded ] }
+  - { from: authorization,       to: donor_management,      guard: [ authorization_valid ] }
+  - { from: authorization,       to: authorization_declined, guard: [ authorization_outcome ] }
+  - { from: donor_management,    to: allocation,            guard: [ serology_complete, typing_complete, authorization_valid ] }
+  - { from: allocation,          to: recovery,              guard: [ primary_acceptance ] }
+  - { from: allocation,          to: no_organs_recovered,   guard: [ disposition_reason ] }
+  - { from: recovery,            to: packaging_transport,   guard: [ recovery_documented ] }
+  - { from: recovery,            to: no_organs_recovered,   guard: [ disposition_reason ] }
+  - { from: packaging_transport, to: disposition,           guard: [ custody_continuous ] }
+  - { from: disposition,         to: reporting_closed,      guard: [ disposition_complete ] }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TIMERS
+#   Symbolic only. No duration is asserted here, because this project does not
+#   publish a regulatory figure it has not verified against live rule text.
+#   Durations arrive two ways: L0 timers when a locator is filled, and L2/L3
+#   timers authored on site with evidence. floor/closure.py consumes both.
+# ─────────────────────────────────────────────────────────────────────────────
+timers:
+  - id: t_referral_response
+    from: referral_received
+    to: referral_triaged
+    bound: upper
+    value: TODO-VERIFY
+    layer: L0
+    provenance: { authority: 42 CFR 486 Subpart G, locator: TODO-VERIFY, accessed: null }
+
+  - id: t_serology_turnaround
+    from: serology_drawn
+    to: serology_resulted
+    bound: lower
+    value: null
+    layer: L3
+    note: your reference laboratory's actual turnaround. Authored on site.
+
+  - id: t_or_mobilisation
+    from: or_scheduled
+    to: incision
+    bound: lower
+    value: null
+    layer: L3
+    note: elapsed time your recovery team actually needs. Authored on site.
+
+  - id: t_cold_ischemia
+    from: cross_clamp
+    to: implant
+    bound: upper
+    value: TODO-VERIFY
+    grain: per_organ
+    layer: L1
+    provenance:
+      authority: peer-reviewed literature
+      locator: TODO-VERIFY
+      accessed: null
+      note: >
+        Organ-specific and clinical rather than statutory. Cite the paper, not
+        the consensus. PROVENANCE.md §3.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MEASURES
+#   The two graded ratios. Admissible only if the denominator is a fold over
+#   the tape — SPEC.md §3, T5.
+# ─────────────────────────────────────────────────────────────────────────────
+measures:
+  - id: donation_rate
+    numerator: TODO-VERIFY
+    denominator: CMS-defined potential donors, derived from inpatient death records
+    denominator_source: inpatient death records, not OPO self-report
+    must_be_fold_over_tape: true
+    provenance:
+      authority: CMS
+      document: OPO Conditions for Coverage; fact sheet CMS-3409-P
+      establishes: >
+        Two outcome measures — a donation rate and a transplantation rate —
+        with denominators derived from inpatient death records rather than
+        self-report.
+      locator: "CMS fact sheet, 2026-01-28; proposed rule, 90 FR / doc 2026-01833, published 2026-01-30"
+      accessed: 2026-08-25
+
+  - id: transplantation_rate
+    numerator: TODO-VERIFY
+    denominator: CMS-defined potential donors, derived from inpatient death records
+    must_be_fold_over_tape: true
+    provenance:
+      authority: CMS
+      document: OPO Conditions for Coverage; fact sheet CMS-3409-P
+      locator: "CMS fact sheet, 2026-01-28; proposed rule doc 2026-01833, published 2026-01-30"
+      accessed: 2026-08-25
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WHAT THIS FILE DOES NOT CONTAIN, ON PURPOSE
+# ─────────────────────────────────────────────────────────────────────────────
+excluded:
+  - "Any duration not verified against live rule text. See timers above."
+  - "Any ranking of donors, recipients or families. SPEC.md §8, prohibition 6."
+  - "Allocation logic. It belongs to OPTN and executes in their systems."
+  - "Any element derived from a non-public source. PROVENANCE.md §4."

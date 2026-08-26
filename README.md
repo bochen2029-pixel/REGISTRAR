@@ -152,11 +152,30 @@ in this design cares which harness you point at it.**
 
 ## Repository status
 
-This repository currently contains the **specification**, the **boot contract** that a foreign harness reads
-before it touches anything ([`AGENTS.md`](AGENTS.md)), and the **source ledger** that every element of the seed
-must trace through ([`PROVENANCE.md`](PROVENANCE.md) — empty, because the seed is unbuilt, and that is the
-honest state). The build ladder, its gates, and the falsifier that decides whether the central claim survives
-are in [`SPEC.md` §11](SPEC.md).
+```
+core/lifecycle/lifecycle.yml   the mandated case lifecycle, as cited data — L0's spine
+schema/patch.schema.json       the seven-field patch contract
+floor/closure.py               the temporal closure. zero dependencies. it runs.
+floor/test_closure.py          27 assertions, no test framework
+fixtures/cases/                synthetic cases. zero PHI, forever.
+SPEC.md  AGENTS.md  PROVENANCE.md  README.md  LICENSE
+```
+
+```bash
+python floor/closure.py fixtures/cases/morning-or-window.json
+python floor/test_closure.py
+```
+
+**Try that first.** It derives, from six ordinary constraints, that a serology had to be drawn at 22:15 the
+previous evening — and prints the chain of constraints that makes it so. It is 23:40 in the fixture. No timer
+has expired. Every field is green. **That is the failure class this system exists to catch**, and it needs no
+model, no network and nothing installed.
+
+**Read the coverage honestly.** The lifecycle file's structure is drafted, but most elements carry
+`locator: TODO-VERIFY` — the authority is named, the citation is not yet checked against live text. Per
+[`PROVENANCE.md`](PROVENANCE.md) §2 **those elements are not implemented; they are TODOs**, and the ledger
+says exactly which are which. The build ladder, its gates, and the falsifier that decides whether the central
+claim survives are in [`SPEC.md` §11](SPEC.md).
 
 The cheapest decisive experiment in the whole plan costs one weekend, touches no PHI, and needs nobody's
 permission — and it either produces the first receipt or prints the funeral. It is **R5** in the ladder, and

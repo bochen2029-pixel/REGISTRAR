@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bochen2029-pixel/REGISTRAR/schema/patch.schema.json",
+  "title": "REGISTRAR site patch layer (L2 + L3)",
+  "description": "The only mutable surface in the system. A patch file describes how one organisation differs from the mandated spine — and nothing else. It lives in the site's own version control and is never committed to this repository. Every row is a (change, inverse) pair: without the inverse the row is not a well-formed element of the patch monoid and cannot be mounted at all. See SPEC.md §2 and §3.",
+
+  "type": "object",
+  "required": ["schema_version", "site", "rows"],
+  "additionalProperties": false,
+
+  "properties": {
+    "schema_version": { "const": "0.1" },
+
+    "site": {
+      "type": "object",
+      "description": "Identifies the organisation this fit belongs to. Deliberately minimal: this file describes an operation, not a population.",
+      "required": ["id"],
+      "additionalProperties": false,
+      "properties": {
+        "id":   { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$", "description": "A slug the site chooses for itself." },
+        "name": { "type": "string", "maxLength": 200 }
+      }
+    },
+
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/row" }
+    }
+  },
+
+  "$defs": {
+    "row": {
+      "type": "object",
+      "description": "One difference between this organisation and the seed.",
+      "required": ["target", "value", "inverse", "evidence", "shadow_run", "expiry", "author"],
+      "additionalProperties": false,
+
+      "properties": {
+        "target": {
+          "type": "string",
+          "description": "A local_variation id declared by an L0 element — see core/lifecycle/lifecycle.yml. The seed enumerates its own mutable surface; a target that is not declared there does not exist. A target naming an L0, L1 or L4 object fails the blast-radius gate.",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+          "examples": [
+            "intake.after_hours_owner",
+            "allocation.offer_window_practice",
+            "recovery.or_availability"
+          ]
+        },
+
+        "value": {
+          "description": "The change. Any JSON value the target accepts.",
+          "$comment": "Deliberately untyped here; the target's own declaration constrains it."
+        },
+
+        "inverse": {
+          "description": "What restores the prior state at the state where this row is applied. MANDATORY. A row without a genuine inverse is not an element of the monoid and mount is undefined on it (SPEC.md §3). The local-invertibility gate computes p-inverse(p(lambda)) and compares; a plausible-looking inverse that does not actually invert is caught there. If the prior value cannot be determined, that is a STOP condition, not a field to fill with something reasonable.",
+          "$comment": "null is a legal inverse only when the target genuinely had no prior value."
+        },
+
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Pointers into the SITE's own material. Not this repository — the seed says nothing about any particular organisation, so it can never be evidence for a site fact. Not general knowledge. Not 'standard practice'.",
+          "items": {
+            "type": "object",
+            "required": ["source", "says"],
+            "additionalProperties": false,
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "A locator precise enough for a reviewer to check in under a minute: document and section, ticket query, config path, tape span.",
+                "minLength": 3
+              },
+              "says": {
+                "type": "string",
+                "description": "What the source actually establishes — not a restatement of the row. A citation to a document that does not contain the claim is worse than no citation, because it survives casual review and fails audit.",
+                "minLength": 3
+              },
+              "kind": {
+                "enum": ["document", "ticket", "config", "tape", "interface", "observation"],
+                "description": "Where it came from. 'observation' carries the least weight and the gate treats it accordingly."
+              }
+            }
+          }
+        },
+
+        "shadow_run": {
+          "type": "object",
+          "description": "A replay of this row against the site's own historical cases, before it is offered. A row nobody replayed is a guess with formatting.",
+          "required": ["cases", "would_have_matched"],
+          "additionalProperties": false,
+          "properties": {
+            "cases":              { "type": "integer", "minimum": 1, "description": "Denominator. A count without one is not a count." },
+            "would_have_matched": { "type": "integer", "minimum": 0 },
+            "would_have_missed":  { "type": "integer", "minimum": 0 },
+            "window":             { "type": "string", "description": "The period replayed, e.g. 2026-01-01/2026-06-30." },
+            "notes":              { "type": "string", "maxLength": 2000 }
+          }
+        },
+
+        "expiry": {
+          "type": "string",
+          "format": "date",
+          "description": "The date this row must re-earn its place. Nothing is permanent by default: an operation that changed and a row that did not is exactly the drift this field exists to surface."
+        },
+
+        "author": {
+          "type": "string",
+          "description": "The named human who signs. An automated author MUST leave this empty — a machine's output is a candidate, and the signature is what makes the mount legitimate. An empty author is legal in a draft and fatal at mount time.",
+          "maxLength": 200
+        },
+
+        "layer": {
+          "enum": ["L2", "L3"],
+          "description": "Optional and advisory; the target's own declaration is authoritative."
+        },
+
+        "supersedes": {
+          "type": "string",
+          "description": "The id of a row this replaces. Retirement unwinds through inverses in reverse dependency order (SPEC.md §3, T2) — a correction is a new row, never an edit to an old one."
+        },
+
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{2,62}$",
+          "description": "Stable identifier for this row, so it can be superseded and audited later."
+        }
+      }
+    }
+  }
+}

@@ -134,13 +134,99 @@ because it launders an opinion into apparent law and every downstream reader inh
 
 ## §6 · The ledger
 
-**Empty. `core/` and `clinical/` do not exist yet.**
+**Opened 2026-08-25**, in the same commit as the first `core/` file. Rows below cover
+`core/lifecycle/lifecycle.yml` and `floor/`.
 
-This is the honest state of a Rev 0 specification repository, and stating it is the point: a provenance file
-populated ahead of the code it describes would be evidence of exactly the practice it exists to prevent.
+**Read the coverage honestly.** The lifecycle file's *structure* is drafted, but most of its elements carry
+`locator: TODO-VERIFY` — the authority is named, the exact citation is not yet checked against live text.
+**Per §2 those elements are not implemented; they are TODOs**, and no validator may enforce one until its
+locator is filled. What follows is what has actually been verified.
 
-The first rows are written with rung **R1** of `SPEC.md` §11 — the L0 lifecycle state machine, the required
-element set, and its validators — **in the same commits.**
+---
+
+### core/lifecycle/measures/donation_rate
+- **layer** L0
+- **element** The graded donation rate, and the origin of its denominator.
+- **kind** mandate
+- **source** CMS — *Organ Procurement Organizations (OPOs) Conditions for Coverage: Revisions* (CMS-3409-P), fact sheet and proposed rule
+- **locator** CMS fact sheet, 2026-01-28; Federal Register document 2026-01833, published 2026-01-30
+- **accessed** 2026-08-25
+- **establishes** CMS grades OPOs on two outcome measures — a donation rate and a transplantation rate — whose denominators are derived from inpatient death records rather than from OPO self-report.
+- **notes** The *denominator source* is verified. The precise numerator definition is **not** and remains TODO-VERIFY in the element file. The element therefore records where the denominator comes from and refuses to assert the numerator.
+
+### core/lifecycle/measures/transplantation_rate
+- **layer** L0
+- **element** The graded transplantation rate.
+- **kind** mandate
+- **source** CMS — CMS-3409-P, fact sheet and proposed rule
+- **locator** CMS fact sheet, 2026-01-28; FR doc 2026-01833, 2026-01-30
+- **accessed** 2026-08-25
+- **establishes** As above; the second of the two graded measures, same denominator construction.
+- **notes** Same numerator caveat.
+
+### core/lifecycle/tiering
+- **layer** L0
+- **element** The three-tier recertification regime and its consequences.
+- **kind** mandate
+- **source** CMS — CMS-3409-P; corroborated by Crowell & Moring and Holland & Knight client alerts
+- **locator** FR doc 2026-01833, 2026-01-30; comment period closed 2026-03-31
+- **accessed** 2026-08-25
+- **establishes** **Tiers attach to donation service areas, not to organisations.** An OPO holding at least one Tier 1 DSA is recertified automatically; one holding Tier 2 areas is not out of compliance but must compete for areas that open; an OPO holding *only* Tier 3 areas is non-compliant and decertified.
+- **notes** **This corrected a published error.** Project material previously stated "Tier 3 is decertified" at organisation grain, which materially overstated decertification exposure. Corrected 2026-08-25.
+
+### core/lifecycle/timeline
+- **layer** L0
+- **element** When the regime takes effect.
+- **kind** mandate
+- **source** CMS — CMS-3409-P; supplementary CMS guidance issued 2026-03-11
+- **locator** FR doc 2026-01833, 2026-01-30
+- **accessed** 2026-08-25
+- **establishes** Final rule expected late 2026, effective 60 days after publication; recertification and decertification proceedings for Tier 2 and Tier 3 commence January 2027. The March 2026 guidance is complementary and does not alter the tier architecture or the timeline.
+- **notes** **Re-verify before any distribution.** A citation is a claim about a document at a date, and the final rule has not landed.
+
+### core/lifecycle/authority
+- **layer** L0
+- **element** The regulatory home of the OPO Conditions for Coverage.
+- **kind** mandate
+- **source** eCFR — 42 CFR Part 486, Subpart G
+- **locator** `ecfr.gov`, Title 42 → Chapter IV → Subchapter G → Part 486 → Subpart G
+- **accessed** 2026-08-25
+- **establishes** Subpart G is the location of the OPO certification, designation and Conditions for Coverage requirements.
+- **notes** Existence and scope verified. **Individual section citations within Subpart G are not yet verified** and appear as TODO-VERIFY throughout the lifecycle file.
+
+---
+
+### Design choices, marked as such
+
+Per §5, a design choice mislabelled as a mandate is the most damaging error this ledger can contain. These
+are choices. Nothing above compels them.
+
+### core/lifecycle/states/referral_lapsed
+- **layer** L0 (structural)
+- **kind** **design-choice**
+- **source** none — introduced by this project
+- **accessed** 2026-08-25
+- **establishes** Nothing. It is not a mandated state.
+- **notes** Added so that non-progression is representable. A referral that quietly stops moving is a real and measurable failure with **no event, only an absence** — and a state machine with no terminal for it cannot express the thing the missed-referral audit is about. Marked a design choice so no reader mistakes it for policy.
+
+### floor/closure.py — integer (min,+) arithmetic
+- **layer** floor
+- **kind** **design-choice**
+- **source** classical result: an STN is consistent iff its distance graph has no negative cycle; minimal network = all-pairs shortest paths
+- **accessed** 2026-08-25
+- **establishes** The algorithm is standard and not this project's invention.
+- **notes** The *choice* is whole minutes and integer arithmetic with `INF = 0x3f3f3f3f`. Exactly associative, no floating point, no drift — which is what lets an accelerated implementation be compared to this one **by equality rather than tolerance**, and is therefore a precondition of replay determinism rather than a style preference.
+
+### fixtures/ — JSON rather than YAML
+- **layer** fixtures
+- **kind** **design-choice**
+- **accessed** 2026-08-25
+- **notes** So the floor runs on a bare Python with nothing installed. A reference artifact that requires a dependency install before it does anything is a worse reference artifact.
+
+### fixtures/cases/* — all values illustrative
+- **kind** **design-choice**
+- **accessed** 2026-08-25
+- **notes** Every duration in every fixture is **synthetic and illustrative**, including the cold-ischemia budget in `infeasible-transport.json`. Organ-specific ischemia tolerances are clinical figures requiring citation to published literature before any validator enforces one; `t_cold_ischemia` in the lifecycle file is deliberately TODO-VERIFY. **No fixture value should be read as a clinical or regulatory claim.**
 
 ---
 
@@ -150,7 +236,10 @@ Where a source was consulted and **not** relied upon, it is recorded here with t
 to the same funeral discipline as everything else in this project: **what was rejected, and why, is part of
 the record.**
 
-*No entries yet.*
+### Excluded — CMS and Federal Register primary sources, retrieved indirectly
+- **date** 2026-08-25
+- **class** access, not admissibility
+- **notes** `cms.gov` returned HTTP 403 and `federalregister.gov` redirected to a bot-check on automated retrieval. The figures above were corroborated through published law-firm client alerts (Crowell & Moring, Holland & Knight) and search summaries of the CMS fact sheet. **The sources are admissible; this retrieval was indirect, and that is recorded rather than hidden.** Every row above should be re-checked against the primary text by a human before it load-bears.
 
 Expected entry classes, so the discipline is unambiguous when the first one arrives:
 
