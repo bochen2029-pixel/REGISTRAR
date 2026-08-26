@@ -122,6 +122,64 @@ NOT_A_QUANTITY = re.compile(
     r"opens|closes|window|at|time|start|end)($|_)", re.I)
 
 
+# A key whose value is a DURATION. When a row states one, the only sensible
+# thing to compare it against is another duration.
+DURATION_KEY = re.compile(r"(minutes?|mins?|hours?|hrs?|elapsed|turnaround|"
+                          r"budget|threshold|window|lead_?time|latency)", re.I)
+
+
+def durations_in(text: str) -> set[float]:
+    """
+    Only the numbers in prose that carry a DURATION unit, in minutes.
+
+    THIS EXISTS BECAUSE THE FIRST VERSION OF THE CONSERVATIVE CHECK LAUNDERED
+    SAMPLE SIZES INTO DURATIONS. `numbers_in` returns every number it can find,
+    undifferentiated — so for
+
+        "across 402 resulted panels in 2025 the observed p75 was 6h04m"
+
+    it yields {6, 360, 364, 402, 2025}. A study's **n** and the **year** sat in
+    the same set as the measurement, and the conservative branch accepted any
+    value within +25% of any of them. Since evidence prose almost always carries
+    an n, most arbitrary durations could be justified by the sample size of the
+    study that fails to support them — and a year licensed anything up to 2531.
+
+    Found by an adversarial sweep, 2026-08-26. `[Fork C]`
+    """
+    text = text or ""
+    out: set[float] = set()
+    for m in NUM.finditer(text):
+        mins = _minutes(m.group(2) or "")
+        if not mins:
+            continue
+        try:
+            out.add(float(m.group(1)) * mins)
+        except ValueError:
+            pass
+    for m in re.finditer(r"(\d+)\s*h(?:ours?)?\s*(\d{1,2})\s*m", text, re.I):
+        out.add(float(m.group(1)) * 60 + float(m.group(2)))
+    for m in re.finditer(r"\b([a-z]+(?:-[a-z]+)?)\s+(minutes?|mins?|hours?|hrs?)\b",
+                         text, re.I):
+        n = WORD_NUM.get(m.group(1).lower())
+        mins = _minutes(m.group(2))
+        if n is not None and mins:
+            out.add(float(n) * mins)
+    return out
+
+
+def value_keys(value, out=None) -> set[str]:
+    """Every key name a value uses, at any depth — so a duration can be spotted."""
+    out = set() if out is None else out
+    if isinstance(value, dict):
+        for k, v in value.items():
+            out.add(str(k))
+            value_keys(v, out)
+    elif isinstance(value, list):
+        for v in value:
+            value_keys(v, out)
+    return out
+
+
 def numbers_of(value, key: str = "") -> set[float]:
     """
     Every number a row's value ASSERTS, at any depth.
@@ -190,10 +248,20 @@ def check_row(row: dict) -> list[tuple[str, str]]:
             # FOLLOWED. Flagging it was the gate misreading conservatism as
             # divergence. Rounding DOWN is the dangerous direction, and that
             # still fails.
+            # ANCHOR ON THE RIGHT KIND OF NUMBER. If the row states a duration,
+            # only a duration in the evidence may license rounding it up — a
+            # sample size, a case count and a year are not measurements of time,
+            # and treating them as such is how an arbitrary figure gets waved
+            # through as "conservative".
+            anchors = ev_nums
+            if any(DURATION_KEY.search(k) for k in value_keys(row.get("value"))):
+                d = durations_in(ev_text)
+                if d:
+                    anchors = d
             conservative = {v for v in unaccounted
-                            if any(e <= v <= e * 1.25 for e in ev_nums)}
+                            if any(e <= v <= e * 1.25 for e in anchors)}
             optimistic = {v for v in unaccounted - conservative
-                          if any(v < e for e in ev_nums)}
+                          if any(v < e for e in anchors)}
             hard = sorted(unaccounted - conservative - optimistic)
 
             if optimistic:

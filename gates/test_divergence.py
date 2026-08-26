@@ -139,6 +139,47 @@ def test_prose_units():
     check("4 hours reads as 240", 240.0 in numbers_in("contracted turnaround is 4 hours"), True)
 
 
+def test_conservative_anchors_on_durations():
+    """
+    REGRESSION, from an adversarial sweep on 2026-08-26.
+
+    The `conservative` branch accepted any value within +25% of ANY number in
+    the evidence prose — and `numbers_in` is undifferentiated, so a sample size,
+    a case count and a YEAR sat in the same set as the measurement. For
+
+        "across 402 resulted panels in 2025 the observed p75 was 6h04m"
+
+    the anchors were {6, 360, 364, 402, 2025}. Since evidence prose almost
+    always carries an `n`, most arbitrary durations could be licensed by the
+    sample size of the study that fails to support them — and a year licensed
+    anything up to 2531.
+    """
+    print("\nconservative rounding anchors on durations, not on any stray number")
+    from divergence import durations_in, numbers_in
+    ev = "across 402 resulted panels in 2025 the observed p75 was 6h04m"
+    check("the old anchor set contained the sample size", 402.0 in numbers_in(ev), True)
+    check("and the year", 2025.0 in numbers_in(ev), True)
+    check("durations_in admits neither", {402.0, 2025.0} & durations_in(ev), set())
+    check("but keeps the measurement", 364.0 in durations_in(ev), True)
+
+    # a duration nowhere near any duration in the evidence must FAIL,
+    # even when a sample size would once have licensed it
+    st, _ = validate(row(target="evaluation.reference_lab",
+                         value={"lab": "nl", "turnaround_minutes": 500},
+                         evidence=[{"source": "tape",
+                                    "says": "across 402 resulted panels the observed p75 was 60 minutes"}],
+                         shadow_run={"cases": 402, "would_have_matched": 402,
+                                     "would_have_missed": 0}))
+    check("500 minutes against a p75 of 60 FAILS", st, FAILED)
+
+    # and the house rule still passes
+    st2, _ = validate(row(value={"or_scheduled_to_incision_minutes": 120},
+                          evidence=[{"source": "tape", "says": "p75 elapsed was 118 minutes"}],
+                          shadow_run={"cases": 57, "would_have_matched": 43,
+                                      "would_have_missed": 14}))
+    check("120 from a p75 of 118 minutes still passes", st2, GREEN)
+
+
 def test_the_worked_example_passes():
     """
     The shipped example must pass its own gate. It did not, on the first three
@@ -176,7 +217,8 @@ if __name__ == "__main__":
     for t in (test_refuses_contradiction, test_refuses_optimistic_rounding,
               test_refuses_arithmetic_that_does_not_close, test_refuses_empty_replay,
               test_refuses_rubber_stamp_derivation, test_flags_population_mismatch,
-              test_accepts_conservative_rounding, test_identifiers_are_not_assertions,
+              test_accepts_conservative_rounding, test_conservative_anchors_on_durations,
+              test_identifiers_are_not_assertions,
               test_prose_units, test_the_worked_example_passes, test_the_rejected_drafts):
         t()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
