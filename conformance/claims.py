@@ -197,6 +197,15 @@ def derive(with_battery: bool = True) -> dict:
                 "value": fixtures,
                 "pattern": r"(\d+) adversarial fixtures",
             },
+            # ── battery strength ────────────────────────────────────────────
+            # SPEC.md §12 ranks a weak battery as the central risk, and until
+            # F-BATTERY-STRENGTH it had no number — only seven hand-found holes
+            # with no denominator. These are DERIVED, never typed, for the
+            # reason that makes them worth gating at all: the score moves
+            # whenever `gates/` moves. A gate fix that lowers it has traded
+            # coverage for accuracy, and a hardcoded figure would hide that.
+            # ~0.3 s to compute.
+            **_mutation_claims(),
         },
         "not_derivable_here": {
             "$note": "Claims a surface may carry that this file cannot check, listed so "
@@ -209,6 +218,44 @@ def derive(with_battery: bool = True) -> dict:
             ],
         },
     }
+
+
+def _mutation_claims() -> dict:
+    """Battery strength, derived by running the mutation harness.
+
+    Returns {} if the harness is absent, so a clone that does not carry the
+    experiment still gets a green claims file rather than a crash — the claim
+    simply is not asserted, which is the honest state.
+    """
+    import importlib.util
+    mp = os.path.join(ROOT, "experiments", "F-BATTERY-STRENGTH", "mutate.py")
+    if not os.path.exists(mp):
+        return {}
+    try:
+        spec = importlib.util.spec_from_file_location("_fbs_mutate", mp)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _, results = mod.run()
+        total = len(results)
+        killed = sum(1 for r in results if r["verdict"] == "KILLED")
+        if not total:
+            return {}
+        return {
+            "mutation_score_pct": {
+                "value": round(killed / total * 100, 1),
+                "pattern": r"mutation score[^0-9]{0,24}(\d+\.\d)\s*%",
+            },
+            "mutation_denominator": {
+                "value": total,
+                "pattern": r"\*\*(\d+)\*\* mutants",
+            },
+            "mutation_survivors": {
+                "value": total - killed,
+                "pattern": r"\*\*(\d+) — defects",
+            },
+        }
+    except Exception:
+        return {}
 
 
 def emit() -> int:

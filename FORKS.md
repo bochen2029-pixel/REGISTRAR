@@ -77,9 +77,26 @@ Each fork **owns** its directories and **does not write** outside them without s
 
 | Fork | Owns (writes) | Reads |
 |---|---|---|
-| **mainline** — F-PATCH-DELTA | `experiments/` | everything |
+| **mainline** — F-PATCH-DELTA | `experiments/` **except** `experiments/F-BATTERY-STRENGTH/` | everything |
 | **A** — sub-repo fold + plugins | `forge/plugins/`, `forge/dsh/`, `forge/plugins.yml` | the chassis, **read-only** |
 | **C** — witnesses per gate | `examples/worked/rejected/`, `gates/test_*.py`, `fixtures/` | `gates/` |
+| **battery** — F-BATTERY-STRENGTH | `experiments/F-BATTERY-STRENGTH/` | `gates/`, `examples/worked/`, **`internal/` never** |
+
+**On the `experiments/` carve-out, and why it is written as an exception rather than assumed.**
+`fork/battery` ran three commits into `experiments/F-BATTERY-STRENGTH/` while this table assigned all
+of `experiments/` to mainline and `tools/worktree.py` had no entry for the branch at all — so
+`--check` returned exit 2, *"not a partitioned branch"*, which is **a silent no-op, not a guard.**
+No collision occurred, because the subdirectory was new and mainline was working in
+`F-PATCH-DELTA/`. That is luck, not containment.
+
+**Two auditors independently called this the largest hole in the process as written**, and they were
+right: a fork absent from the table is not merely unprotected, it is *invisible* to the mechanism
+built after the 60-file sweep. **A branch that is not in both tables should not be committing.**
+Registered in `tools/worktree.py` at `a3a8fcc` and here.
+
+*Related, and the reason a subdirectory carve-out is the right shape:* a fork whose work belongs
+inside another fork's tree should claim the **subdirectory**, not negotiate the parent. The parent
+owner keeps everything else and the check can still enforce both.
 
 ### Shared files, and how to touch them without collision
 

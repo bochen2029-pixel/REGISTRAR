@@ -190,3 +190,36 @@ and main's partition** — while writing a commit about containment. Caught imme
 else's working copy rather than a file swept into my commit. That is exactly the difference
 `tools/worktree.py` was written to create, demonstrated accidentally, by the person writing the
 registration.*
+
+### 2026-08-27 · registered in both contracts, and the figure landed under the gate
+
+**`FORKS.md`** — `fork/battery` added with `experiments/F-BATTERY-STRENGTH/` as an explicit carve-out
+from mainline's `experiments/`, plus the reason written out: three commits ran into another fork's
+declared write surface while `--check` returned exit 2, *"not a partitioned branch"* — **a silent
+no-op, not a guard.** No collision occurred because the subdirectory was new. *That is luck, not
+containment*, and two auditors called it the largest hole in the process as written.
+
+**`tools/worktree.py`** — registered at `a3a8fcc`; `--check` now returns **0** and enforces the
+partition rather than shrugging at it.
+
+**The battery-strength figure is now DERIVED in `conformance/claims.py`**, not typed anywhere:
+`mutation_score_pct 74.8 · mutation_denominator 127 · mutation_survivors 32`. It runs the harness in
+~0.3 s. Derivation rather than a constant is the whole point — **the score moves whenever `gates/`
+moves**, so a hardcoded figure would hide exactly the trade the number exists to expose. A clone
+without the experiment gets `{}` and the claim is simply not asserted, which is the honest state.
+
+**And the gate caught me on its first run — three STALE claims, all mine.** My patterns matched
+*deltas and prose*, not claims: `−9 mutants` from the correction table, `9 kills → 9 survivors`, and
+`two gates, not one` colliding with the pre-existing `gates` claim. **The fourth greedy matcher in
+this repository's short life**, and the file already carries the lesson — *a checker that cries wolf
+is worse than none, and the mechanism is the fix, not the pattern.* Anchored the two new patterns to
+the claim's own bold markup so a delta cannot impersonate a claim, and reworded the one prose
+collision rather than growing the exclude list. Surface now **GREEN, 3/3**.
+
+*Worth stating: the check earned its keep against the person who wrote it, on the first run, before
+it ever saw anyone else's work.*
+
+**Cross-partition edits in this commit, declared:** `FORKS.md`, `tools/worktree.py`,
+`conformance/claims.py`, `conformance/CLAIMS.json` — all mainline's or shared. Made at the operator's
+explicit instruction to register before merging and to land the figure. Flagged so the reviewer sees
+them rather than discovers them.

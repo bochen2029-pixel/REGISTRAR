@@ -68,7 +68,7 @@ label). The count is exact and nobody had counted it.
 
 **The mechanism, corrected `[D]`:** not "the value carries a bare scalar quantity." It is the
 **key-name regex** `NOT_A_QUANTITY` (`gates/divergence.py:117`), plus a `(?<![\w.])` lookbehind that
-rejects a digit following an underscore, plus `attest._asserts_a_bound` — two gates, not one. Chain:
+rejects a digit following an underscore, plus `attest._asserts_a_bound` — a second gate, not one alone. Chain:
 `numbers_of({'hospital': 1147})` with an **int** value → `set()`; the same clock data under a
 different key → `{0.0, 6.0}`. *(A3.)*
 
