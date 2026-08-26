@@ -179,6 +179,18 @@ def derive(with_battery: bool = True) -> dict:
                 "value": verified,
                 "of": len(lc),
                 "pattern": r"(\d+) ?/ ?15",
+                # FOURTH greedy matcher, same lesson as `gates` above. A surface
+                # legitimately says "the 2/15 states, which are open for
+                # non-equivalent reasons" — that is a claim about the COMPLEMENT
+                # (2 open, therefore 13 verified) and this pattern read it as a
+                # verified-count and cried wolf on ROADMAP.md. The exclude is the
+                # mechanism; widening the pattern would not have helped, because
+                # the two phrasings are identical in shape and differ only in
+                # which side of the fraction the surface is talking about.
+                # `\s+` and not ` ` — the first version of this exclude required a
+                # literal space and the phrasing it was written for wrapped across
+                # a line break, so it matched nothing and the wolf stayed cried.
+                "exclude": [r"(?:the )?\d+ ?/ ?15\s+states[^.]*?(?:open|unverified|remaining)"],
                 "note": "the remaining two are open for NON-EQUIVALENT reasons and a "
                         "surface that says '2 unverified' without them misreports",
             },

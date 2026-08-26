@@ -1,9 +1,33 @@
 #!/usr/bin/env python3
 """
-REGISTRAR · core · the tape (L4)
+REGISTRAR · core · the tape (L4)  ——  THE COMMITTED PLANE
 ─────────────────────────────────────────────────────────────────────────────
 The case record. Append-only, hash-chained, exportable in full at any moment
 without asking anyone's permission.
+
+THIS IS THE COMMITTED PLANE, and naming it matters because the architecture is
+otherwise findable only in a spec. REGISTRAR is a resident that attends a donor
+case, and a resident has three planes:
+
+    FELT       the disposition it judges under        [SPEC — not built]
+    FORMING    candidate surfacings, abortable,
+               never persisted                        [SPEC — not built]
+    COMMITTED  >>> THIS MODULE <<<  append-only,
+               hash-chained, only commits kill        BUILT
+
+Two consequences that are easy to lose:
+
+  * SILENCE BELONGS HERE. A decision to stay quiet is a decision, and it is
+    written with its reason. An EDR that surfaced nothing must not be
+    indistinguishable from one that considered and declined — and OPTN Policy
+    2.3(4) already demands exactly that at the record layer: document what is
+    unavailable AND WHY.
+  * A FORMING THOUGHT THAT DIES NEVER ARRIVES HERE. If a surfacing is killed
+    mid-formation because the world contradicted it, what lands is the record
+    that it was considered and why it died — never the half-formed thing
+    itself. Reflex partials never persist.
+
+See VISION.md and SPEC.md §2b.
 
 THE SIGNATURE IS THE POINT
 

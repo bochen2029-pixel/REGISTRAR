@@ -20,16 +20,16 @@ wins, the funeral prints and that rung dies. A roadmap that cannot lose is a bro
 
 ---
 
-## Where it stands · `2026-08-26` · 40 GREEN · 7 PASS-UNVERIFIED · 0 FAILED · 197 assertions
+## Where it stands · `2026-08-26` · 50 GREEN · 9 PASS-UNVERIFIED · 0 FAILED · 396 assertions
 
 | Built | State |
 |---|---|
-| L0 spine, cited | 13/15 states established · 41 citations byte-exact · 5 pinned sources |
+| L0 spine, cited | 13/15 states established · 44 citations byte-exact · 5 pinned sources |
 | L4 tape | append-only, hash-chained, no delete/update **by type** |
 | replay | refuses illegal transitions; guards enforced where provenance allows |
 | the algebra | `mount`/`retire`/T3 computed — the invertibility gate **decides** |
 | the floor | the temporal closure; the argmin path *is* the citation |
-| gates | **thirteen**, three states, defects named in words |
+| gates | **sixteen**, three states, defects named in words |
 | the kit | `elicit/` 20 questions · a worked patch · **four refused drafts** |
 | profiles | `edr` ⊂ `forge`, checked not trusted |
 | percepts + switch | six ported laws · `off` is inert · fails toward inert |
@@ -170,9 +170,11 @@ being told about it. **Level 1 for all of them; level 2 for `chunk` and `phi_sca
 **Licences are a hard prerequisite** — only one estate tool currently carries one, and the contract refuses a
 mount without SPDX.
 
-**Fork C, and why it earns a whole session:** thirteen gates, **four** adversarial fixtures — nine gates have
-no evidence they can fire, and the four that exist were written by the same author as the gates. That is
-`SPEC.md` §14's *first-ranked* risk, unmeasured. **And it makes the falsifier stronger:** F-PATCH-DELTA
+**Fork C, and why it earned a whole session:** at the branch point the battery shipped with **four**
+adversarial fixtures and most of its gates had no evidence they could fire — and the four that existed were
+written by the same author as the gates they tested. That is `SPEC.md` §14's *first-ranked* risk, unmeasured.
+**Counts as of the branch point are deliberately not restated here; the current ones are in the table above
+and the update under *What would kill it*.** **And it makes the falsifier stronger:** F-PATCH-DELTA
 grades against these gates, so a weak battery makes its verdict weak in the same proportion — a pass could
 mean *the harness did well* or *the battery is easy*, with nothing to tell them apart.
 
@@ -341,8 +343,19 @@ building more.
 
 **1 · A weak battery.** *The central risk is not a wrong patch.* A foreign harness produces confident,
 plausible, wrong work all day, and the gates are the only thing between that and an organisation where wrong
-loses an organ. **Twelve gates ship with four adversarial fixtures — the eight without witnesses are the
-exposure**, and they were written by the same author as the gates.
+loses an organ. **At the three-way branch point the battery shipped with four adversarial fixtures and most
+gates had no witness — that was the exposure**, and the fixtures that existed were written by the same author
+as the gates they tested.
+
+> **Updated `2026-08-26`, after Fork C.** The sentence above described the state at the three-way branch point
+> and is kept because it is the reason the fork was launched. **Now: sixteen gates, nine witnessed, three
+> entangled with a structural floor, one undecidable from a file — and seven exposures found and RETAINED**
+> as fixtures that pass (`examples/worked/rejected/*UNCAUGHT*`). The risk did not go away; **it got measured,
+> and it changed shape — from most of the battery having no evidence it could fire, to seven NAMED holes
+> that no semantic gate catches.** All seven currently trip a floor gate for being minimal — *and conformance says in words that
+> this is not closure.* **The next move on this risk is a well-formed variant of each of the seven: if one
+> passes clean, that is the highest-priority gate in the project, identified by measurement rather than
+> intuition.**
 
 **2 · The completability bet fails.** F-PATCH-DELTA returns *confidently wrong*. **Then the honest product is
 the spine plus a human implementation guide, and the page says so.**

@@ -30,6 +30,9 @@
       "value": 13,
       "of": 15,
       "pattern": "(\\d+) ?/ ?15",
+      "exclude": [
+        "(?:the )?\\d+ ?/ ?15\\s+states[^.]*?(?:open|unverified|remaining)"
+      ],
       "note": "the remaining two are open for NON-EQUIVALENT reasons and a surface that says '2 unverified' without them misreports"
     },
     "battery_configuration": {
