@@ -1,6 +1,13 @@
 # REGISTRAR
 
-**The open-source electronic donor record.**
+**The open-source electronic donor record — built as a resident, not a form.**
+
+A donor case is a case under a clock, and **almost everything that goes wrong goes wrong in the interval
+between two events, when no single field is wrong.** So this is a loop: the world enters continuously, the
+system judges at each boundary whether the instant deserves a coordinator's attention, and **what it decides
+— including every decision to stay silent — goes on an append-only tape.**
+
+It **perceives and surfaces. It never acts.**
 
 The half that is federal law ships byte-identical to all fifty-five OPOs. The half that has to fit *your*
 operation is not configured, not consulted, and not customised — it is **completed on site**, by your own

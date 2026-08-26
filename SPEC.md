@@ -24,14 +24,24 @@ Companion: **[opnaorta.ai/edr](https://opnaorta.ai/edr)**.
 
 ## §0 · What is being built
 
-An open-source electronic donor record, in two halves.
+**A resident that attends a donor case — and, at a second radius, one that attends its own fit.**
+
+An electronic donor record is a case under a clock. The world enters it continuously: referrals, labs,
+transitions, timers, the passage of time itself. **Almost everything that goes wrong in this domain goes
+wrong in the interval between two events, and no field is wrong when it does.**
+
+So the object here is a **loop**, not a form. The world enters; at each boundary the system judges whether
+this instant deserves a coordinator's attention; and what it decides — including every decision to stay
+silent — goes on an append-only tape. **§2b states the loop, its three planes, and its three radii.**
+
+**The system ships in two halves.**
 
 **The seed (L0/L1)** is federal law and clinical invariant. It ships byte-identical to every OPO, because
 there is exactly one legal answer to what it contains.
 
 **The fit (L2/L3)** is everything that differs between organisations. It is authored **on site, by the site**,
-using the site's own coding harness and the site's own material — against a gate battery that mechanically
-refuses work that is wrong, and mounted only under a human signature.
+using the site's own material — against a gate battery that mechanically refuses work that is wrong, and
+mounted only under a human signature.
 
 The organising insight is that generality and specificity are both *static* properties of an artifact, and
 they are the wrong axis. The property that matters is **completability** — how much correct work a competent
@@ -81,6 +91,104 @@ row must carry all of the following, or it does not validate:
 
 **Drift demotes. Retirement unwinds through the inverse, in reverse dependency order** — and §3 shows why that
 order is forced rather than chosen.
+
+---
+
+## §2b · The loop — three planes, three radii, and the dial that cannot be set
+
+This is the architecture. The layer stack says what the parts are; this says what the system *does*.
+
+### The three planes
+
+**COMMITTED** — `core/tape.py`. Append-only, hash-chained, owned. Every judgment, every hold, every
+surfacing, every margin. **Every view in this system is a deterministic fold over it.** Built.
+
+**FORMING** — candidate surfacings and candidate rows, speculative and abortable, **never persisted**. A
+surfacing killed mid-formation when a lab result contradicts it dies here, and the fact that it was
+considered and killed goes on the tape. `[SPEC]`
+
+**FELT** — the disposition: how readily this instance speaks, as a property of its weights rather than a
+config value. Coefficients on the tape; **never a percept.** `[SPEC]`
+
+**Only commits kill.** Forming evidence may pause a judgment; only a commit ends one.
+
+### The loop
+
+The world enters token by token, unconditionally. **Nothing is re-read, because nothing is ever put down** —
+a donor case runs twelve to thirty-six hours, and a turn-based system re-assembles that entire history on
+every interaction. At each boundary the system judges: **surface, or stay silent.**
+
+**And silence is written down.** A hold goes on the tape with its margin. Today an EDR that surfaced nothing
+is indistinguishable from an EDR that considered a case and declined — and OPTN Policy 2.3(4) already
+demands the opposite at the record layer: *document what is unavailable and why.* This applies the same rule
+to judgment.
+
+### Three radii, one shape
+
+| Radius | What enters | The judgment | The seam |
+|---|---|---|---|
+| **the case** | labs, transitions, timers, elapsed time | does this instant deserve attention? | the board — **nothing acts** |
+| **the fit** | SOPs, tickets, gate refusals, drift | is there enough here to propose a row? | the gates, and a signature |
+| **the seed** | findings across sites | is this a variation point the seed should declare? | upstream, human-authored |
+
+**The same loop three times.** The algebra of §3 is the seam at radius 2; the gates of §4 are its
+enforcement; the closure of §6 is the deterministic judge at radius 1.
+
+### The dial cannot be set — and this is the argument
+
+**Alert fatigue is the most documented failure in clinical software.** Every records system has it.
+Coordinators mute alarms because there are too many and the one that mattered is in the pile. It is
+universally treated as a tuning problem.
+
+**It is not a tuning problem, and there is a measurement.** `[M inherited — measured on another domain's
+streams; the transfer to this one is a bet]`
+
+> The best fixed threshold caught **36 of 39** planted moments and was **deaf exactly where it mattered**.
+> The same system at zero bias fired **921 times per stream hour**. There is no setting between them.
+
+The reason is structural. Maximising expected value over a sequence of surface-or-hold actions under a rate
+constraint makes a runtime threshold **exactly the Lagrange multiplier** on that constraint — and a scalar
+multiplier can only express a utility that is *constant in state*. **The utility of speaking is violently
+state-dependent.** The same unfilled field deserves nothing at hour two of a workup and a page at hour nine
+when the OR window is closing.
+
+**So no threshold is right in both cases, and no configuration project ever finishes.**
+
+One decomposition kills the obvious patch: at zero bias the deduplication ratio was **1.07** — the flood is
+not one condition repeating, it is **breadth**, roughly 59 distinct individually-defensible conditions per
+hour. **You cannot dedupe out of that, cool it with a refractory period, or rank it away with a filter
+outside the loop.** What must be decided is whether *this instant, given everything currently held*, deserves
+a word. **That is a judgment, and judgments live in weights.**
+
+Absorbed into weights rather than wrapped around: **63.4% → 6.7% per decision boundary, ≈9.5×, catches
+kept.** `[M inherited]` `[BET — kill condition: if the deterministic floor of §6 catches nearly everything a
+trained disposition would, the disposition is theatre and the funeral prints.]`
+
+### The fence is on action, never on perception
+
+**The resident perceives the case and surfaces. It never acts on it.**
+
+That is §8 unchanged, with its mechanism named. And note which direction it cuts: **a resident satisfies the
+decision-support carve-out better than a threshold alarm does.** The carve-out turns on presenting the basis
+so a professional can independently review it. An alarm presents a number. **The closure presents the argmin
+path — the chain of constraints that produced the deadline, recovered from the same computation that
+produced it** — and the hold record adds what was considered and declined.
+
+### The floor is the null
+
+`floor/` and `gates/` must pass their full battery **with every learned component disabled**, or the release
+does not ship. **The resident must beat the floor or it does not ship either.** No organ outlives its null.
+
+### The switch
+
+`registrar.state` — **`off` | `shadow` | `live`** — a file only the operator writes.
+
+**`off` is the default and it is exactly today's repository**: the seed, the gates, the floor, turn-based
+completion. **`shadow`** renders what the resident would have surfaced beside what actually happened, with
+nothing reaching anyone. **`live`** means it surfaces — never that it acts.
+
+**No surface may exist that only makes sense at `live`.** Every interval surface degrades to a useful
+turn-based surface, or it does not belong here. `[SPEC]`
 
 ---
 
@@ -325,6 +433,17 @@ cheap and needs only an existing tape: replay historical cases, count the breach
 missed, print the number. **If the flat list catches nearly all of them, the closure becomes a funeral and
 this document will say so.**
 
+### The floor is also the resident's null
+
+The closure is the **deterministic judge at radius 1** (§2b): it perceives a case, computes what no human
+computed, and surfaces it **unprompted** — no timer fired, nobody asked. That is already an emit decision,
+made by a fixed rule rather than a trained one. **The system has always been a resident; the floor is its
+simplest possible mind.**
+
+Which makes it the null for everything above it. The floor must pass its full battery **with every learned
+component disabled**, and **any resident must beat the floor, or neither ships.** `[NULL]` **No organ
+outlives its null** — and this is a strong one: exact, explicable, and it needs no card.
+
 ---
 
 ## §7 · The record and the measures
@@ -376,6 +495,24 @@ boundary drawn where the theory says it has to be. An emission never made needs 
 And the other recovery has a name here too. *Withholding an emission until the state that produced it is
 certain to persist* is precisely what a human signature does in this design. **The signature is the output
 commit.**
+
+### The fence is on action, never on perception
+
+Read the seven prohibitions again and note what is **not** among them: *perceive*, *notice*, *compute*,
+*surface*. **They are a list of acts.** The system may attend a case as closely as it is able — that is the
+product — and it may never act on one.
+
+> **The resident perceives and surfaces. It never acts.**
+
+Not throttled, not permissioned. There is no arrow from a judgment to an act: `core/case.py` takes no input
+a model produced, and allocation, authorization, transmission and the record itself are structurally
+unreachable (§3, T6 — *the arrow does not exist*).
+
+**And the direction this cuts is the opposite of the intuitive one.** A resident is *more* compliant with
+the decision-support carve-out than a threshold alarm is, because the carve-out turns on presenting the
+basis for independent review. **An alarm presents a number. The closure presents the derivation** — the
+argmin path, recovered from the same computation that produced the deadline — and a hold record adds what
+was considered and declined. §2b.
 
 **Advisory by construction.** The clinical-decision-support carve-out turns on whether software presents the
 basis of its recommendation so a professional can independently review it and does not rely primarily on the
