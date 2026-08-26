@@ -1,0 +1,240 @@
+# REGISTRAR · elicit · the question set
+# ─────────────────────────────────────────────────────────────────────────────
+# One question per declared variation point. This file is NOT invented beside
+# the seed — it is keyed to `core/lifecycle/targets.json`, so the coverage test
+# fails if the lifecycle grows a variation point and nobody writes its question.
+# The seed enumerates what it does not determine; this file asks about exactly
+# that and nothing else.
+#
+# USABLE WITH NO SOFTWARE AT ALL. If you never run a line of this repository,
+# these are still the questions that determine how your organisation differs
+# from the mandated spine — and `trap` is the part worth reading, because it
+# names the specific way each answer comes out wrong.
+#
+# ORDERING is by decision impact: the constraints that bind schedules come
+# first, because those are the ones that decide whether cases convert.
+#
+# See method.md before running this against anyone or anything.
+
+schema_version: 0.1
+keyed_to: ../core/lifecycle/targets.json
+
+questions:
+
+  # ── tier 1 · these bind the schedule ──────────────────────────────────────
+
+  - target: recovery.or_availability
+    tier: 1
+    ask: >
+      For each donor hospital: when can you actually get an OR for a recovery,
+      and what happens if you miss that window?
+    sources:
+      - OR scheduling correspondence with each donor hospital
+      - the case tape — actual cross-clamp times, grouped by hospital
+      - whoever books the room, who usually knows this and has never been asked
+    impact: >
+      On most cases this is the constraint that binds the entire schedule, and
+      everything upstream is computed backwards from it.
+    trap: >
+      There is usually no document. The answer lives in one person's head and in
+      the pattern of past cross-clamp times. If someone hands you a policy that
+      says "as needed," that is the binder, not the behaviour — go to the tape.
+
+  - target: evaluation.reference_lab
+    tier: 1
+    ask: >
+      Which laboratory runs your serology panel, and how long does it ACTUALLY
+      take — not what the contract says?
+    sources:
+      - the reference-lab contract (for the contracted figure)
+      - the case tape — drawn-to-resulted elapsed, p75 and p90
+    impact: >
+      Serology gates the match run, so its turnaround propagates into every
+      downstream deadline on the case.
+    trap: >
+      The contracted number and the observed number frequently differ, and the
+      observed one is almost always longer. **Encode the observed figure and cite
+      the contract**, so the gap is visible rather than absorbed. A fit built on
+      the contract computes every deadline optimistic, in the direction that
+      loses organs.
+
+  - target: recovery.team_mobilisation
+    tier: 1
+    ask: >
+      From the moment an OR is scheduled, how long before your recovery team is
+      making an incision?
+    sources:
+      - the case tape — OR-scheduled to incision elapsed
+      - travel arrangements, if the team is contracted or travels
+    impact: Sets the latest safe time to schedule, and therefore to accept.
+    trap: >
+      Ask whether the figure differs for in-house versus contracted teams, at
+      night, and at your furthest hospital. One number for all three is usually
+      one number for the easiest of the three.
+
+  - target: allocation.offer_window_practice
+    tier: 1
+    ask: >
+      How long does it actually take from match run to a primary acceptance?
+    sources:
+      - the case tape — match run to acceptance elapsed, p90
+    impact: Determines how early the match run must happen to hold a given OR slot.
+    trap: >
+      Use a high percentile, not the median. This number is used to compute a
+      **latest safe start**, and a latest-start computation must assume the worst
+      case or it is not a guarantee.
+
+  - target: transport.providers
+    tier: 1
+    ask: >
+      Who moves organs for you, by what mode, and what is the real door-to-door
+      time to each accepting centre you commonly use?
+    sources: [ transport contracts, dispatch records, the case tape ]
+    impact: Consumes ischemia budget directly.
+    trap: Quoted transit time is rarely door-to-door. Ask what is included.
+
+  # ── tier 2 · these decide whether a case is caught in time ────────────────
+
+  - target: intake.after_hours_owner
+    tier: 2
+    ask: >
+      When a referral arrives at 2 a.m. and no one has claimed it, who actually
+      works it?
+    sources:
+      - the SOP (for what is written)
+      - ticket or service-desk history (for what happened)
+      - the call rotation as actually staffed
+    impact: The most common point at which a referral quietly stops moving.
+    trap: >
+      **The binder and the behaviour disagree here more often than anywhere
+      else.** Encode the behaviour and cite both — the gap is the finding, not an
+      error to tidy away.
+
+  - target: triage.callback_practice
+    tier: 2
+    ask: >
+      When the first contact does not reach someone who can decide, what happens
+      next, and how quickly?
+    sources: [ the case tape — elapsed to second contact attempt, SOP ]
+    impact: Directly upstream of the donation-rate measure.
+    trap: >
+      Set thresholds at p75 or above. A threshold set at the median is breached
+      half the time by construction, and a threshold breached half the time
+      trains people to ignore it.
+
+  - target: lapse.threshold
+    tier: 2
+    ask: >
+      How long can a referral sit with no progress before you would call it lost?
+    sources: [ the case tape — non-converted referrals and their last transition ]
+    impact: >
+      Defines when absence becomes a catch. A case that quietly stops moving has
+      no event, only an absence — this threshold is what makes the absence
+      visible.
+    trap: >
+      Most organisations have never set this explicitly. Derive it from the tape
+      rather than asking for an opinion: at what elapsed time did non-converted
+      referrals pass the point of recovery?
+
+  - target: triage.ruleout_authority
+    tier: 2
+    ask: >
+      Who can rule a referral out without escalating, and does that change
+      overnight or at weekends?
+    sources: [ SOP, the call rotation, ruleout records by role and hour ]
+    impact: A ruleout is terminal, so the authority to make one is load-bearing.
+    trap: The written answer and the 3 a.m. answer are frequently different people.
+
+  # ── tier 3 · operational shape ────────────────────────────────────────────
+
+  - target: authorization.approach_sequence
+    tier: 3
+    ask: >
+      In what order do you approach, who goes, and what determines whether it is
+      in person or by telephone?
+    sources: [ SOP, approach documentation on the case tape ]
+    impact: Affects timing of everything downstream of authorization.
+    trap: >
+      Keep this at the level of sequence and roles. **Do not collect anything
+      about what was said, to whom, or how a family responded** — see method.md.
+
+  - target: authorization.second_person_rule
+    tier: 3
+    ask: >
+      Are there circumstances where a second requester is always present?
+    sources: [ the case tape — approaches with more than one requester, by donor characteristics ]
+    impact: A rule that is universally followed and usually written down nowhere.
+    trap: >
+      Nobody will report this, because from the inside it is not a rule — it is
+      just what you do. Find it in the tape, not the interview.
+
+  - target: management.protocol_variant
+    tier: 3
+    ask: Which donor-management protocol is in local use, and who may deviate from it?
+    sources: [ clinical protocol documents, medical director standing orders ]
+    impact: Determines which management targets the record should carry.
+    trap: >
+      This is clinical territory. Record which protocol is in use; **do not
+      encode clinical judgement, and do not let a machine draft this row without
+      a clinician reading it.**
+
+  - target: management.escalation_ladder
+    tier: 3
+    ask: >
+      When a donor is deteriorating, who gets called, in what order, and after
+      how long?
+    sources: [ SOP, escalation threads, the call rotation ]
+    impact: The ladder as practised is what determines response time.
+    trap: The documented ladder is a starting hypothesis. The threads are the evidence.
+
+  - target: evaluation.on_site_vs_remote
+    tier: 3
+    ask: Which parts of workup are done on site, by which role, and which remotely?
+    sources: [ staffing model, the case tape — where events were recorded from ]
+    impact: Drives who is available and when.
+    trap: Frequently differs by hospital and by hour rather than being one policy.
+
+  # ── tier 4 · integrations. concrete, enumerable, mechanical ───────────────
+
+  - target: intake.channel
+    tier: 4
+    ask: >
+      For each donor hospital: how does a referral physically reach you —
+      interfaced, phone, portal, fax-to-email?
+    sources: [ the integration inventory, intake records by hospital and channel ]
+    impact: >
+      A hand-keyed channel is where hours disappear, and it is the highest-value
+      thing to know because it is also the easiest to fix.
+    trap: >
+      Ask per hospital, not in general. The mixed answer is the useful one, and
+      the aggregate hides exactly the hospital that is costing you referrals.
+
+  - target: evaluation.imaging_route
+    tier: 4
+    ask: How does imaging get from each donor hospital to whoever reads it?
+    sources: [ the integration inventory, PACS configuration, workup records ]
+    impact: A common silent delay.
+    trap: "\"They send it\" is not an answer. Ask by what mechanism, and how you know it arrived."
+
+  - target: authorization.esignature_vendor
+    tier: 4
+    ask: How is the authorization artifact captured, stored, and retrieved later?
+    sources: [ vendor documentation, the artifact itself ]
+    impact: Every downstream step depends on this artifact being present and valid.
+    trap: Ask what happens when the vendor is unreachable, because it will be.
+
+  - target: allocation.credentials
+    tier: 4
+    ask: How does your instance authenticate to the national allocation system?
+    sources: [ your identity provider, the integration inventory ]
+    impact: Required for the record to reach allocation readiness.
+    trap: >
+      **Record the mechanism, never the secret.** No credential value belongs in
+      a patch file, an evidence field, or anywhere else in this system.
+
+  - target: transport.perfusion
+    tier: 4
+    ask: Do you use machine perfusion, for which organs, and what does it change about timing?
+    sources: [ perfusion contracts, the case tape ]
+    impact: Alters the ischemia budget it is used on.
+    trap: Availability is often the constraint rather than policy. Ask what happens when a machine is already out.

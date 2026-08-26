@@ -1,0 +1,25 @@
+{
+  "$comment": "REJECTED DRAFT 1 — FICTIONAL. The most likely first mistake: paraphrasing policy into the patch, and inventing a target that sounds plausible. Both are refused by the blast-radius gate, which is the whole point of the seed declaring its own mutable surface.",
+  "schema_version": "0.1",
+  "site": { "id": "northlake" },
+  "rows": [
+    {
+      "target": "allocation.match_run_sequence",
+      "value": "run match, issue offers in rank order, record responses",
+      "inverse": null,
+      "evidence": [{ "kind": "document", "source": "OPTN policy", "says": "allocation proceeds by the published sequence" }],
+      "shadow_run": { "cases": 40, "would_have_matched": 40 },
+      "expiry": "2027-01-01",
+      "author": ""
+    },
+    {
+      "target": "authorization.consent_required",
+      "value": true,
+      "inverse": false,
+      "evidence": [{ "kind": "document", "source": "42 CFR 486", "says": "authorization is required before recovery" }],
+      "shadow_run": { "cases": 100, "would_have_matched": 100 },
+      "expiry": "2027-01-01",
+      "author": ""
+    }
+  ]
+}

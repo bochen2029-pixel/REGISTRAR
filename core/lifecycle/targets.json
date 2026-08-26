@@ -1,0 +1,103 @@
+{
+  "$comment": "GENERATED from lifecycle.yml by gen_targets.py. Do not edit by hand. This is the complete set of legal patch targets: the seed's declared mutable surface. A target absent from this file does not exist, and a patch row naming one fails the blast-radius gate.",
+  "schema_version": 0.1,
+  "generated_from": "lifecycle.yml",
+  "count": 19,
+  "targets": {
+    "allocation.credentials": {
+      "layer": "L3",
+      "state": "allocation",
+      "note": "endpoints and credentials for the national system"
+    },
+    "allocation.offer_window_practice": {
+      "layer": "L2",
+      "state": "allocation",
+      "note": "observed elapsed time from match run to primary acceptance"
+    },
+    "authorization.approach_sequence": {
+      "layer": "L2",
+      "state": "authorization",
+      "note": "observed order of approach (in person, telephonic) and who accompanies"
+    },
+    "authorization.esignature_vendor": {
+      "layer": "L3",
+      "state": "authorization",
+      "note": "how the artifact is captured and stored"
+    },
+    "authorization.second_person_rule": {
+      "layer": "L2",
+      "state": "authorization",
+      "note": "local practice on a second requester, and the conditions triggering it"
+    },
+    "evaluation.imaging_route": {
+      "layer": "L3",
+      "state": "evaluation",
+      "note": "how imaging is obtained and transferred from each donor hospital"
+    },
+    "evaluation.on_site_vs_remote": {
+      "layer": "L2",
+      "state": "evaluation",
+      "note": "whether workup is conducted on site or remotely, and by which role"
+    },
+    "evaluation.reference_lab": {
+      "layer": "L3",
+      "state": "evaluation",
+      "note": "which laboratory, which assay panel, and its actual turnaround"
+    },
+    "intake.after_hours_owner": {
+      "layer": "L2",
+      "state": "referral_received",
+      "note": "who owns an out-of-hours referral in practice, as distinct from the binder"
+    },
+    "intake.channel": {
+      "layer": "L3",
+      "state": "referral_received",
+      "note": "which lanes referrals actually arrive on (interfaced, phone, fax-to-email) and per donor hospital"
+    },
+    "lapse.threshold": {
+      "layer": "L2",
+      "state": "referral_lapsed",
+      "note": "when a site considers a referral lapsed rather than open"
+    },
+    "management.escalation_ladder": {
+      "layer": "L2",
+      "state": "donor_management",
+      "note": "the escalation path as practised, not as written"
+    },
+    "management.protocol_variant": {
+      "layer": "L2",
+      "state": "donor_management",
+      "note": "which management protocol is in local use and who may deviate"
+    },
+    "recovery.or_availability": {
+      "layer": "L2",
+      "state": "recovery",
+      "note": "the donor hospital's actual OR availability window. Frequently the binding constraint on the whole case, and almost never written down.\n"
+    },
+    "recovery.team_mobilisation": {
+      "layer": "L3",
+      "state": "recovery",
+      "note": "elapsed time from OR scheduled to incision, by team"
+    },
+    "transport.perfusion": {
+      "layer": "L3",
+      "state": "packaging_transport",
+      "note": "machine perfusion availability and local practice"
+    },
+    "transport.providers": {
+      "layer": "L3",
+      "state": "packaging_transport",
+      "note": "carriers, modes, and observed door-to-door times by destination"
+    },
+    "triage.callback_practice": {
+      "layer": "L2",
+      "state": "referral_triaged",
+      "note": "observed callback behaviour where the first contact does not reach a decision-maker"
+    },
+    "triage.ruleout_authority": {
+      "layer": "L2",
+      "state": "referral_triaged",
+      "note": "which role may rule out without escalation, and at what hour"
+    }
+  }
+}

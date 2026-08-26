@@ -154,22 +154,33 @@ in this design cares which harness you point at it.**
 
 ```
 core/lifecycle/lifecycle.yml   the mandated case lifecycle, as cited data — L0's spine
+core/lifecycle/targets.json    the declared mutable surface: 19 legal patch targets (generated)
 schema/patch.schema.json       the seven-field patch contract
+gates/validate_patch.py        the first gates. names every defect in words.
+elicit/questions.yml           one question per variation point — usable with no software at all
+elicit/method.md               how to run an elicitation, and the PHI rules
+examples/worked/               a complete fictional patch — and the drafts that were REFUSED
 floor/closure.py               the temporal closure. zero dependencies. it runs.
-floor/test_closure.py          27 assertions, no test framework
 fixtures/cases/                synthetic cases. zero PHI, forever.
 SPEC.md  AGENTS.md  PROVENANCE.md  README.md  LICENSE
 ```
 
 ```bash
 python floor/closure.py fixtures/cases/morning-or-window.json
-python floor/test_closure.py
+python gates/validate_patch.py examples/worked/northlake.patch.json
+python floor/test_closure.py && python gates/test_gates.py     # 59 assertions
 ```
 
 **Try that first.** It derives, from six ordinary constraints, that a serology had to be drawn at 22:15 the
 previous evening — and prints the chain of constraints that makes it so. It is 23:40 in the fixture. No timer
 has expired. Every field is green. **That is the failure class this system exists to catch**, and it needs no
 model, no network and nothing installed.
+
+**Start with [`examples/worked/REJECTED.md`](examples/worked/REJECTED.md)** if you want to understand what
+this actually is. It is the four drafts the gate refused, with the real refusal text and why each fix is not
+"phrase it better" — including the one nobody catches by reading, where a row installs half of what it
+declares, returns successfully, and stops independent completions from converging with no error and no
+symptom.
 
 **Read the coverage honestly.** The lifecycle file's structure is drafted, but most elements carry
 `locator: TODO-VERIFY` — the authority is named, the citation is not yet checked against live text. Per

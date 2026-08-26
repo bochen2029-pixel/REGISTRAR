@@ -1,0 +1,25 @@
+{
+  "$comment": "REJECTED DRAFT 2 — FICTIONAL. Well-formed, plausible, and grounded in nothing. This is what a competent harness produces when it has no site material and generates from its prior instead of stopping.",
+  "schema_version": "0.1",
+  "site": { "id": "northlake" },
+  "rows": [
+    {
+      "target": "evaluation.reference_lab",
+      "value": { "turnaround_minutes": 240 },
+      "inverse": null,
+      "evidence": [{ "kind": "observation", "source": "domain knowledge", "says": "serology turnaround is typically around 4 hours at most reference labs" }],
+      "shadow_run": { "cases": 0, "would_have_matched": 0 },
+      "expiry": "2027-01-01",
+      "author": ""
+    },
+    {
+      "target": "allocation.offer_window_practice",
+      "value": { "budget_minutes": 120 },
+      "inverse": null,
+      "evidence": [],
+      "shadow_run": { "would_have_matched": 12 },
+      "expiry": "2027-01-01",
+      "author": ""
+    }
+  ]
+}

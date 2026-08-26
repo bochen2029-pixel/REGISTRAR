@@ -1,0 +1,16 @@
+{
+  "$comment": "REJECTED DRAFT 4 — FICTIONAL. The silent one. The row declares a partial application: it installs some of what its target requires and returns successfully. Nothing errors, nothing looks wrong, and independent completions stop converging. This is gate 11.",
+  "schema_version": "0.1",
+  "site": { "id": "northlake" },
+  "rows": [
+    {
+      "target": "recovery.or_availability",
+      "value": { "hospital": "1147", "cross_clamp_window": { "opens": "06:00" }, "__partial__": true },
+      "inverse": null,
+      "evidence": [{ "kind": "observation", "source": "OR correspondence with hospital 1147", "says": "the recovery block opens at 06:00" }],
+      "shadow_run": { "cases": 41, "would_have_matched": 39 },
+      "expiry": "2026-11-01",
+      "author": ""
+    }
+  ]
+}

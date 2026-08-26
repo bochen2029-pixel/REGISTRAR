@@ -1,0 +1,15 @@
+{
+  "$comment": "REJECTED DRAFT 3 — FICTIONAL. A row that changes a value which already had one, and does not say how to get back. Also an expiry that is not a date. Neither row is an element of the patch monoid, so mount is undefined on both.",
+  "schema_version": "0.1",
+  "site": { "id": "northlake" },
+  "rows": [
+    {
+      "target": "lapse.threshold",
+      "value": { "minutes_without_progression": 90 },
+      "evidence": [{ "kind": "tape", "source": "case tape 2025, n=63", "says": "51 of 63 non-converted referrals showed no transition for over 90 minutes" }],
+      "shadow_run": { "cases": 63, "would_have_matched": 51 },
+      "expiry": "when reviewed",
+      "author": ""
+    }
+  ]
+}

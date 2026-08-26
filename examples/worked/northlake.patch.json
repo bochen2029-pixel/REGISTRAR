@@ -1,0 +1,185 @@
+{
+  "$comment": "FICTIONAL. Northlake Donor Services does not exist. Every value, source, ticket id and person named here is invented for teaching. Written as JSON so the gate runs with nothing installed; a real site's <slug>.patch.yml in YAML validates against the identical schema, since JSON is a subset of YAML. THIS FILE IS THE ONLY PATCH IN THIS REPOSITORY — a real one lives in the site's own version control and is never committed here.",
+
+  "schema_version": "0.1",
+
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — teaching example)"
+  },
+
+  "rows": [
+    {
+      "id": "nl-001",
+      "target": "intake.after_hours_owner",
+      "layer": "L2",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "document",
+          "source": "ops/SOP-14-referral-intake.md#L88",
+          "says": "conflicts and unclaimed after-hours referrals escalate to the on-duty supervisor"
+        },
+        {
+          "kind": "ticket",
+          "source": "servicedesk/query 'referral owner' 2025-07-01..2025-12-31",
+          "says": "128 of 134 after-hours referrals were in fact claimed and worked by the house coordinator, not the supervisor"
+        }
+      ],
+      "shadow_run": { "cases": 134, "would_have_matched": 128, "would_have_missed": 6, "window": "2025-07-01/2025-12-31" },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "The binder and the behaviour disagree. The row encodes the BEHAVIOUR and cites both, because the gap between them is the finding — not an error to be tidied away."
+    },
+
+    {
+      "id": "nl-002",
+      "target": "triage.callback_practice",
+      "layer": "L2",
+      "value": { "callback_within_minutes": 12, "owner_on_no_answer": "house_coordinator" },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape, triage events, 2025-Q4, n=311",
+          "says": "median elapsed to second contact attempt was 11 minutes; p75 was 12"
+        }
+      ],
+      "shadow_run": { "cases": 311, "would_have_matched": 296, "would_have_missed": 15, "window": "2025-10-01/2025-12-31" },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "Observed, not aspirational. The number is p75 rather than the median, because a threshold set at the median is breached half the time by construction."
+    },
+
+    {
+      "id": "nl-003",
+      "target": "evaluation.reference_lab",
+      "layer": "L3",
+      "value": { "lab": "northlake-reference", "panel": "standard-serology", "turnaround_minutes": 360 },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "document",
+          "source": "contracts/reference-lab-2024.pdf p.7",
+          "says": "contracted turnaround for the standard serology panel is 4 hours"
+        },
+        {
+          "kind": "tape",
+          "source": "case tape, serology drawn -> resulted, 2025, n=402",
+          "says": "observed p75 was 6h04m; the 4-hour contractual figure was met in 38% of cases"
+        }
+      ],
+      "shadow_run": { "cases": 402, "would_have_matched": 402, "would_have_missed": 0, "window": "2025-01-01/2025-12-31" },
+      "expiry": "2026-12-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "THE MOST IMPORTANT ROW IN THIS FILE. The contract says four hours. The laboratory takes six. A fit built on the contract would compute deadlines that are two hours optimistic on every case — and would be wrong in the direction that loses organs. Encode what happens. Cite the contract so the gap is visible and can be renegotiated."
+    },
+
+    {
+      "id": "nl-004",
+      "target": "recovery.or_availability",
+      "layer": "L2",
+      "value": { "hospital": "1147", "cross_clamp_window": { "opens": "06:00", "closes": "10:00" }, "next_window": "18:00" },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "observation",
+          "source": "OR scheduling correspondence with hospital 1147, 2025-09..2026-02",
+          "says": "recovery cases are accommodated in the 06:00-10:00 block; after 10:00 the room is committed to scheduled surgery until 18:00"
+        },
+        {
+          "kind": "tape",
+          "source": "case tape, cross-clamp times at hospital 1147, n=41",
+          "says": "39 of 41 cross-clamps fell inside 06:00-10:00; the two outliers were both 18:00-19:00"
+        }
+      ],
+      "shadow_run": { "cases": 41, "would_have_matched": 39, "would_have_missed": 2, "window": "2025-09-01/2026-02-28" },
+      "expiry": "2026-11-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "Written down nowhere before this row existed. It is also, on most Northlake cases, the constraint that binds the entire schedule — see fixtures/cases/morning-or-window.json, where this window is what forces a serology deadline at 22:15 the previous evening."
+    },
+
+    {
+      "id": "nl-005",
+      "target": "recovery.team_mobilisation",
+      "layer": "L3",
+      "value": { "team": "in_house", "or_scheduled_to_incision_minutes": 120 },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape, OR scheduled -> incision, 2025, n=57",
+          "says": "p75 elapsed was 118 minutes; longest was 186"
+        }
+      ],
+      "shadow_run": { "cases": 57, "would_have_matched": 43, "would_have_missed": 14, "window": "2025-01-01/2025-12-31" },
+      "expiry": "2026-11-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "would_have_missed is 14 of 57 and the row was signed anyway, deliberately. A lead time set at p75 is exceeded a quarter of the time by construction; the alternative is a figure so conservative it refuses feasible cases. The count is printed rather than hidden so the next review can argue with it."
+    },
+
+    {
+      "id": "nl-006",
+      "target": "allocation.offer_window_practice",
+      "layer": "L2",
+      "value": { "budget_minutes": 180 },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape, match run -> primary acceptance, 2025, n=88",
+          "says": "p90 elapsed was 174 minutes"
+        }
+      ],
+      "shadow_run": { "cases": 88, "would_have_matched": 79, "would_have_missed": 9, "window": "2025-01-01/2025-12-31" },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "Budgeted at p90 rather than p75, because this figure is used to compute a LATEST SAFE START. A latest-start computation must assume the worst case or it is not a guarantee — a distinction the closure depends on."
+    },
+
+    {
+      "id": "nl-007",
+      "target": "authorization.second_person_rule",
+      "layer": "L2",
+      "value": { "required_when": "donor_age_under_18" },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape, authorization approaches with donor age < 18, 2024-2025, n=19",
+          "says": "a second requester was present in 19 of 19"
+        },
+        {
+          "kind": "document",
+          "source": "ops/SOP-22-authorization.md",
+          "says": "does not mention a second-requester requirement at any age"
+        }
+      ],
+      "shadow_run": { "cases": 19, "would_have_matched": 19, "would_have_missed": 0, "window": "2024-01-01/2025-12-31" },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "A rule that is universally followed and written down nowhere. This is exactly the class of knowledge six years of interviews fails to extract, because nobody reports it — from the inside it is not a rule, it is just what you do."
+    },
+
+    {
+      "id": "nl-008",
+      "target": "lapse.threshold",
+      "layer": "L2",
+      "supersedes": "nl-008-draft",
+      "value": { "minutes_without_progression": 90 },
+      "inverse": { "minutes_without_progression": 240 },
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape, non-converted referrals, 2025, n=63",
+          "says": "of referrals that never converted, 51 showed no state transition for more than 90 minutes before the point of no return; at a 240-minute threshold only 12 would have been surfaced in time"
+        }
+      ],
+      "shadow_run": { "cases": 63, "would_have_matched": 51, "would_have_missed": 12, "window": "2025-01-01/2025-12-31" },
+      "expiry": "2026-11-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "The one row here with a real inverse rather than null, because it REPLACES an earlier value of 240. A correction is a new row that supersedes, never an edit to an old one — and the inverse is the previous value, so retirement of this row restores 240 rather than leaving the target undefined."
+    }
+  ]
+}
