@@ -29,7 +29,7 @@ WHAT THIS DOES
 Mutation testing, the standard instrument for exactly this question. Take the
 worked patch — which the battery accepts — introduce one **named defect** at a
 time, and re-run the gates. A mutant the battery FAILS is *killed*. A mutant it
-accepts *survived*, and every survivor is a defect this repository would mount.
+accepts *survived*, and every survivor is a defect this battery does not FAIL.
 
     python experiments/F-BATTERY-STRENGTH/mutate.py            summary
     python experiments/F-BATTERY-STRENGTH/mutate.py --survivors  each one, in full
@@ -42,11 +42,17 @@ HONESTY CONSTRAINTS, because a mutation score is easy to inflate
       counting it as a hole would inflate the score in the flattering direction.
       Operators here were written defect-first: the sentence came before the code.
 
-  2 · **The kill criterion is FAILED, never PASS-UNVERIFIED.** Three gates report
-      PASS-UNVERIFIED because they cannot be decided from a file. Counting those
-      as kills is precisely the three-states-collapsed-into-two failure this
-      repository has a gate against. A mutant that only trips an undecidable gate
-      has NOT been caught.
+  2 · **The kill criterion is FAILED, never PASS-UNVERIFIED.** On the SIGNED
+      worked example **two** gates report PASS-UNVERIFIED — shadow-run fidelity
+      and totality on provision — because they cannot be decided from a file.
+      (An earlier version of this docstring said "three", importing a figure
+      derived from a DIFFERENT subject: the machine-authored draft with authors
+      stripped. `conformance/claims.py` documents that exact trap and this text
+      walked into it. Audit A4.) Counting those as kills is the
+      three-states-collapsed-into-two failure this repository has a gate
+      against. A mutant that only trips an undecidable gate has NOT been caught.
+      Note the constraint never fired: no mutant among the 127 tripped ONLY an
+      undecidable gate, so this is a discipline that had no occasion to work.
 
   3 · **Deterministic.** No RNG. Same input, same mutants, same verdicts — the
       replay-determinism discipline applies to instruments too.
@@ -135,20 +141,35 @@ def op_shadow_over_unity(p):
 
 
 def op_shadow_inflate(p):
-    """The quiet one: a plausible but false denominator."""
+    """The quiet one: a plausible but false denominator.
+
+    CORRECTED 2026-08-27 after audit A7. The first version multiplied `cases`
+    and left `would_have_missed` alone, so the counts stopped closing — and
+    THAT is what the battery caught, not the lying denominator. Nine kills were
+    credited for a defect the battery misses. The counts are now kept closing so
+    the inflated denominator is the ONLY defect, which is what the operator's
+    own docstring always claimed to test.
+    """
     for i, row in enumerate(_rows(p)):
         sr = row.get("shadow_run")
         if not isinstance(sr, dict) or "cases" not in sr:
             continue
         m = copy.deepcopy(p)
-        m["rows"][i]["shadow_run"]["cases"] = int(sr["cases"]) * 7
+        cases = int(sr["cases"]) * 7
+        matched = int(sr.get("would_have_matched") or 0)
+        m["rows"][i]["shadow_run"]["cases"] = cases
+        m["rows"][i]["shadow_run"]["would_have_missed"] = cases - matched
         yield (f"row {row['id']} inflates its denominator 7x — the ratio now lies", m)
 
 
 def op_inverse_identity(p):
     for i, row in enumerate(_rows(p)):
         m = copy.deepcopy(p)
-        m["rows"][i]["inverse"] = row.get("value")
+        # deepcopy: reading `row` from `p` aliased the base patch into the
+        # mutant (audit A7, minor). Harmless today because no gate writes into
+        # the patch — one gate change from corrupting every verdict after the
+        # first.
+        m["rows"][i]["inverse"] = copy.deepcopy(row.get("value"))
         yield (f"row {row['id']} inverse equals its value — there is no way back", m)
 
 
@@ -187,11 +208,50 @@ def op_target_undeclared(p):
         yield (f"row {row['id']} targets a point the seed never declared", m)
 
 
-def op_target_reaches_l0(p):
-    for i, row in enumerate(_rows(p)):
-        m = copy.deepcopy(p)
-        m["rows"][i]["target"] = "core.lifecycle.referral.required_elements"
-        yield (f"row {row['id']} reaches into L0 — federal law", m)
+# REMOVED 2026-08-27 after audit A7 · op_target_reaches_l0
+#
+# It set `target = "core.lifecycle.referral.required_elements"` and claimed the
+# row "reaches into L0 — federal law". **The stated defect was false.** That
+# target is not in `core/lifecycle/targets.json`, so the row died on BLAST
+# RADIUS with a gate profile byte-identical to `op_target_undeclared` — nine
+# mutants, 6.6% of the old denominator, that were a semantic duplicate carrying
+# a sentence that was not true. Honesty constraint 1, broken by its author.
+#
+# It cannot be repaired, and the reason is the finding: `targets.json` declares
+# twenty targets and **every one is L2 or L3**, while gate 4 only inspects rows
+# whose target is already in `targets`. There is no reachable input that makes
+# the L0/L1/L4 immutability gate FAIL. **The battery's most safety-critical gate
+# has zero coverage, and no mutation of a patch file can give it any** — the
+# immutability is a property of the target vocabulary, not of the gate.
+#
+# Testing it needs a different instrument than this one. Recorded in AUDIT.md.
+
+
+def op_duplicate_conflict(p):
+    """CORRECTED 2026-08-27 after audit A7.
+
+    The first version left the duplicate row's `inverse` as `null`, so the kill
+    came from `local invertibility` complaining about the inverse — NOT about
+    the collision. Verified: give the duplicate a properly chained inverse and
+    the patch returns PASS-UNVERIFIED with two rows setting one target to
+    contradictory values and **nothing objecting.** There is no target-collision
+    gate. The false kill is now a true survivor.
+    """
+    rows = _rows(p)
+    if not rows:
+        return
+    m = copy.deepcopy(p)
+    dup = copy.deepcopy(rows[0])
+    dup["id"] = dup["id"] + "-dup"
+    dup["value"] = "a_different_answer_entirely"
+    dup["inverse"] = copy.deepcopy(rows[0].get("value"))   # a legitimate chain
+    m["rows"].append(dup)
+    yield (f"two rows set {rows[0]['target']} to different values", m)
+
+
+def _op_target_reaches_l0_removed(p):
+    return
+    yield
 
 
 def op_weasel(p):
@@ -228,16 +288,6 @@ def op_numeric_round_down(p):
                 break
 
 
-def op_duplicate_conflict(p):
-    rows = _rows(p)
-    if not rows:
-        return
-    m = copy.deepcopy(p)
-    dup = copy.deepcopy(rows[0])
-    dup["id"] = dup["id"] + "-dup"
-    dup["value"] = "a_different_answer_entirely"
-    m["rows"].append(dup)
-    yield (f"two rows set {rows[0]['target']} to different values", m)
 
 
 def op_holds_strip(p):
@@ -271,7 +321,7 @@ OPERATORS = [
     ("expiry-strip", op_expiry_strip),
     ("author-machine", op_author_machine),
     ("target-undeclared", op_target_undeclared),
-    ("target-reaches-l0", op_target_reaches_l0),
+    # ("target-reaches-l0", …) REMOVED — see the note above the removal.
     ("weasel", op_weasel),
     ("value-contradicts", op_value_contradicts_evidence),
     ("numeric-round-down", op_numeric_round_down),
@@ -347,7 +397,9 @@ def main(argv):
         print(f"  {mark} {op_name:<22} {k}/{len(rs)} killed")
 
     if survived:
-        print(f"\n  ** {len(survived)} SURVIVOR(S) — defects this battery would mount **")
+        print(f"\n  ** {len(survived)} SURVIVOR(S) — defects this battery does not FAIL **")
+        print("     (NOT 'would mount': two gates are ambient PASS-UNVERIFIED on")
+        print("      every mutant, so no mutant is ever all-GREEN and none would mount.)")
         seen = set()
         for r in survived:
             if r["operator"] in seen and "--survivors" not in argv:

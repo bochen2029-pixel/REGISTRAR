@@ -145,3 +145,48 @@ number that cannot be computed should be visibly refused, not absent.
 +9 from declines, −11 on checkable rows, +1 from the fabrication it did not commit. *Arm 2 beat the
 prior primarily by knowing what it did not know*, which is a real property and a different claim
 from *the corpus let it author better values.*
+
+---
+
+### 2026-08-27 · AUDIT ROUND — seven auditors, and the work did not survive it
+
+Seven opus-tier auditors, distinct adversarial mandates, each told refuting beats confirming. Bus
+record `proj-registrar-qc-b60738d4`, #2006–#2029. **Every finding re-verified by me before
+acceptance.** Full record in `AUDIT.md`.
+
+**Verdicts:** A2 BLOCKER · A4 BLOCKER (6) · A7 BLOCKER · A6 REFUTED · A1 MAJOR · A3 MAJOR · A5 MINOR.
+
+**Withdrawn:** `ATTRIBUTION.md` entirely — the causal claim is refuted 11/11 (A6), the denominator
+was swapped after the numbers existed across a pre-registered threshold in the flattering direction
+(A4), the decomposition arithmetic did not close (A4), and three repair methods give three values
+for M (A2: 0.40 · A7: 0.00 · as-shipped: 0.20). **The `[D]` meta-finding** — falsified by git;
+`3825787`, gate 13's *introducing* commit, already contains `NOT_A_QUANTITY`. **The novelty claim** —
+already in `REJECTED.md:225-227` and pinned by `test_divergence.py`.
+
+**Corrected:** 83.8 % → **74.8 % (95/127)**, measured here after fixing the harness, and matching
+A7's independent figure. Survivor classes 4 → **6**. The three-states language. The mechanism
+statement. The `[NULL]` verdict, from "the null loses" to "neither dominates" — which this file
+already said twenty lines from where it claimed the opposite.
+
+**A false receipt, and it is the one that stings.** Two documents asserted a retraction was "left in
+the tool with the note beside it." `attribute.py` contained **zero** retraction text. Verified: 0
+grep hits. *A claimed receipt that does not exist is worse than the quiet edit it was pretending not
+to be.* The note is now actually in the tool.
+
+**Three harness defects fixed, each changing a published number:** `op_shadow_inflate` was killed by
+counts not closing rather than by its lying denominator — fixed, all 9 now survive, and **the battery
+does not catch an inflated denominator**. `op_duplicate_conflict` was killed by a null inverse, not
+the collision — fixed, and **there is no target-collision gate**. `op_target_reaches_l0` **removed**:
+its stated defect was false, and it cannot be repaired because every declared target is L2/L3, so
+**the L0 immutability gate has zero coverage and no patch mutation can give it any.**
+
+### 2026-08-27 · a containment slip, mine, recorded rather than quietly fixed
+
+Registering `fork/battery` in `PARTITION`, **I edited `C:/REGISTRAR/tools/worktree.py` — main's tree
+and main's partition** — while writing a commit about containment. Caught immediately, reverted with
+`git checkout --`, main verified clean, and the edit re-made in this worktree where it belongs.
+
+*The worktrees did their job: because my index is separate, the slip was a stray edit in someone
+else's working copy rather than a file swept into my commit. That is exactly the difference
+`tools/worktree.py` was written to create, demonstrated accidentally, by the person writing the
+registration.*

@@ -83,10 +83,17 @@ def how_scored(why: str) -> str:
         return "keys"
     if "fabricat" in w:
         return "fabricated"
+    # ORDER IS LOAD-BEARING, corrected 2026-08-27 after audit A7.
+    # `absent` MUST be tested before `hold`. score.py emits exactly one absent
+    # string — "absent — no row and no hold" — and it contains "hold" inside
+    # "no hold". With the old ordering, a target the harness went SILENT on was
+    # reported as one it declined honestly: the exact inversion the
+    # accountability gate exists to prevent ("silence is not an answer"),
+    # committed by the instrument built to observe it.
+    if w.startswith("absent") or "no row and no hold" in w:
+        return "absent"
     if w.startswith("correct decline") or "hold" in w:
         return "declined"
-    if w.startswith("absent") or "no row" in w:
-        return "absent"
     return "other"
 
 
@@ -161,9 +168,16 @@ def main(argv):
         d_bld = e2.get("BLIND", 0) - e1.get("BLIND", 0)
         d_tot = d_chk + d_bld
         print(f"\n  THE DELTA between arms:  CHECKABLE {d_chk:+d}   BLIND {d_bld:+d}   total {d_tot:+d}")
-        if d_tot:
-            print(f"  share of the delta the gates could mechanically check: "
-                  f"{d_chk/d_tot:.0%}")
+        # RETRACTED 2026-08-27. Earlier versions of this tool printed a "share
+        # of the delta the gates could mechanically check" here, and both
+        # ATTRIBUTION.md and LOG.md asserted the retraction was "left in the
+        # tool with the note beside it". IT WAS NOT — audit A4 found zero
+        # retraction text in this file. A claimed receipt that does not exist is
+        # worse than a quiet edit. The note is now actually here.
+        print("  share of that delta the gates could check:  RETRACTED — not computable.")
+        print("    The arms are not comparable bucket-by-bucket: arm 1 has zero")
+        print("    declines and arm 2 has nine, so the denominator changes sign.")
+        print("    A number that cannot be computed is refused visibly, not omitted.")
 
         m = m2
         verdict = ("EARNED — the oracle carried it" if m >= 0.70 else
