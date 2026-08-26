@@ -16,6 +16,10 @@ record with alarms bolted on.**
 **It perceives and surfaces. It never acts** — the fence is on ACTION, and *perceive, notice, compute,
 surface* are not among the seven things it may never do, because that is the product.
 
+**Why it is shaped this way: [`VISION.md`](VISION.md).** Read it before proposing anything structural —
+it carries the reasoning that used to live only in a gitignored file, and the specific error it took four
+attempts to stop making.
+
 The half that is federal law ships byte-identical to all fifty-five OPOs. The half that has to fit *your*
 operation is not configured, not consulted, and not customised — it is **completed on site**, by your own
 people and their own coding harness, against a gate battery that mechanically refuses work that is wrong.

@@ -306,6 +306,10 @@ wrong answer is not — which is why the completion falsifier scores a fabricati
 
 ## §7c · You are radius 2 of the loop you are reading about
 
+**Read [`VISION.md`](VISION.md) first if you have not.** It is short, and it explains why this repository is
+shaped as a loop rather than a form — which is the difference between completing it correctly and completing
+it plausibly.
+
 `SPEC.md` §2b describes one shape at three radii. **You are the middle one**, and knowing it changes how you
 should work.
 
