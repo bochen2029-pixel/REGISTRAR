@@ -111,11 +111,15 @@ here. `internal` §14 item 1. **Unpinned third-party code must not become load-b
 
 Concurrent, partitioned by write surface, contract in [`FORKS.md`](FORKS.md).
 
-| Fork | Doing | Owns |
-|---|---|---|
-| **mainline** | pre-register F-PATCH-DELTA | `experiments/` |
-| **A** | fold the estate tools in as forge capabilities, then mount the first two as dsh plugins | `forge/plugins/`, `forge/dsh/` |
-| **C** | **a witness for every gate** | `examples/worked/rejected/`, `gates/test_*.py` |
+| Fork | Plan | Doing | Owns |
+|---|---|---|---|
+| **mainline** | [`plans/MAINLINE_f-patch-delta.md`](plans/MAINLINE_f-patch-delta.md) | pre-register the falsifier, then run arms ① and ② | `experiments/` |
+| **A** | [`plans/FORK-A_plugins.md`](plans/FORK-A_plugins.md) | fold the estate tools in as forge capabilities; mount the first two as dsh plugins | `forge/plugins/`, `forge/dsh/` |
+| **C** | [`plans/FORK-C_witnesses.md`](plans/FORK-C_witnesses.md) | **a witness for every gate** | `examples/worked/rejected/`, `gates/test_*.py` |
+
+All three dated `2026-08-26`, branch point `9a1a5f7`. **Each plan is self-contained** — a session with no
+prior context can pick one up and work from it. The shared constraints live in [`FORKS.md`](FORKS.md) and
+are binding on all three.
 
 **Fork A, in one line:** level 1 is *a bound capability* — the tool lands under `forge/plugins/<id>/`, adapted
 rather than copied, and `binding:` stops being `null`. Level 2 is *a mounted dsh plugin* — a thin package
