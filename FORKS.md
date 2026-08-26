@@ -29,6 +29,48 @@ forking.* A plugin that must live inside the tree it extends is not a plugin.
 
 ---
 
+## ONE WORKING TREE PER SESSION — the structural fix `[2026-08-26]`
+
+**The partition below is now enforced by git, not by care.** `python tools/worktree.py --list`
+
+| branch | worktree |
+|---|---|
+| `main` | `C:/REGISTRAR` |
+| `fork/plugins` | `C:/REGISTRAR-forkA` |
+| `fork/witnesses` | `C:/REGISTRAR-forkC` |
+
+**Each has its own index.** `git add -A` in one cannot reach another, and git refuses to check out the same
+branch in two of them. **Merge by branch, which is reviewable; a swept index was not.**
+
+**Why this replaced a paragraph.** The staging collision happened **twice, in both directions** — mainline
+swept 60 files including **55 of verbatim OPTN policy text into a public commit**, and Fork C was swept in
+return **after following the rule**. *Complying did not protect it, because the rule binds whoever stages*,
+and `git add -A` in one session is indistinguishable from another's own staging. **A partition that says who
+may WRITE says nothing about who may STAGE** — that is half a contract, and law 9 says a hazard should be
+unreachable rather than forbidden.
+
+### Starting work in a worktree
+
+```bash
+python tools/worktree.py --provision C:/REGISTRAR-forkA   # the pinned corpus
+python tools/worktree.py --check                          # staged inside your partition?
+python conformance/run.py
+```
+
+**A worktree gets tracked files only**, and the three ignored things are not equivalent:
+
+- **`corpus/*.txt`** — provisioned. `tools/cite.py` cannot verify a citation without them.
+- **`deepseek-harness-master`** — **not copied.** 68 MB, already pinned; fetch and verify with
+  `tools/pin_chassis.py --verify` if you need it. **Still read-only to every fork.**
+- **`internal/`** — **withheld on purpose.** The vault holds the F-PATCH-DELTA answer key, and a fork that
+  cannot see it cannot be contaminated by it. **The gitignore is doing protocol work here, not just
+  hygiene.**
+
+*Expect a fresh worktree to report more PASS-UNVERIFIED than mainline — absent optional material reads as
+unverified, which is the honest state rather than a fault.*
+
+---
+
 ## The write surface, partitioned
 
 Each fork **owns** its directories and **does not write** outside them without saying so.
