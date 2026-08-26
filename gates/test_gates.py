@@ -63,14 +63,41 @@ def test_accepted_patch() -> None:
 
 def test_undecidable_gates_say_so() -> None:
     """
-    The three gates that cannot be decided from a file must report
-    PASS-UNVERIFIED. If one of them ever reports GREEN, this validator has
+    A gate that cannot be decided from a file must report PASS-UNVERIFIED. If
+    one ever reports GREEN without having become decidable, the validator has
     started committing the error it exists to prevent.
+
+    **`local invertibility` was in this list and is not any more**, because
+    `core/algebra.py` made it decidable. That was the machinery working, not a
+    regression — the same shape as the guard test that broke when a locator was
+    filled. The reasoning that put it here was *"T3 needs a runtime."* Half
+    true: applying a row to a live instance needs one, but T3's hypothesis is
+    **pointwise**, and the patch file plus the seed determine that state
+    exactly. It was computable all along, and the gate carried PASS-UNVERIFIED
+    until somebody questioned the premise rather than the implementation.
+
+    The two below genuinely need something a patch file does not contain: a
+    runtime that applies rows, and the site's own tape.
     """
     print("\nundecidable gates report PASS-UNVERIFIED, never GREEN")
     r = run(os.path.join(WORKED, "northlake.patch.json"))
-    for gate in ("local invertibility", "shadow-run fidelity", "totality on provision"):
+    for gate in ("shadow-run fidelity", "totality on provision"):
         check(f"{gate}", state_of(r, gate), UNVERIFIED)
+
+
+def test_local_invertibility_now_decides() -> None:
+    """T3 is computed rather than deferred — and must still refuse a bad inverse."""
+    print("\nlocal invertibility decides (T3, via core/algebra.py)")
+    r = run(os.path.join(WORKED, "northlake.patch.json"))
+    check("GREEN on the worked example", state_of(r, "local invertibility"), GREEN)
+
+    # a row whose inverse names a prior value nothing established
+    bad = {"rows": [{"target": "lapse.threshold", "value": {"m": 90}, "inverse": {"m": 240}}]}
+    r2 = validate(bad, load_targets())
+    check("FAILED where the hypothesis does not hold",
+          state_of(r2, "local invertibility"), FAILED)
+    detail = next(d for s, g, d in r2.rows if g == "local invertibility")
+    check("and it names why", "prior state" in detail or "absent" in detail, True)
 
 
 def test_off_surface_refused() -> None:
@@ -158,6 +185,7 @@ if __name__ == "__main__":
     for t in (
         test_accepted_patch,
         test_undecidable_gates_say_so,
+        test_local_invertibility_now_decides,
         test_off_surface_refused,
         test_ungrounded_refused,
         test_missing_inverse_refused,

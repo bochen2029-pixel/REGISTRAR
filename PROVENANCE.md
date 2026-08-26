@@ -476,6 +476,68 @@ Tier 5 is the only one federal authority does not determine, and the only one ke
 **donor** rather than the OPO. Conformance checks that every tier names its clock: **a tier that cannot say
 how it changes is not an authority, it is an assertion.**
 
+### Batch 8 — the algebra made executable, and the CUDA kernel shipped
+
+**134 assertions, 30 GREEN.** Two of the three gaps named in the divergence audit are closed.
+
+### core/algebra.py — T3 computed, and a gate converted
+
+`mount`, `retire`, and observational equivalence, implemented. The consequential part:
+
+> **`local invertibility` reported PASS-UNVERIFIED from the day it was written, on the reasoning that "T3
+> needs a runtime." That was half true and nobody questioned it.** Applying a row to a live instance needs a
+> runtime; **T3's hypothesis is pointwise** — `p⁻(p(λ)) ≃ λ` at the state where the row is applied — and the
+> patch file plus the seed determine that state exactly. **It was computable all along.**
+
+The gate now decides: **GREEN** on the worked example, **FAILED** with a named reason on a row whose inverse
+assumes an unestablished state. Second gate converted from PASS-UNVERIFIED by making something computable
+rather than by relaxing it.
+
+**And T3 immediately found a defect in the shipped worked example.** `nl-008` carried
+`inverse: {minutes_without_progression: 240}` and `supersedes: nl-008-draft` — **but that draft row was not in
+the file.** So the inverse named a prior value nothing established, retirement left `lapse.threshold: 240`
+behind, and **the patch did not retire to the seed. T4 failed on the repository's own teaching example.**
+
+Fixed by adding the row the supersession chain requires — `nl-008-draft`, 240 minutes, sourced from the SOP,
+with a shadow run that shows why it lost (12 of 63 caught, against 51 for the tape-derived 90). **It is
+better teaching than the clean version was:** it demonstrates a supersession chain end to end, and it exists
+because a theorem refused to typecheck.
+
+Also: my first diagnostic for that failure **reported the opposite of the truth** — `difference(restored,
+fit)` yields (what the inverse produced, what was there), and I had the tuple reversed. Found by running it,
+not by reading it.
+
+### floor/tropical.cu + floor/parity.py — the kernel, and the receipt it does not have
+
+The batched `(min,+)` closure, one case per `blockIdx.z`, published because the page already claimed it
+existed. **Marked `[SPEC — COMPILED AND PARITY-CHECKED NOWHERE YET]`**: there is no GPU in this project's
+reference environment, so it carries no measured claim.
+
+`parity.py` is what would produce the receipt. Without a card it reports **PASS-UNVERIFIED**, which is the
+correct answer rather than a degraded one — but it still checks what does not need hardware:
+
+- the sentinel survives being added to itself in int32
+- **repeated squaring (what the kernel does) agrees with Floyd–Warshall (what the reference does)** — this
+  catches an algorithmic divergence before hardware is ever involved
+- idempotence, and integrality throughout
+
+**That squaring check failed on first run, and the failure was mine, not the code's.** The two algorithms
+legitimately differ on an *infeasible* network: under a negative cycle **"the shortest path" is not a defined
+quantity** — you can traverse the cycle arbitrarily often — so Floyd–Warshall (each intermediate relaxed once)
+and squaring (⌈log₂ n⌉ rounds) descend to different depths. Both correct; neither computing something
+well-defined. **I had demanded agreement where the quantity does not exist.**
+
+Corrected to check what the system actually consumes: **feasible networks entry-for-entry, and the verdict on
+every network.** `closure.py` checks the diagonal and refuses before reading any distance from an infeasible
+network — so the kernel and the reference agree everywhere the answer is used.
+
+### A test that broke because a gate changed class
+
+`test_undecidable_gates_say_so` asserted local invertibility was PASS-UNVERIFIED. Making it decidable broke
+the test — **the machinery working, the same shape as the guard test that broke when a locator was filled.**
+Rewritten, with the reasoning recorded in the docstring: *the gate carried PASS-UNVERIFIED until somebody
+questioned the premise rather than the implementation.*
+
 ---
 
 ### Design choices, marked as such

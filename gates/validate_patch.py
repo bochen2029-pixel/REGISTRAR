@@ -35,6 +35,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+sys.path.insert(0, os.path.join(ROOT, "core"))
 TARGETS = os.path.join(ROOT, "core", "lifecycle", "targets.json")
 
 GREEN, UNVERIFIED, FAILED = "GREEN", "PASS-UNVERIFIED", "FAILED"
@@ -130,9 +131,26 @@ def validate(patch: dict, targets: dict) -> Result:
     r.add(FAILED if no_inv else GREEN, "inverse declared",
           ", ".join(map(str, no_inv)) if no_inv else "every row carries an inverse")
 
-    # 6 · inverse actually inverts — NOT decidable here
-    r.add(UNVERIFIED, "local invertibility",
-          "needs a runtime to apply the row and compare; not decidable from the file")
+    # 6 · inverse actually inverts — DECIDED, as of core/algebra.py
+    #
+    # This gate reported PASS-UNVERIFIED from the day it was written, on the
+    # reasoning that T3 "needs a runtime". That was half true: applying a row
+    # to a live instance needs one, but T3's hypothesis is POINTWISE —
+    # p⁻(p(λ)) ≃ λ at the state where the row is applied — and the patch file
+    # plus the seed determine that state exactly. It was computable all along.
+    try:
+        from algebra import check_all, rows_from_patch  # noqa: E402
+        inv = check_all(rows_from_patch(patch))
+        bad = [x for x in inv if not x.ok]
+        if bad:
+            r.add(FAILED, "local invertibility",
+                  "; ".join(x.render() for x in bad))
+        else:
+            r.add(GREEN, "local invertibility",
+                  f"{len(inv)} row(s): p⁻(p(λ)) ≃ λ at the state each is applied")
+    except ImportError:
+        r.add(UNVERIFIED, "local invertibility",
+              "core/algebra.py not importable — T3 not computed")
 
     # 7 · evidence binding
     weak = []

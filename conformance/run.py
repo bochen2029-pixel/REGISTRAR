@@ -195,6 +195,41 @@ def check_floor() -> None:
     last = (r.stdout.strip().splitlines() or ["no output"])[-1]
     record(GREEN if r.returncode == 0 else FAILED, "floor · closure battery", last)
 
+    # the accelerated path: admissible only if bit-identical to the reference
+    p = subprocess.run([sys.executable, os.path.join(ROOT, "floor", "parity.py")],
+                       capture_output=True, text=True)
+    state = {0: GREEN, 2: UNVERIFIED}.get(p.returncode, FAILED)
+    record(state, "floor · CPU/GPU parity",
+           "bit-identical on every fixture" if state == GREEN
+           else ("CPU invariants hold; GPU parity not run — no card in the reference environment"
+                 if state == UNVERIFIED else "the accelerated path is NOT admissible"))
+
+
+# ── 6e · the algebra is executable ──────────────────────────────────────────
+def check_algebra() -> None:
+    sys.path.insert(0, os.path.join(ROOT, "core"))
+    from algebra import Context, check_all, equivalent, mount_all, retire, rows_from_patch
+
+    with open(os.path.join(ROOT, "examples", "worked", "northlake.patch.json"),
+              encoding="utf-8") as fh:
+        patch = json.load(fh)
+    rows = rows_from_patch(patch)
+
+    inv = check_all(rows)
+    bad = [x.render() for x in inv if not x.ok]
+    record(FAILED if bad else GREEN, "algebra · T3 pointwise invertibility",
+           "; ".join(bad) if bad else f"{len(inv)} rows: p⁻(p(λ)) ≃ λ at each applied state")
+
+    recovered = equivalent(retire(mount_all(Context.seed(), rows)).fit, {})
+    record(GREEN if recovered else FAILED, "algebra · T4 the seed is recoverable",
+           "retire(mount*(λ₀)) ≃ λ₀" if recovered
+           else "a reachable state does NOT retire to the seed")
+
+    t = subprocess.run([sys.executable, os.path.join(ROOT, "core", "test_algebra.py")],
+                       capture_output=True, text=True)
+    last = (t.stdout.strip().splitlines() or ["no output"])[-1]
+    record(GREEN if t.returncode == 0 else FAILED, "algebra · theorem battery", last)
+
 
 # ── 6b · citations are not fabricated ───────────────────────────────────────
 def check_citations() -> None:
@@ -398,6 +433,7 @@ def main() -> int:
         ("the clinical layer (L1)", check_clinical),
         ("authorization jurisdiction", check_jurisdiction),
         ("the authority chain", check_authority),
+        ("the algebra", check_algebra),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")
