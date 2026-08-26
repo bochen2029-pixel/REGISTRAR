@@ -1,0 +1,29 @@
+{
+  "$comment": "REJECTED DRAFT 7 — FICTIONAL. WITNESS FOR: evidence binding, isolated. 02-ungrounded trips three gates at once, so it cannot show which one caught what. This one is correct in every other respect and cites a source that describes the INDUSTRY rather than this site — the single most characteristic failure of a confident model, because the sentence is true and useless. A fit is a claim about one organisation; 'most OPOs' is evidence for nobody.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "document",
+          "source": "industry practice",
+          "says": "most OPOs assign unclaimed after-hours referrals to the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

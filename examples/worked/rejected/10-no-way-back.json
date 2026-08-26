@@ -1,0 +1,53 @@
+{
+  "$comment": "REJECTED DRAFT 10 — FICTIONAL. WITNESS FOR: inverse declared, isolated. 03-no-inverse omits the field entirely, which also trips schema shape. This one SUPERSEDES a prior value and declares its inverse as null — the field is present, the shape is valid, and the row is still not invertible, because null means 'there was nothing here before' and something was. Retiring it would delete a value the site was relying on. Without a true inverse the row is not an element of the monoid at all, and mount is undefined on it.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake"
+  },
+  "rows": [
+    {
+      "target": "lapse.threshold",
+      "value": {
+        "minutes_without_progression": 240
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "document",
+          "source": "ops/SOP-14.md#L120",
+          "says": "a referral with no progress after four hours is reviewed"
+        }
+      ],
+      "shadow_run": {
+        "cases": 63,
+        "would_have_matched": 12,
+        "would_have_missed": 51,
+        "window": "2025-01-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    },
+    {
+      "target": "lapse.threshold",
+      "value": {
+        "minutes_without_progression": 90
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "tape",
+          "source": "case tape 2025, n=63",
+          "says": "51 non-converted referrals showed no transition for more than 90 minutes"
+        }
+      ],
+      "shadow_run": {
+        "cases": 63,
+        "would_have_matched": 51,
+        "would_have_missed": 12,
+        "window": "2025-01-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

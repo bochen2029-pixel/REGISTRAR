@@ -1,0 +1,29 @@
+{
+  "$comment": "REJECTED DRAFT 9 — FICTIONAL. WITNESS FOR: expiry, isolated. 03-no-inverse trips expiry only as collateral. This row is correct in every other respect and simply declines to expire — the quietest and most reasonable-looking mistake in the whole corpus, because a fit that is right today feels like a fit that is right. Nothing is permanent by default: an operation changes and a row that never re-earns its place becomes a confident statement about a building that has moved.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk/query 'referral owner' 2025-07-01..2025-12-31",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

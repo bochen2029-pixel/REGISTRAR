@@ -1,0 +1,29 @@
+{
+  "$comment": "REJECTED DRAFT 5 — FICTIONAL. WITNESS FOR: target syntax, and nothing else. A harness that has read the seed's prose but not its grammar writes the target the way the documentation reads it — title case, spaces, a human's spelling. The value, evidence, shadow run and signature are all correct; only the NAME is malformed. This is the fixture that proves the syntax gate does its own work rather than riding on blast radius.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake"
+  },
+  "rows": [
+    {
+      "target": "Intake.After_Hours_Owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk/query 'referral owner' 2025-07-01..2025-12-31",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "$comment": "REJECTED DRAFT 8 — FICTIONAL. WITNESS FOR: shadow run, isolated. The row is grounded in the site's own tape and correctly signed. Its shadow run reports a COUNT WITH NO DENOMINATOR — '128 matched' with no statement of how many cases were replayed. 128 of 134 is evidence; 128 of an unstated total is a number wearing the costume of one. Every number carries its grain and denominator, or it is not a number.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk/query 'referral owner' 2025-07-01..2025-12-31",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "would_have_matched": 128,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

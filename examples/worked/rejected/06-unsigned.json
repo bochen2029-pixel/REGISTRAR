@@ -1,0 +1,29 @@
+{
+  "$comment": "REJECTED DRAFT 6 — FICTIONAL. WITNESS FOR: signature. Note what this fixture does NOT do: it does not FAIL. An unsigned row is a legal DRAFT — AGENTS.md says a machine leaves `author` empty, and the signature is the output commit — so the correct verdict is PASS-UNVERIFIED, which is 'not yet', not 'wrong'. A gate that FAILED here would refuse the very artifact a harness is supposed to produce. The witness therefore asserts the middle state, and the middle state is the point.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk/query 'referral owner' 2025-07-01..2025-12-31",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "   "
+    }
+  ]
+}
