@@ -169,14 +169,32 @@ def check_gates() -> None:
     record(GREEN if GF not in {s for s, _, _ in r.rows} else FAILED,
            "gates · accepted patch", "no gate FAILED on the worked example")
 
-    rejected = sorted(os.listdir(os.path.join(worked, "rejected")))
-    refused = 0
-    for f in rejected:
+    # Three states, and the corpus uses all three deliberately:
+    #   FAILED           the draft is wrong
+    #   PASS-UNVERIFIED  the draft is INCOMPLETE, not wrong — an unsigned row is a
+    #                    legal draft, because a machine leaves `author` empty
+    #   *UNCAUGHT*       a fixture NOTHING catches, retained ON PURPOSE so the
+    #                    exposure stays visible instead of becoming a story
+    from validate_patch import GREEN as GG
+    rejected = sorted(f for f in os.listdir(os.path.join(worked, "rejected"))
+                      if f.endswith((".json", ".yml", ".yaml")))
+    must_refuse = [f for f in rejected if "UNCAUGHT" not in f]
+    uncaught = [f for f in rejected if "UNCAUGHT" in f]
+
+    passed_through = []
+    for f in must_refuse:
         rr = validate(load_patch(os.path.join(worked, "rejected", f)), load_targets())
-        if rr.worst == GF:
-            refused += 1
-    record(GREEN if refused == len(rejected) else FAILED, "gates · refuses bad patches",
-           f"{refused}/{len(rejected)} adversarial drafts refused")
+        if rr.worst == GG:
+            passed_through.append(f)
+    record(FAILED if passed_through else GREEN, "gates · refuses bad patches",
+           f"{len(passed_through)} draft(s) passed clean: {', '.join(passed_through)}"
+           if passed_through
+           else f"{len(must_refuse)}/{len(must_refuse)} adversarial drafts refused")
+
+    if uncaught:
+        record(UNVERIFIED, "gates · known exposures",
+               f"{len(uncaught)} fixture(s) NOTHING catches, retained deliberately: "
+               f"{', '.join(uncaught)}")
 
     record(UNVERIFIED, "gates · undecidable from a file",
            "local invertibility, shadow-run fidelity, totality — need a runtime and the site's tape")

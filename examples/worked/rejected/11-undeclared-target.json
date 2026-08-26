@@ -1,0 +1,29 @@
+{
+  "$comment": "REJECTED DRAFT 11 — FICTIONAL. WITNESS FOR: blast radius, isolated. 01-off-surface trips three gates because its rows are unsigned and one has no workable inverse. This row is signed, grounded, replayed and syntactically valid — and names a target the seed does not declare. That is the whole failure: a harness inventing a plausible place to put an answer. The seed enumerates its own mutable surface precisely so that inventing one is refused rather than accommodated.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake"
+  },
+  "rows": [
+    {
+      "target": "triage.escalation_ladder",
+      "value": "house_coordinator",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk 2025-07-01..2025-12-31, n=134",
+          "says": "128 of 134 after-hours referrals were worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director"
+    }
+  ]
+}

@@ -118,6 +118,22 @@ truth would be recollection of a former employer's design, which `PROVENANCE.md`
 **PRE-REGISTERED.** Gate battery pinned at `87c463d`. Rubric, thresholds, and invalidation conditions all
 fixed before any corpus was written.
 
+**CORPUS BUILT · ARM ① RUN · ARM ② BLOCKED — `2026-08-26`.** See
+[`experiments/F-PATCH-DELTA/RESULTS.md`](experiments/F-PATCH-DELTA/RESULTS.md).
+
+- **`site/`** — Fairbank Donor Network, fictional. 1,186 raw case events, four SOPs, two contracts, an
+  integration inventory. **Three binder/tape contradictions in both directions**, and **one target nothing
+  supports.**
+- **Arm ① — the template prior: `19/40 · S = 0.47 · 1 fabrication · SHAPED`.** **The floor is already at
+  SHAPED**, so arm ② clearing 0.40 would mean nothing — it must beat 0.47 by a real margin. §5 anticipated
+  this: *if ① scores near ②, the schema is doing the work and the harness is not.* **Thresholds not adjusted;
+  §6 forbids it.**
+- **The gates refused arm ① independently, without the answer key** — evidence binding caught *"asserts
+  generality, not this site"*, and 20/20 shadow runs had no denominator. **A harness could produce arm ① at
+  any site and the battery would refuse it at every one.**
+- **Arm ② is BLOCKED by §6** — I wrote the corpus, and writing the corpus is having the delta. **The
+  protocol for a clean run is in `RESULTS.md`; it needs a session that did not build this.**
+
 **Pin the chassis.** Blocking, and it now blocks *wiring* rather than acquisition — the bytes are already
 here. `internal` §14 item 1. **Unpinned third-party code must not become load-bearing.**
 

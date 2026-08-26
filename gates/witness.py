@@ -122,13 +122,22 @@ def fixtures() -> dict[str, dict]:
 # Gates that report PASS-UNVERIFIED on EVERY patch, good or bad. They are
 # background noise in this matrix — a fixture cannot be said to have witnessed
 # them, because they say the same thing regardless of what it contains.
-def ambient() -> set[str]:
+def ambient() -> dict[str, str]:
+    """
+    What each gate says about a patch with nothing wrong with it.
+
+    Returned as gate -> state, not a bare set, because **suppression has to
+    compare states.** `totality on provision` is PASS-UNVERIFIED on every clean
+    patch — ambient noise — and FAILED on `04-partial`, which is a real
+    refusal. Subtracting the gate by NAME erased that witness; subtracting it
+    only when the state MATCHES keeps it.
+    """
     r = validate(load_patch(WORKED), load_targets())
-    return {g for st, g, _ in r.rows if st == UNVERIFIED}
+    return {g: st for st, g, _ in r.rows if st != GREEN}
 
 
 def fired_by(patch: dict, targets: dict,
-             ignore: set[str] | None = None) -> tuple[list[str], dict[str, str]]:
+             ignore: dict[str, str] | None = None) -> tuple[list[str], dict[str, str]]:
     """
     Which gates left GREEN on this patch, and what each said.
 
@@ -141,9 +150,12 @@ def fired_by(patch: dict, targets: dict,
     Counting only FAILED made the first version of this tool report an unsigned
     fixture as **silent**, when the gate had refused it correctly.
     """
-    ignore = ignore or set()
+    ignore = ignore or {}
     r = validate(patch, targets)
-    out = [(g, st, d) for st, g, d in r.rows if st != GREEN and g not in ignore]
+    # a gate counts as refusing only if it says something DIFFERENT here than it
+    # says about a clean patch
+    out = [(g, st, d) for st, g, d in r.rows
+           if st != GREEN and ignore.get(g) != st]
     return [g for g, _, _ in out], {g: f"{st}: {d}" for g, st, d in out}
 
 

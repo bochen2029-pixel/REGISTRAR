@@ -1,0 +1,498 @@
+{
+  "$comment": "ARM 1 — the template prior. Generated from declared generic OPO defaults with NO SITE MATERIAL READ. This is the floor every other arm is read against: if arm 2 scores near this, the schema is doing the work.",
+  "arm": "1-template-prior",
+  "schema_version": "0.1",
+  "site": {
+    "id": "fairbank",
+    "name": "Fairbank Donor Network (FICTIONAL)"
+  },
+  "rows": [
+    {
+      "target": "intake.after_hours_owner",
+      "layer": "L2",
+      "value": "on_call_supervisor",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "an SOP almost always routes after-hours work to the on-call supervisor; that is what the org chart implies and what a policy document would say"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "an SOP almost always routes after-hours work to the on-call supervisor; that is what the org chart implies and what a policy document would say"
+    },
+    {
+      "target": "triage.callback_practice",
+      "layer": "L2",
+      "value": {
+        "callback_within_minutes": 30
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "30 minutes is the round number a policy reaches for; it is also what most SOPs specify"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "30 minutes is the round number a policy reaches for; it is also what most SOPs specify"
+    },
+    {
+      "target": "evaluation.reference_lab",
+      "layer": "L2",
+      "value": {
+        "turnaround_minutes": 240
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "four hours is the standard contracted serology turnaround across the industry"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "four hours is the standard contracted serology turnaround across the industry"
+    },
+    {
+      "target": "recovery.or_availability",
+      "layer": "L2",
+      "value": {
+        "cross_clamp_window": {
+          "opens": "06:00",
+          "closes": "10:00"
+        }
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "recovery is conventionally accommodated in an early-morning block before the elective list starts"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "recovery is conventionally accommodated in an early-morning block before the elective list starts"
+    },
+    {
+      "target": "recovery.team_mobilisation",
+      "layer": "L2",
+      "value": {
+        "or_scheduled_to_incision_minutes": 120
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "two hours is the usual planning figure for team mobilisation"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "two hours is the usual planning figure for team mobilisation"
+    },
+    {
+      "target": "allocation.offer_window_practice",
+      "layer": "L2",
+      "value": {
+        "budget_minutes": 180
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "three hours is the conventional allowance from match run to primary acceptance"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "three hours is the conventional allowance from match run to primary acceptance"
+    },
+    {
+      "target": "lapse.threshold",
+      "layer": "L2",
+      "value": {
+        "minutes_without_progression": 240
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "four hours without progression is the common review trigger"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "four hours without progression is the common review trigger"
+    },
+    {
+      "target": "triage.ruleout_authority",
+      "layer": "L2",
+      "value": {
+        "listed_criterion": "coordinator",
+        "clinical_judgment": "physician"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "the standard split: listed contraindications by coordinator, judgment calls by a physician"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "the standard split: listed contraindications by coordinator, judgment calls by a physician"
+    },
+    {
+      "target": "authorization.approach_sequence",
+      "layer": "L2",
+      "value": {
+        "default": "in_person",
+        "telephonic_when": "family unable to attend"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "in-person by default is near-universal practice"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "in-person by default is near-universal practice"
+    },
+    {
+      "target": "authorization.second_person_rule",
+      "layer": "L2",
+      "value": {
+        "required_when": "donor_age_under_18"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "a second requester for minors is common practice"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "a second requester for minors is common practice"
+    },
+    {
+      "target": "management.protocol_variant",
+      "layer": "L2",
+      "value": "standard adult targets",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "most OPOs use standard targets without a local variant"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "most OPOs use standard targets without a local variant"
+    },
+    {
+      "target": "management.escalation_ladder",
+      "layer": "L2",
+      "value": {
+        "ladder": [
+          "coordinator",
+          "supervisor",
+          "director",
+          "medical_director"
+        ],
+        "ack_minutes": 30
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "a four-level ladder with a 30-minute acknowledgement is the conventional shape"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "a four-level ladder with a 30-minute acknowledgement is the conventional shape"
+    },
+    {
+      "target": "evaluation.on_site_vs_remote",
+      "layer": "L2",
+      "value": "predominantly on site",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "on-site workup remains the norm"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "on-site workup remains the norm"
+    },
+    {
+      "target": "intake.channel",
+      "layer": "L2",
+      "value": {
+        "default": "interfaced where available, telephone otherwise"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "the standard mixed-channel arrangement"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "the standard mixed-channel arrangement"
+    },
+    {
+      "target": "evaluation.imaging_route",
+      "layer": "L2",
+      "value": {
+        "route": "PACS share"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "a PACS share is the usual arrangement where imaging is exchanged"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "a PACS share is the usual arrangement where imaging is exchanged"
+    },
+    {
+      "target": "authorization.esignature_vendor",
+      "layer": "L2",
+      "value": {
+        "vendor": "DocuSign"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "DocuSign is the most widely deployed e-signature product"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "DocuSign is the most widely deployed e-signature product"
+    },
+    {
+      "target": "allocation.credentials",
+      "layer": "L2",
+      "value": {
+        "mode": "named accounts"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "UNet access is by named account almost everywhere"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "UNet access is by named account almost everywhere"
+    },
+    {
+      "target": "transport.providers",
+      "layer": "L2",
+      "value": {
+        "ground": "contracted courier",
+        "air": "contracted charter"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "the standard two-mode arrangement"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "the standard two-mode arrangement"
+    },
+    {
+      "target": "intake.timely_referral_definition",
+      "layer": "L2",
+      "value": {
+        "minutes": 60
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "one hour is the figure most commonly written into hospital agreements"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "one hour is the figure most commonly written into hospital agreements"
+    },
+    {
+      "target": "transport.perfusion",
+      "layer": "L2",
+      "value": {
+        "provider": "contracted perfusion service"
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "prior",
+          "source": "generic OPO template — NO SITE MATERIAL",
+          "says": "a contracted perfusion service is the usual arrangement"
+        }
+      ],
+      "shadow_run": {
+        "cases": 0,
+        "would_have_matched": 0,
+        "would_have_missed": 0,
+        "window": "n/a — no site tape"
+      },
+      "expiry": "2027-08-26",
+      "author": "",
+      "$prior": "a contracted perfusion service is the usual arrangement"
+    }
+  ],
+  "holds": []
+}

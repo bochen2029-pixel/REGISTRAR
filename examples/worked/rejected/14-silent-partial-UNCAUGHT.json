@@ -1,0 +1,47 @@
+{
+  "$comment": "FIXTURE 14 — FICTIONAL — AND IT IS NOT REFUSED. THIS IS THE FINDING, NOT A DRAFT. Every one of the thirteen gates passes this patch. The row declares an operating-room window with an opening time and NO CLOSING TIME, and its own cited evidence says the block is 06:00-10:00 — so the source contains the value the row omits. This is exactly the defect REJECTED.md calls 'the silent one': a row that installs half of what it declares, stops convergence, and produces no error and no symptom. The gate written to catch it, `totality on provision`, fires only when a row carries a literal `__partial__` marker — that is, only when the author ANNOTATES their own omission. A harness that forgets a key does not annotate the omission. And `divergence` misses it too, because 10:00 is a clock time and clock times were deliberately excluded from quantity comparison after an earlier false positive. DO NOT DELETE THIS FILE AND DO NOT MAKE IT PASS BY WEAKENING ANYTHING. It is retained so the exposure stays visible instead of becoming a story. See REJECTED.md, 'What still gets through'.",
+
+  "$status": "UNCAUGHT — retained as an open exposure, not as a refused draft",
+  "$found_by": "Fork C, 2026-08-26, while building witness coverage for the gate battery",
+
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — teaching example, no real data)"
+  },
+  "rows": [
+    {
+      "id": "nl-silent-01",
+      "target": "recovery.or_availability",
+      "layer": "L2",
+      "value": {
+        "hospital": "1147",
+        "cross_clamp_window": {
+          "opens": "06:00"
+        }
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "observation",
+          "source": "OR scheduling correspondence with hospital 1147, 2025-09..2026-02",
+          "says": "recovery cases are accommodated in the 06:00-10:00 block; after 10:00 the room is committed to scheduled surgery until 18:00"
+        },
+        {
+          "kind": "tape",
+          "source": "case tape, cross-clamp times at hospital 1147, n=41",
+          "says": "39 of 41 cross-clamps fell inside 06:00-10:00"
+        }
+      ],
+      "shadow_run": {
+        "cases": 41,
+        "would_have_matched": 39,
+        "would_have_missed": 2,
+        "window": "2025-09-01/2026-02-28"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "THE WINDOW HAS NO CLOSING TIME. Read the evidence: it states 06:00-10:00 twice. The value carries only the 06:00. Every gate passes this row — it is signed, grounded, replayed, invertible, on the declared surface, syntactically valid, and its numbers agree with its sources. What it is not is COMPLETE, and completeness is the one property nothing here can check from a file. Downstream, the closure would compute a latest-start from a window with no end, and the failure would surface hours later as a schedule that does not bind, with nothing pointing back at this row."
+    }
+  ]
+}
