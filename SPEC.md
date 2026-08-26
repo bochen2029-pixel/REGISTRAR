@@ -583,6 +583,38 @@ requiring a person to start them. That is a real capability and this project doe
 it authors reaches the standing instance except as a **candidate patch row**, through the gates of §4, under a
 signature. The runtime's own design already draws that line; REGISTRAR only insists on it.
 
+### The same body, twice — what a clone delivers
+
+**A clone is not a specification. It is a working harness**, composed to a profile, with the default plugins
+mounted and **FUSOR at its core** — runnable against a local open-weight model on one card, or against any
+API, because provider routing is configuration rather than code. **That harness is what completes the fit.**
+
+**And the same stack, re-profiled, is what the finished record runs on**, with its own resident attending
+cases. **One substrate, instantiated twice** — the forge that grows the seed into this organisation's shape,
+and the record that then attends its cases. Not two products sharing a repository: **the same loop at two
+radii** (§2b), which is why the recursion is mechanical rather than metaphorical.
+
+**FUSOR is toggleable at both levels.** Everything is a plugin, so it unmounts — from the source, or from
+inside a running session, because a registration carries its own disposer. Off, you have a conventional
+turn-based harness and a conventional record, and both still work. **The maximum-ambition version ships by
+default; using it that way is the operator's choice.**
+
+**Why it must be in the delivery rather than bolted on:** the body is excellent and heartless. Its own
+documentation names the hole — *"injected context waits in the inbox until another message wakes it"* — and
+the chain of who-wakes-it terminates at a clock, a tool completion, or a person. **Without something home to
+notice, a completion stalls at every boundary waiting for a person to type *continue*, and a three-person IT
+function with a day job does not finish that.**
+
+**Bootstrapping runs at every level, during and after.** Because the harness is a plugin host with reversible
+effects, a wall is never a dead end at either radius: it authors the plugin, shadow-runs it against the
+site's own material, and **proposes** it — one yes mounts it hash-pinned, drift demotes, retirement unwinds
+through the disposer. **The same contract as a patch row, applied to capability rather than configuration.**
+
+**The gap, stated plainly.** `[SPEC]` The chassis is **present but unpinned and unwired**, and every plugin
+binding is `null`. **A clone today delivers the seed, the gates, the floor and the contract — not yet the
+standing harness.** Closing it is four pieces: **pin · wire a boot profile · bind the default plugins ·
+mount FUSOR.**
+
 ### Repository layout `[SPEC — to be created]`
 
 ```
