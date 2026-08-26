@@ -53,6 +53,20 @@ MANIFEST = os.path.join(CORPUS, "MANIFEST.json")
 CITATIONS = os.path.join(ROOT, "corpus", "citations.json")
 
 OK, MISSING, MISMATCH, UNPINNED = "OK", "SOURCE-MISSING", "QUOTE-NOT-FOUND", "SOURCE-UNPINNED"
+WARN = "CHECK-CURRENCY"
+
+# Language meaning a passage may be real and no longer in force. Found the hard
+# way: 42 CFR 486.318(a)-(c) describes an expired three-measure regime that is
+# still in the codified text, and a search for "outcome measures" lands there
+# first. The byte-match gate PASSES a citation to it — the passage exists, it is
+# merely superseded. So the gate warns, because it genuinely cannot decide.
+SUNSET = (
+    r"effective until",
+    r"expire[sd]?\s+(?:on|at)",
+    r"no longer (?:in effect|applicable)",
+    r"until\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d",
+    r"superseded by",
+)
 
 
 # ── normalisation ───────────────────────────────────────────────────────────
@@ -147,6 +161,19 @@ def verify(citation: dict, cache: dict, m: dict) -> tuple[str, str]:
         return MISMATCH, f"quote is {len(needle)} chars — too short to be evidence of anything"
 
     if needle in text:
+        # Is the quote sitting in a neighbourhood that sunsets itself?
+        i = text.find(needle)
+        window = text[max(0, i - 2500): i + len(needle) + 2500]
+        for pat in SUNSET:
+            m = re.search(pat, window, re.I)
+            if not m:
+                continue
+            # A human may close the warning — by recording WHY, not by silencing it.
+            conf = citation.get("currency_confirmed")
+            if conf:
+                return OK, f"verbatim; sunset nearby, confirmed in force — {conf}"
+            return WARN, (f"verbatim in {sid}, but nearby text reads "
+                          f"{m.group(0)!r} — CONFIRM IT IS STILL IN FORCE")
         return OK, f"verbatim in {sid} ({len(needle)} chars)"
 
     # Say something useful about how it failed, rather than just "no".
@@ -167,15 +194,20 @@ def check_all(path: str = CITATIONS) -> int:
         cites = json.load(fh).get("citations", [])
 
     cache: dict = {}
-    bad = 0
+    bad = warned = 0
     for c in cites:
         status, detail = verify(c, cache, m)
-        mark = "ok    " if status == OK else "REJECT"
+        mark = {OK: "ok    ", WARN: "WARN  "}.get(status, "REJECT")
         print(f"  {mark}  {c.get('element', '?'):<44} {detail}")
-        if status != OK:
+        if status not in (OK, WARN):
             bad += 1
+        if status == WARN:
+            warned += 1
 
     print(f"\n{len(cites) - bad}/{len(cites)} citations verify byte-exact against pinned sources")
+    if warned:
+        print(f"{warned} carry sunset language nearby. A passage can be REAL AND EXPIRED,")
+        print("and this gate cannot tell the difference — so it says so rather than guessing.")
     if bad:
         print(f"{bad} REJECTED. A citation that does not appear in its source is a fabrication,")
         print("regardless of how plausible it reads. It does not enter the ledger.")

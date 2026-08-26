@@ -37,7 +37,7 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true
     },
     "authorization": {
       "name": "Authorization",
@@ -100,7 +100,7 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true
     },
     "ruled_out_medical": {
       "name": "Ruled out — medically unsuitable",

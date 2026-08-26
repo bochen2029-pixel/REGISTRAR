@@ -126,9 +126,18 @@ states:
     terminal: false
     provenance:
       - authority: 42 CFR 486 Subpart G
-        establishes: separation of death determination from donation activity
-        locator: TODO-VERIFY
-        accessed: null
+        establishes: >
+          "Verify that death has been pronounced according to applicable local,
+          State, and Federal laws." The OPO's duty is to VERIFY a pronouncement
+          made elsewhere. It does not pronounce.
+        locator: 42 CFR 486.344(b)(1)
+        accessed: 2026-08-25
+        quote_verified: true
+        note: >
+          Stronger than the drafted claim, which said "separation of death
+          determination from donation activity". The text is narrower and more
+          useful: the duty is verification, which is exactly what the
+          constitutional note below already required of this system.
     constitutional_note: >
       REGISTRAR never determines or asserts death. It records a determination
       made and attributed elsewhere. See SPEC.md §8, prohibition 2.
@@ -272,9 +281,18 @@ states:
     terminal: true
     provenance:
       - authority: 42 CFR 486 Subpart G
-        establishes: OPO reporting obligations
-        locator: TODO-VERIFY
-        accessed: null
+        establishes: >
+          "If an OPO determines through death record review or other means that
+          the data it reported to the OPTN was incorrect, it must report the
+          corrected data to the OPTN within 30 days of the end of the month in
+          which the error is identified."
+        locator: 42 CFR 486.328(d)
+        accessed: 2026-08-25
+        quote_verified: true
+        note: >
+          The regulation is itself append-with-correction: an error is REPORTED,
+          not erased. That is the tape's design, arrived at independently and
+          then found already written into the rule.
     local_variation: []
 
   # ── non-conversion terminals ───────────────────────────────────────────────
@@ -394,6 +412,25 @@ timers:
     layer: L3
     note: elapsed time your recovery team actually needs. Authored on site.
 
+  - id: t_data_reporting
+    from: death
+    to: optn_report
+    bound: upper
+    value: 30d_after_month_end
+    layer: L0
+    provenance:
+      authority: 42 CFR 486 Subpart G
+      locator: 42 CFR 486.328(d)
+      accessed: 2026-08-25
+      quote_verified: true
+      establishes: >
+        "Data reported by the OPO to the OPTN must be reported within 30 days
+        after the end of the month in which a death occurred."
+      note: >
+        A REAL federal deadline with a number — the contrast case to
+        t_referral_response, which turned out to be per-agreement. Verification
+        moved one timer out of L0 and put another one firmly in it.
+
   - id: t_cold_ischemia
     from: cross_clamp
     to: implant
@@ -416,29 +453,76 @@ timers:
 # ─────────────────────────────────────────────────────────────────────────────
 measures:
   - id: donation_rate
-    numerator: TODO-VERIFY
-    denominator: CMS-defined potential donors, derived from inpatient death records
-    denominator_source: inpatient death records, not OPO self-report
+    numerator: number of donors in the DSA
+    denominator: donor potential
     must_be_fold_over_tape: true
     provenance:
-      authority: CMS
-      document: OPO Conditions for Coverage; fact sheet CMS-3409-P
-      establishes: >
-        Two outcome measures — a donation rate and a transplantation rate —
-        with denominators derived from inpatient death records rather than
-        self-report.
-      locator: "CMS fact sheet, 2026-01-28; proposed rule, 90 FR / doc 2026-01833, published 2026-01-30"
+      authority: 42 CFR 486 Subpart G
+      locator: 42 CFR 486.318(d)(1)(i)
       accessed: 2026-08-25
+      quote_verified: true
+      currency_confirmed: >
+        486.318(a)(4) sunsets paragraphs (a)(1)-(3) only; (d) carries no sunset
+        and is the regime in force.
+      establishes: >
+        "The donation rate is calculated as the number of donors in the DSA as a
+        percentage of the donor potential."
+      note: >
+        Upgraded from a CMS fact sheet to the codified text. The fact-sheet
+        claim was correct; it is now citable to the regulation itself.
 
   - id: transplantation_rate
-    numerator: TODO-VERIFY
-    denominator: CMS-defined potential donors, derived from inpatient death records
+    numerator: number of organs transplanted from donors in the DSA
+    denominator: donor potential
     must_be_fold_over_tape: true
     provenance:
-      authority: CMS
-      document: OPO Conditions for Coverage; fact sheet CMS-3409-P
-      locator: "CMS fact sheet, 2026-01-28; proposed rule doc 2026-01833, published 2026-01-30"
+      authority: 42 CFR 486 Subpart G
+      locator: 42 CFR 486.318(d)(1)(ii)
       accessed: 2026-08-25
+      quote_verified: true
+      establishes: >
+        "The organ transplantation rate is calculated as the number of organs
+        transplanted from donors in the DSA as a percentage of the donor
+        potential."
+
+  # THE DENOMINATOR, exactly. Far more specific than "inpatient death records".
+  - id: donor_potential
+    is_denominator_for: [ donation_rate, transplantation_rate ]
+    definition: >
+      Inpatient deaths within the DSA, from patients 75 or younger, with a
+      primary cause of death consistent with organ donation, from the most
+      recent 12 months of state death certificate data.
+    provenance:
+      authority: 42 CFR 486 Subpart G
+      locator: 42 CFR 486.318(d)(1)(iv)
+      accessed: 2026-08-25
+      quote_verified: true
+      establishes: >
+        "The denominator for the outcome measures is the donor potential and is
+        based on inpatient deaths within the DSA from patients 75 or younger
+        with a primary cause of death that is consistent with organ donation."
+      note: >
+        T5 requires this be reconstructible as a fold over the tape. Note it is
+        NOT: the denominator comes from state death certificates, which are
+        outside the OPO's record entirely. **That is what makes the measure hard
+        to game, and it means the denominator gate must verify reconstruction
+        against an external source rather than the tape alone.** A finding.
+
+  # TIERS attach to DSAs, and Tier 3 triggers on EITHER measure.
+  - id: tiering
+    provenance:
+      authority: 42 CFR 486 Subpart G
+      locator: 42 CFR 486.318(e)(6)
+      accessed: 2026-08-25
+      quote_verified: true
+      establishes: >
+        "Tier 3 - OPOs that have an upper limit of the one-sided 95 percent
+        confidence interval for their donation or organ transplantation rates
+        that are below the median threshold rate established for their DSA will
+        be identified at each assessment period."
+      note: >
+        Tier 3 triggers on donation OR transplantation - either measure, not
+        both. Codified, and stricter than a fact-sheet summary conveys.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # WHAT THIS FILE DOES NOT CONTAIN, ON PURPOSE

@@ -227,6 +227,40 @@ locator is filled. What follows is what has actually been verified.
   uncited — it can be *wrong in a way that moves a layer boundary*, and every hour it stays unverified is an
   hour the architecture rests on an assumption nobody checked.
 
+### core/lifecycle/measures — **the whole graded regime, from the regulation**
+- **layer** L0 · **kind** mandate
+- **source** eCFR — 42 CFR 486.318(d) and (e)
+- **locator** 486.318(d) regime · (d)(1)(i)-(ii) numerators · (d)(1)(iv) denominator · (e)(6) Tier 3
+- **accessed** 2026-08-25 · quotes verified byte-exact
+- **establishes** *"An OPO is evaluated by measuring the donation rate and the organ transplantation rate in their DSA."* Numerators, denominator and the tier thresholds are all codified, with one-sided 95% confidence intervals against top-quartile and median thresholds.
+- **notes**
+  Three things this changed. **(1)** The two-measure claim was previously sourced to a CMS fact sheet; it is now citable to the regulation. **(2)** The denominator is far more specific than "inpatient death records" — *patients 75 or younger, primary cause of death consistent with organ donation, most recent 12 months of state death certificate data.* **(3)** Tier 3 triggers on donation **or** transplantation — either measure, not both. Stricter than a summary conveys.
+
+  **And a finding that changes a gate.** T5 requires a denominator be reconstructible as a fold over the tape. **This one is not**: donor potential comes from state death certificates, which are outside the OPO's record entirely. That is exactly what makes the measure hard to game — and it means the measure-denominator gate must verify reconstruction against an **external** source, not the tape alone. The gate as specified would have checked the wrong thing.
+
+### SUPERSEDED · 42 CFR 486.318(a)–(c) — the three-measure regime — **A NEAR-MISS, RECORDED**
+- **date** 2026-08-25 · **class** expired, still in the codified text
+- **establishes** *"The outcome measures described in § 486.318(a)(1) through (3) are effective until July 31, 2022."*
+- **notes**
+  § 486.318(a)–(c) describes an expired three-measure regime and **is still present in the current codified text.** A search for "outcome measures" lands there *first*. Reading only the search hit would have produced a citation to law that has not been in force since 2022 — and **the byte-match gate would have passed it**, because the passage is real. It is merely dead.
+
+  This is the documented limit of `tools/cite.py`, demonstrated rather than asserted: *passing means "not fabricated"; it does not mean "correct."*
+
+  **Mechanical response, applied the same day:** the gate now scans the neighbourhood of every quote for sunset language and returns `CHECK-CURRENCY`. A human may close the warning only by recording *why* in a `currency_confirmed` field — never by silencing it. Five citations tripped it; each carries its reasoning. **The expired passage is retained in `citations.json` on purpose, so the failure mode stays visible instead of becoming a story.**
+
+### core/lifecycle/states/death_determination
+- **layer** L0 · **kind** mandate · **locator** 42 CFR 486.344(b)(1) · **accessed** 2026-08-25
+- **establishes** *"Verify that death has been pronounced according to applicable local, State, and Federal laws."*
+- **notes** The drafted claim said "separation of death determination from donation activity." The text is narrower and better: the duty is **verification of a pronouncement made elsewhere.** The system's constitutional prohibition on asserting death was already correct; it now rests on the regulation rather than on inference.
+
+### core/lifecycle/states/reporting_closed · core/lifecycle/timers/t_data_reporting
+- **layer** L0 · **kind** mandate · **locator** 42 CFR 486.328(d) · **accessed** 2026-08-25
+- **establishes** *"Data reported by the OPO to the OPTN must be reported within 30 days after the end of the month in which a death occurred."* And: *"If an OPO determines … that the data it reported to the OPTN was incorrect, it must report the corrected data … within 30 days of the end of the month in which the error is identified."*
+- **notes**
+  **A real federal deadline with a number** — the contrast case to `t_referral_response`, which turned out to be per-agreement. One verification pass moved one timer out of L0 and put another firmly into it.
+
+  And the correction clause is worth noting for its own sake: **the regulation is itself append-with-correction.** An error is *reported*, not erased. The tape's design was arrived at independently and then found already written into the rule.
+
 ---
 
 ### Design choices, marked as such
