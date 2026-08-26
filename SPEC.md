@@ -610,10 +610,16 @@ effects, a wall is never a dead end at either radius: it authors the plugin, sha
 site's own material, and **proposes** it — one yes mounts it hash-pinned, drift demotes, retirement unwinds
 through the disposer. **The same contract as a patch row, applied to capability rather than configuration.**
 
-**The gap, stated plainly.** `[SPEC]` The chassis is **present but unpinned and unwired**, and every plugin
-binding is `null`. **A clone today delivers the seed, the gates, the floor and the contract — not yet the
-standing harness.** Closing it is four pieces: **pin · wire a boot profile · bind the default plugins ·
-mount FUSOR.**
+**The gap, stated precisely.** `[SPEC]` **The harness itself is here** — the full dsh tree, in the
+repository root. What is missing is narrower than its absence: **it has never been installed** (no
+`node_modules`, nothing built), **it is unpinned** (no `.git`, no assertable SHA), **it is stock rather than
+composed** (the default tree on `127.0.0.1:3080`, not a profile carrying only what a record needs), **every
+plugin binding is `null`**, and **FUSOR is not mounted in it.**
+
+So a clone today delivers the seed, the gates, the floor, the contract, the percept stream, the switch **and
+the harness** — but you would install and compose it yourself. Closing that is four pieces: **pin · compose a
+boot profile · bind the default plugins · mount FUSOR.** A packaged desktop chassis — an executable with an
+embedded runtime, so nobody meets a console — is separate and further out.
 
 ### Repository layout `[SPEC — to be created]`
 

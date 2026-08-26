@@ -109,8 +109,14 @@ These are stated formally, with proofs, in [`SPEC.md` §3](SPEC.md). The result 
 
 ```
 OS         Linux or Windows Server, inside your network
-GPU        one NVIDIA RTX-class card, 24–32 GB VRAM
+GPU        one NVIDIA RTX-class card. The reference implementation of the
+           resident loop runs on a 4070 Ti SUPER — 16 GB. [M]
+           24-32 GB is what a 27B-class model with a long context wants, not
+           what the loop requires.
 Model      open weights, 9B to 27B class, quantized — fully offline
+Co-tenancy A resident sharing a card with a loaded workstation does NOT run at
+           bench speed: probes measured 0.6-24.6 s against 44 ms on a free
+           card. [M] Size for the card being shared, not the card on paper.
 Record     append-only, hash-chained, exportable in full at any time
 Harness    whichever your team already uses. this repo is written for it.
 Network    none required. air-gapped is a supported configuration.
