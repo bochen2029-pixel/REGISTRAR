@@ -127,6 +127,25 @@ the failure this pre-registration was written to prevent.
 
 **So arm ② is not run here, and the pre-registration's own invalidation clause is the reason.**
 
+### AND THE PROTOCOL AS FIRST WRITTEN WAS UNENFORCEABLE
+
+Noticed while explaining it, not while writing it: **`DELTA.json` and the extractor were committed in this
+same directory.** A fresh session reads the answer key in one command — and a *diligent* one would, because
+it is adjacent and looks relevant.
+
+**§6 says "the harness is given the delta, in any form." Committing it beside the corpus is a form.**
+
+The protocol said *"must NOT be shown."* **That is an instruction where a mechanism was needed** — the same
+error as a `.gitignore` line standing in for a fence, twice in one session.
+
+**Fixed:** the answer key, the extractor and the corpus builder now live in `internal/f-patch-delta/`, which
+is gitignored. A fresh clone does not receive them. `score.py` reads from the vault and tells you how to
+regenerate it. See [`README.md`](README.md).
+
+**Honest limit:** they are in git history, because they were pushed before this was caught. Moving them stops
+*accidental* contamination and not deliberate digging — and a runner who goes looking has chosen to
+invalidate the run, which §6 already covers.
+
 ### The protocol for a valid arm ② run
 
 A session that **did not build this corpus**, given exactly:

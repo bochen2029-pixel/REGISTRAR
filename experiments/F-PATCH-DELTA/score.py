@@ -40,8 +40,20 @@ except Exception:
 TOL = 0.15   # a numeric answer within 15% is "correct"; outside it is "shaped"
 
 
+# The answer key lives in the gitignored vault, NOT beside the corpus.
+# A protocol that says "do not look at the answer key" while the answer key sits
+# in the same directory is an instruction where a mechanism was needed.
+VAULT = os.path.join(ROOT, "internal", "f-patch-delta")
+
+
 def load_delta() -> dict:
-    with open(os.path.join(HERE, "DELTA.json"), encoding="utf-8") as fh:
+    p = os.path.join(VAULT, "DELTA.json")
+    if not os.path.exists(p):
+        raise SystemExit(
+            "no answer key at " + p + "\n"
+            "  Regenerate it:  python internal/f-patch-delta/extract_delta.py\n"
+            "  It is deliberately NOT committed — see experiments/F-PATCH-DELTA/README.md")
+    with open(p, encoding="utf-8") as fh:
         return json.load(fh)["delta"]
 
 
