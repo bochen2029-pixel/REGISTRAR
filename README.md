@@ -118,8 +118,11 @@ identically.
 
 ## Repository status
 
-This repository currently contains the **specification**. The build ladder, its gates, and the falsifier that
-decides whether the central claim survives are in [`SPEC.md` §11](SPEC.md).
+This repository currently contains the **specification**, the **boot contract** that a foreign harness reads
+before it touches anything ([`AGENTS.md`](AGENTS.md)), and the **source ledger** that every element of the seed
+must trace through ([`PROVENANCE.md`](PROVENANCE.md) — empty, because the seed is unbuilt, and that is the
+honest state). The build ladder, its gates, and the falsifier that decides whether the central claim survives
+are in [`SPEC.md` §11](SPEC.md).
 
 The cheapest decisive experiment in the whole plan costs one weekend, touches no PHI, and needs nobody's
 permission — and it either produces the first receipt or prints the funeral. It is **R5** in the ladder, and

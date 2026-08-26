@@ -347,8 +347,8 @@ fixtures/        synthetic donor cases; zero PHI, forever
 elicit/          the question set (§5)
 schema/          patch.schema.json — the contract of §2
 examples/worked/ one complete annotated patch layer, with its rejected drafts
-AGENTS.md        the boot contract for a foreign harness
-PROVENANCE.md    per-L0-element public-source citation (§10)
+AGENTS.md        the boot contract for a foreign harness            [EXISTS]
+PROVENANCE.md    per-L0-element public-source citation (§10)         [EXISTS — ledger empty]
 
 <site>.patch.yml   AUTHORED ON SITE. Lives in the site's own version control. Never here.
 <site>.tape/       The site's record. Never here.
