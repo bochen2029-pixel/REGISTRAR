@@ -157,7 +157,7 @@ Concurrent, partitioned by write surface, contract in [`FORKS.md`](FORKS.md).
 |---|---|---|---|
 | **mainline** | [`plans/MAINLINE_f-patch-delta.md`](plans/MAINLINE_f-patch-delta.md) | pre-register the falsifier, then run arms ① and ② | `experiments/` |
 | **A** | [`plans/FORK-A_plugins.md`](plans/FORK-A_plugins.md) | fold the estate tools in as forge capabilities; mount the first two as dsh plugins | `forge/plugins/`, `forge/dsh/` |
-| **C** | [`plans/FORK-C_witnesses.md`](plans/FORK-C_witnesses.md) | **a witness for every gate** | `examples/worked/rejected/`, `gates/test_*.py` |
+| **C** ✅ | [`plans/FORK-C_witnesses.md`](plans/FORK-C_witnesses.md) | **a witness for every gate** — DONE: 9 witnessed, 3 entangled, 1 undecidable; **7 exposures found and retained** | `examples/worked/rejected/`, `gates/test_*.py` |
 
 All three dated `2026-08-26`, branch point `9a1a5f7`. **Each plan is self-contained** — a session with no
 prior context can pick one up and work from it. The shared constraints live in [`FORKS.md`](FORKS.md) and

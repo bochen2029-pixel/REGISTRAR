@@ -127,3 +127,76 @@ a strong one tells you how much of the first verdict was the battery.
 - **Do not add a fixture containing anything resembling real data.** Synthetic, and the hygiene check
   requires every fixture to say so.
 - **Do not weaken a gate to make a fixture pass.**
+
+
+---
+
+# OUTCOME · `2026-08-26`
+
+**Done against the definition above.** `13 gates · 9 witnessed · 3 entangled · 1 undecidable`, and
+`battery · isolation` reports GREEN: every witnessed gate fires alone.
+
+## The starting position was worse than this plan estimated
+
+The table above said *nine gates unwitnessed*. Measured, it was **one gate cleanly witnessed out of
+thirteen** — because every existing fixture fired two to four gates at once, and a fixture that trips three
+gates proves *something* refused the patch, **not which**.
+
+Three rows of that table were also simply wrong — `local invertibility`, `expiry` and `divergence` were
+each already tripped by an existing fixture, incidentally. **The plan said to confirm the table before
+trusting it, and confirming it was the first finding.**
+
+## What was built
+
+**Nine isolating fixtures** (`05`–`12`, `21`, `22`), each firing exactly one gate, each with a test asserting
+that gate refuses it **and names the defect in words**. Plus `gates/witness.py` — the coverage matrix, run by
+conformance so the number is printed rather than assumed — and 74 assertions in `gates/test_witness.py`.
+
+## Three gates cannot be isolated, and that is structural
+
+Recorded in `witness.py:ENTANGLED` with the reason, so no future author chases an impossible fixture:
+
+- **`target syntax`** — a malformed target is by definition not a declared target, so blast radius always
+  fires first. **Its value is teaching, not catching.**
+- **`inverse declared`** — fires only when the key is *absent*, and an absent required field trips schema
+  shape first.
+- **`L0/L1/L4 immutability`** — **unreachable from any patch.** It is a seed invariant living in a patch
+  validator; it would fire only if `lifecycle.yml` itself declared an L0 variation point. Witnessed with a
+  synthetic target table.
+
+And **`signature` never returns FAILED, correctly** — a machine leaves `author` empty, so unsigned is *not
+yet*, never *wrong*. Its witness asserts the middle state.
+
+## Seven exposures, retained as fixtures that pass
+
+An adversarial sweep produced **44 silent passes out of 49 candidates**; each headline was re-verified by
+hand before being written down. Seven are kept as `*-UNCAUGHT.json`, counted by conformance as known
+exposures, with tests that fail in **both** directions — *if one starts being caught the exposure closed and
+it must be promoted; if a file disappears, someone deleted an exposure instead of fixing it.*
+
+The largest blast radius is `15`: **`allocation.credentials` is a declared target**, so a row can repoint the
+national allocation system at an arbitrary host, ship a live-looking key, and set `verify_tls: False`, with
+all thirteen gates content.
+
+## One gate was fixed rather than recorded
+
+Divergence's `conservative` branch accepted any value within +25% of **any** number in the evidence prose —
+so a study's `n` and a **year** could license an arbitrary duration. It was the gate purpose-built for that
+defect class, failing on its own mission, **silently in the affirmative.** Now a duration may only be
+licensed by a duration; the house rule still passes and mainline's pinned worked example is unchanged.
+
+## What this fork could not close
+
+**Three sentences cover nearly every exposure, and all three are seed work:**
+
+1. **The seed declares where a value may go, never what shape it must have.** No types, no ranges, no
+   required keys, no direction of safety.
+2. **Every gate reads a row; no gate reads the patch.**
+3. **Several gates check that a field is present rather than what it says.**
+
+The sharpest illustration came from the last fixture: omitting each required field in turn, **exactly one
+omission isolates `schema shape` — `value`.** Every other field has a gate of its own. **The one field with
+nothing behind it is the field the row exists to state.**
+
+**Closing these means a schema per target.** That is a change to the seed, outside this partition, and it is
+written up in `examples/worked/REJECTED.md` as the next thing anyone hunting this should read.
