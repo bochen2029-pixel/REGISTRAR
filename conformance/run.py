@@ -476,6 +476,31 @@ def check_percepts() -> None:
                "no stream yet — it fills as the repository is used (useful at `off`)")
 
 
+# ── 6h · the nested chassis ─────────────────────────────────────────────────
+def check_chassis() -> None:
+    """
+    68 MB of third-party code sits in the repository ROOT — vendored in place,
+    unpinned, and unwired. The only thing keeping it out of the public tree is
+    one .gitignore line, and a .gitignore line is a preference. This makes it a
+    gate: law 9, hazards unreachable rather than forbidden.
+    """
+    d = os.path.join(ROOT, "deepseek-harness-master")
+    if not os.path.isdir(d):
+        record(UNVERIFIED, "chassis · present", "not on disk — nothing to pin or exclude")
+        return
+
+    record(UNVERIFIED, "chassis · present but unpinned",
+           "vendored in place; no .git, so no assertable SHA — internal §14 item 1")
+
+    # the hazard: unpinned third-party code shipping from an MIT repo
+    r = subprocess.run(["git", "ls-files", "deepseek-harness-master"],
+                       capture_output=True, text=True, cwd=ROOT)
+    tracked = [ln for ln in r.stdout.splitlines() if ln.strip()]
+    record(FAILED if tracked else GREEN, "chassis · not tracked",
+           f"{len(tracked)} file(s) STAGED — unpinned third-party code would ship"
+           if tracked else "untracked; provenance must be established before it can")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -516,6 +541,7 @@ def main() -> int:
         ("the algebra", check_algebra),
         ("the profiles", check_profiles),
         ("percepts and the switch", check_percepts),
+        ("the nested chassis", check_chassis),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

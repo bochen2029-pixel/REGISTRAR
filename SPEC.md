@@ -546,7 +546,15 @@ runtime, a set of out-of-tree packages, and a profile that mounts only what an e
 
 **The runtime is [Cordis](https://github.com/deepseek-ai/deepseek-harness)** (MIT), the effect and coeffect
 kernel formalised in *A Programming Paradigm for Spatiotemporal Composability* (Shi, Zhang & Cui; Peking
-University and DeepSeek-AI), together with the harness built on it. The algebra in §3 is not an abstraction
+University and DeepSeek-AI), together with the harness built on it.
+
+**Stated precisely, because the tense here has been wrong.** The chassis is **vendored in place** — it sits
+in this repository's root — and it is **unpinned and unwired**: no `.git`, so no assertable SHA, and nothing
+imports it. It is gitignored and a conformance gate fails if it is ever staged, because **unpinned
+third-party code must not ship from an MIT tree.** The algebra of §3 is implemented **directly**, in
+`core/algebra.py`, in stdlib Python with no runtime dependency. **Cordis is the reference implementation of
+those semantics and the intended substrate for the composed instance; that composition has not been built.**
+The pin is `internal` §14 item 1 and it blocks the wiring, not the design. The algebra in §3 is not an abstraction
 over nothing — `mount`, `retire`, the twisted product and confluence are that kernel's semantics with the
 objects of this domain substituted in. **The alternative to depending on it was re-deriving a published,
 tested effect system ourselves, which would be novel, unaudited and unmaintained, and would make §3's
