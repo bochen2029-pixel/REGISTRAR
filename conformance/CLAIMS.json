@@ -31,9 +31,14 @@
       "of": 15,
       "pattern": "(\\d+) ?/ ?15",
       "exclude": [
-        "(?:the )?\\d+ ?/ ?15\\s+states[^.]*?(?:open|unverified|remaining)"
+        "(?:the )?\\d+ ?/ ?15\\s+states\\b[^.\\n]{0,60}?\\b(?:open|unverified|remaining)\\b"
       ],
       "note": "the remaining two are open for NON-EQUIVALENT reasons and a surface that says '2 unverified' without them misreports"
+    },
+    "states_open": {
+      "value": 2,
+      "pattern": "(\\d+) ?/ ?15\\s+states\\b[^.\\n]{0,60}?\\b(?:open|unverified|remaining)\\b",
+      "note": "the complement of states_verified; open for non-equivalent reasons — known-incomplete (authorization) and design-choice (referral_lapsed) — and a surface that merges them misreports"
     },
     "battery_configuration": {
       "value": "default — no REGISTRAR_SURFACE set"

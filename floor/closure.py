@@ -1,23 +1,7 @@
 #!/usr/bin/env python3
 """
-REGISTRAR · floor · the temporal closure  ——  THE NULL, AND THE FIRST RESIDENT
+REGISTRAR · floor · the temporal closure
 ─────────────────────────────────────────────────────────────────────────────
-THIS MODULE IS THE NULL THE RESIDENT MUST BEAT. Not a placeholder for one —
-the baseline it has to outperform on a site's own ledger, or the resident is
-theatre and the funeral prints. No organ outlives its null. The floor must
-also pass its FULL battery with every learned component disabled, or the
-release does not ship.
-
-AND IT IS ALREADY A RESIDENT, WITH THE DUMBEST POSSIBLE MIND. Read what this
-does: it takes a world of constraints, computes something no human computed,
-and SURFACES IT UNPROMPTED — "the serology had to be drawn at 22:15; it is
-23:40." No timer fired. Nobody asked. That is an emit decision with a
-deterministic judge instead of a learned one, and it is the reason REGISTRAR
-is a loop rather than a record with alarms bolted on. FUSOR is what this
-becomes when the judge is TRAINED rather than FIXED — which is also why the
-judge may never be swapped out silently: this module is the thing any
-successor is measured against. See VISION.md and SPEC.md §2b.
-
 A donor case is a Simple Temporal Network: time points joined by constraints
 of the form  a <= x_j - x_i <= b.  Three classical facts do all the work here:
 

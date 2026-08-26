@@ -190,9 +190,33 @@ def derive(with_battery: bool = True) -> dict:
                 # `\s+` and not ` ` — the first version of this exclude required a
                 # literal space and the phrasing it was written for wrapped across
                 # a line break, so it matched nothing and the wolf stayed cried.
-                "exclude": [r"(?:the )?\d+ ?/ ?15\s+states[^.]*?(?:open|unverified|remaining)"],
+                # 2026-08-26, SECOND correction, from an adversarial audit that
+                # built the counter-examples and ran them. The exclude above was
+                # too wide in two ways and the combination was worse than the
+                # false positive it fixed:
+                #   * `[^.]*?` excludes a literal DOT, not "any char" — so it
+                #     crossed newlines, and in a markdown table (few periods) the
+                #     deletion ran ~88 chars past the phrase, swallowing a
+                #     legitimate `13/15` further down.
+                #   * `open` was unanchored and matched inside `open-source`.
+                # Measured effect: a surface saying `11/15 states established`
+                # returned GREEN with `states_verified` absent from the output —
+                # a genuinely stale number the gate CAUGHT before the exclude and
+                # missed after it. Now bounded to one line, capped, word-anchored.
+                "exclude": [r"(?:the )?\d+ ?/ ?15\s+states\b[^.\n]{0,60}?\b(?:open|unverified|remaining)\b"],
                 "note": "the remaining two are open for NON-EQUIVALENT reasons and a "
                         "surface that says '2 unverified' without them misreports",
+            },
+            # The complement, added with the fix above. An exclude only makes a
+            # phrasing invisible; it does not check it. Without this claim the
+            # open/unverified form was checked by NOTHING, which converted a
+            # false positive into an unguarded claim — a worse trade.
+            "states_open": {
+                "value": len(lc) - verified,
+                "pattern": r"(\d+) ?/ ?15\s+states\b[^.\n]{0,60}?\b(?:open|unverified|remaining)\b",
+                "note": "the complement of states_verified; open for non-equivalent "
+                        "reasons — known-incomplete (authorization) and design-choice "
+                        "(referral_lapsed) — and a surface that merges them misreports",
             },
             # THE BATTERY TOTAL IS A PROPERTY OF A CONFIGURATION, NOT A CONSTANT.
             # `claims · public surface` reports GREEN when REGISTRAR_SURFACE
@@ -266,17 +290,28 @@ def surface(path: str) -> int:
     text = open(path, encoding="utf-8", errors="replace").read()
 
     print(f"surface · {os.path.basename(path)}\n")
-    stale, checked = [], 0
+    stale, unchecked, checked = [], [], 0
     for name, c in claims.items():
         pat = c.get("pattern")
         if not pat:
             continue
         blob = text
+        suppressed = 0
         for ex in c.get("exclude") or []:
-            blob = re.sub(ex, " ", blob)     # a phrasing that only looks like this claim
+            blob, n = re.subn(ex, " ", blob)  # a phrasing that only looks like this claim
+            suppressed += n
         found = {_int(m) for m in re.findall(pat, blob)}
         found.discard(None)
         if not found:
+            # THREE STATES, NEVER TWO — enforced here, in the file that enforces it.
+            # "The surface never made this claim" and "every occurrence of it was
+            # excluded" are different facts. Reporting the second as the first
+            # drops a claim silently: not counted, not flagged, invisible. That is
+            # the middle state collapsing into the first, which is the exact
+            # failure this repository names as its own first law.
+            if suppressed and re.search(pat, text):
+                unchecked.append(name)
+                print(f"  UNCHECKED  {name}: every occurrence excluded here — NOT a pass")
             continue                       # the surface does not make this claim
         checked += 1
         want = c["value"]
@@ -293,6 +328,14 @@ def surface(path: str) -> int:
         print("  A claim that was true when written and is not true now is the failure")
         print("  this check exists for. It has happened three times.")
         return 1
+    if unchecked:
+        print(f"PASS-UNVERIFIED — {len(unchecked)} claim(s) went unchecked on this surface:")
+        for name in unchecked:
+            print(f"  · {name} — present, but every occurrence was excluded")
+        print("  An exclude makes a phrasing invisible; it does not verify it. A surface")
+        print("  where a claim is excluded and nothing else checks it is UNGUARDED, and")
+        print("  reporting that as GREEN is how a gate stops being one.")
+        return 2
     if not checked:
         print("PASS-UNVERIFIED — the surface makes none of these claims in a form this")
         print("  can read. That is not a pass: it may be phrasing them another way.")
