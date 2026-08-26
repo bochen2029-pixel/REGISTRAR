@@ -304,6 +304,34 @@ wrong answer is not — which is why the completion falsifier scores a fabricati
 
 ---
 
+## §7c · You are radius 2 of the loop you are reading about
+
+`SPEC.md` §2b describes one shape at three radii. **You are the middle one**, and knowing it changes how you
+should work.
+
+| radius | what enters | the judgment | the seam |
+|---|---|---|---|
+| **the case** | labs, transitions, timers, elapsed time | does this instant deserve attention? | the board — **nothing acts** |
+| **the fit — YOU** | SOPs, tickets, gate refusals, drift | is there enough here to propose a row? | **the gates, and a signature** |
+| **the seed** | findings across sites | is this a variation point the seed should declare? | upstream, human-authored |
+
+**Three consequences that are not obvious:**
+
+**Silence is world at your radius too.** A target the material does not answer is not an absence — it is a
+finding, and §7b is why it must be recorded rather than skipped. *The same law that makes elapsed time a
+percept at radius 1 makes an unanswerable target a hold at radius 2.*
+
+**Your output is a proposal, never a mount.** The seam below you is the gate battery **plus a human
+signature**, exactly as the seam below the case is a coordinator. You leave `author` empty for the same
+reason the record never writes itself.
+
+**And an undeclared variation point goes UP, not sideways.** If the site varies in a way the seed never
+imagined, that is a proposal to the seed — upstream, human-ratified, for all fifty-five. **It is not a patch
+row, and the blast-radius gate will refuse it if you try**, because the seed's fixed variation list is what
+bounds what any agent can reach.
+
+---
+
 ## §8 · STOP conditions — hand to a human
 
 Stop, state plainly what you found, and wait. These are not failures on your part; **surfacing them is the

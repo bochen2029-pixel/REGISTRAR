@@ -35,6 +35,23 @@ This module is the deterministic floor. It contains no model, learns nothing,
 and behaves identically with every learned component in the system disabled.
 
 Zero dependencies. Python 3.9+.
+
+THIS IS THE NULL, AND THE SIMPLEST POSSIBLE RESIDENT.
+
+It perceives a case, computes something no human computed, and **surfaces it
+unprompted** — no timer fired, nobody asked. `SPEC.md` §2b: *that is an emit
+decision*, made by a fixed rule rather than a trained one. **The system was
+always a resident; this is its dumbest possible mind.**
+
+Which makes it the baseline for everything above it. **This file and the gates
+must pass their full battery with every learned component disabled, and any
+resident must beat this, or neither ships.** `[NULL]` No organ outlives its
+null — and this one is strong: exact, explicable, and it needs no card.
+
+The argmin path is the citation. A threshold alarm presents a number; this
+presents the chain of constraints that produced the deadline, recovered from the
+same computation — which is why a resident built on top of it satisfies the
+decision-support carve-out **better** than an alarm does, not worse.
 """
 
 from __future__ import annotations

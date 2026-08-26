@@ -1,16 +1,24 @@
 # REGISTRAR
 
-**The open-source electronic donor record — and the first repository designed to be safely completed by an
-AI its authors do not control, at a site they will never visit, in a domain where wrong loses an organ.**
+**A resident that attends a donor case — and the first repository designed to be safely completed by an AI
+its authors do not control, at a site they will never visit, in a domain where wrong loses an organ.**
+
+**It is a loop, not a form.** A donor case is a case under a clock, and almost everything that goes wrong
+goes wrong in the *interval* between two events, when no single field is wrong. So the world enters
+continuously, the system judges at each boundary whether the instant deserves a coordinator's attention, and
+**what it decides — including every decision to stay silent — goes on an append-only tape.**
+
+`floor/closure.py` already does exactly that with a deterministic judge: it perceives a case, computes what
+no human computed, and surfaces it **unprompted** — *"the serology had to be drawn at 22:15; it is 23:40."*
+No timer fired. Nobody asked. **That is an emit decision, and it is what makes this a loop rather than a
+record with alarms bolted on.**
+
+**It perceives and surfaces. It never acts** — the fence is on ACTION, and *perceive, notice, compute,
+surface* are not among the seven things it may never do, because that is the product.
 
 The half that is federal law ships byte-identical to all fifty-five OPOs. The half that has to fit *your*
 operation is not configured, not consulted, and not customised — it is **completed on site**, by your own
 people and their own coding harness, against a gate battery that mechanically refuses work that is wrong.
-
-It is built as a **loop, not a form**. A donor case is a case under a clock, and almost everything that goes
-wrong goes wrong in the *interval* between two events, when no single field is wrong. So the world enters
-continuously, the system judges at each boundary whether the instant deserves a coordinator's attention, and
-**what it decides — including every decision to stay silent — goes on an append-only tape.**
 
 It **perceives and surfaces. It never acts.**
 

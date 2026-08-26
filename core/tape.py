@@ -29,6 +29,20 @@ HASH CHAINING
     it is tamper-EVIDENT, which is the property an auditor actually needs.
 
 Zero dependencies. Python 3.9+.
+
+THIS IS THE COMMITTED PLANE.
+
+`SPEC.md` §2b names three: **committed** (this file — append-only, hash-chained,
+owned), **forming** (candidate surfacings and rows, abortable, never persisted),
+and **felt** (disposition in weights, coefficients on the tape, never a percept).
+
+**Only commits kill.** Forming evidence may pause a judgment; only a commit ends
+one. Every view in this system is a deterministic fold over this file, and that
+is not a convention — it is the reason a killed process re-folds its knowledge
+rather than losing it.
+
+No code changed when the architecture was re-founded. **This was already right;
+it only lacked its name.**
 """
 
 from __future__ import annotations
