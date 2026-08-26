@@ -172,6 +172,41 @@ finding from one that passes the gates and scores badly.
 
 ---
 
+## DEVIATION, recorded before the arm-② candidate landed
+
+**The gate battery moved off `87c463d` while arm ② was being authored.** Fork C landed a real behavioural
+fix to gate 13 (`2d1ed0f` — `conservative` was laundering sample sizes and years into duration anchors),
+plus witness machinery and six further exposure fixtures.
+
+`PREREGISTRATION.md` §6 lists *"the gate battery moves off `87c463d` mid-run"* as an invalidation condition.
+**Recording the deviation now rather than deciding about it after seeing the result.**
+
+### Why it does not invalidate the score
+
+**The score does not come from the gates.** It comes from the §4 rubric against `DELTA.json`. Gate results
+are reported *separately*, by design and by the pre-registration's own instruction. So a moving battery
+cannot move the score.
+
+### What it does affect, and how it is handled
+
+Arm ② read the gates **at HEAD** while authoring — the screenshot of its own trace shows it going to
+*"the two gates I'll be graded hardest by."* That is a deviation from *"the repository at `87c463d`"*.
+
+**It is not contaminating:** Fork C's fix is a general correction about which numbers may anchor a
+conservative rounding. It says nothing about Fairbank, its contradictions, or its unanswerable target.
+
+**Handling:** a worktree at `87c463d` is checked out alongside, so **the candidate is gated BOTH ways** —
+at the pin, for the pre-registered comparison, and at HEAD, to see what the strengthened battery says.
+
+**And that pair is not damage control; it is the thing Fork C's plan predicted:**
+
+> *The delta between the two runs is itself informative: the same harness graded by a weak battery and then a
+> strong one tells you how much of the first verdict was the battery.*
+
+**We now get that measurement on the first run instead of the second.**
+
+---
+
 ## What this already establishes, before arm ②
 
 1. **The floor is high — S = 0.47 from no site material at all.** Any future claim about a harness completing
