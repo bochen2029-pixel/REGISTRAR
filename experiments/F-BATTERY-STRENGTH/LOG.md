@@ -91,3 +91,57 @@ loses narrowly, and its four exclusive findings are printed beside the loss.
 
 **Owed, and not done here:** the two one-line gate fixes live in `gates/`, which is **Fork C's
 partition**. They are described in `RESULTS.md` §What follows and deliberately left unwritten.
+
+---
+
+### 2026-08-26T23:10Z · plan written before execution
+
+`PLAN_attribution.md`. Question: how much of `S = 0.57` rests on rows the battery can mechanically
+check. **Thresholds and all three interpretations fixed before any number existed**, plus one
+additional check named in advance — *if the ungrounded arm draws more of its score from blind rows
+than the grounded arm, the blind class is where a confident-but-baseless prior hides.*
+
+Protocol decided explicitly: the answer key does **not** enter this worktree. The withholding rule
+protects candidate *authorship*; this audit authors nothing. Arm 2's scores were read from the
+vault's existing `RESULT_2-site-corpus.json` through a scratch copy outside every git tree, because
+`score.py` writes a `RESULT_*.json` and running it in main's tree would drop a file in another
+session's partition.
+
+### 2026-08-26T23:06Z · first run — and the instrument was contaminated
+
+Reported arm 1 at **M = 1.00**. Wrong, and wrong in the flattering direction.
+
+Axis A asked *did any gate FAIL after destroying this row's evidence?* **Arm 1 fails four gates
+before any mutation** — evidence binding, shadow run, divergence, schema conformance — so every
+arm-1 mutant was trivially killed and the ungrounded prior appeared perfectly gate-covered.
+
+Verified rather than assumed: `arm1 baseline worst=FAILED`, `arm2 baseline worst=PASS-UNVERIFIED,
+FAILED gates: none`. **Arm 2's number was valid all along; arm 1's was an artifact.**
+
+### 2026-08-26T23:12Z · corrected, and the pre-registered check fired
+
+Axis A is now a **delta** — CHECKABLE only if destroying the evidence introduces a failure the
+baseline did not already carry. Well-posed whether or not the patch passes.
+
+**arm 1 M = 0.20 · arm 2 M = 0.64.** PLAN §3 verdict at 0.64: **MIXED — the claim is partial and
+must say so.**
+
+**And §3's additional check fired.** The arm that read no site material earned **80 %** of its points
+on rows the gates cannot tie to evidence; the grounded arm, 36 %. **The blind class is where the
+ungrounded prior lives.** Arm 1 was still refused — but on structural tells, denominators and weasel
+words, not on its assertions being unsupported. *A completion that supplied denominators and dropped
+the weasel phrasing keeps 80 % of that score with nothing behind it.*
+
+### 2026-08-26T23:14Z · one metric retracted, not deleted
+
+`attribute.py` prints a per-bucket delta of **−83 %**, which is meaningless: arm 1 has zero declines
+and arm 2 has nine, so the arms are not comparable bucket-by-bucket and the denominator changes
+sign. **Left in the tool with the retraction printed beside it** rather than quietly removed — a
+number that cannot be computed should be visibly refused, not absent.
+
+### 2026-08-26T23:15Z · banked
+
+`ATTRIBUTION.md`. Also recorded: **the composition of arm 2's win is not what the plate implies** —
++9 from declines, −11 on checkable rows, +1 from the fabrication it did not commit. *Arm 2 beat the
+prior primarily by knowing what it did not know*, which is a real property and a different claim
+from *the corpus let it author better values.*
