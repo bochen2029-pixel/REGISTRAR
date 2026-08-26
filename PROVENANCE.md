@@ -538,6 +538,55 @@ the test — **the machinery working, the same shape as the guard test that brok
 Rewritten, with the reasoning recorded in the docstring: *the gate carried PASS-UNVERIFIED until somebody
 questioned the premise rather than the implementation.*
 
+### 2026-08-26 · closing the seed's remaining provenance
+
+**44 citations byte-exact. 11 of 11 clinical provenance blocks quote-verified. Two TODO-VERIFY markers
+resolved, and NEITHER resolved into a citation.**
+
+**The infectious-disease panel is complete** — all eleven items of OPTN 2.9(2) plus the two cultures of
+2.9(1). It had stopped at item (g) **and said so**, which is what made finishing it a bounded transcription
+rather than a rediscovery. *The honest gap was worth more than a quiet one.*
+
+**Two facts came out of the same passages that a data-shaped reading would have missed:**
+
+**The 96-hour sampling window binds seven of eleven tests, not all of them.** HIV, HBV and HCV samples must
+be obtained within 96 hours of procurement; CMV, EBV, syphilis and toxoplasma carry no stated window. **A fit
+applying it to the whole panel enforces something the policy does not say; one applying it to none misses a
+real bound on the majority.** Same class as serology-before-match-run: **L1 carries time, not only data.**
+
+**Hemodilution (2.5) is a gate on evidence, not a test.** A serology result is not a fact standing alone — it
+is a fact *about a sample*, and the sample carries a qualification status that changes what the result means.
+A system storing results without it cannot answer *"was this donor screened on a qualified sample?"*, which
+2.5 obliges the OPO to answer on request. **And the third reporting item is conditional — "if requested" — so
+a validator demanding the calculation every time would refuse compliant work.**
+
+#### The two markers, and both were the marker being wrong
+
+**`DBD` claimed `authority: OPTN Policy`. OPTN Policy uses the term zero times.** It defines the
+EXCEPTION — the glossary defines *Donation after Circulatory Death* and 2.15 imposes a protocol on it —
+precisely because DCD departs from the unmarked default. **Policy names what needs naming.** So "DBD" is
+industry vernacular this project adopted for symmetry, not a citable object. **The name is ours; the pathway
+is real.** Reclassified `design-choice`, which is not a gap anyone can close by finding a document.
+
+**`t_cold_ischemia` was not a missing number. It was a missing model.** It carried `value: TODO-VERIFY` as
+though one literature search from a figure. It is not one bound (per organ, and the ranges do not overlap);
+it is not a bound at all (a continuous risk gradient, and **the floor computing an exact deadline from a risk
+curve is an exact answer to the wrong question**); and it is moving under machine perfusion, while **L1 is
+immutable, so a site could not correct a stale figure.**
+
+**It probably belongs at L2/L3** — a site's own accepted practice, cited to what its medical director stands
+behind. That is the `t_referral_response` correction in the opposite direction. **Left in L1 and unverified
+rather than moved on my own judgment: it is a clinical modelling decision, and `SPEC.md` §8 says a machine
+does not make those.** Marked `known-incomplete` — the literature exists; what is missing is a decision about
+how to use it.
+
+#### What remains, for non-equivalent reasons
+
+**2 of 15 states, and collapsing them would misreport.** `authorization` is `known-incomplete` — its
+state-law leg needs ~50 statutes that exist and belong to the OPOs operating under them. `referral_lapsed` is
+`design-choice` — **no source exists; the state is ours.** One is waiting for work. The other is waiting for
+nothing.
+
 ---
 
 ### Design choices, marked as such

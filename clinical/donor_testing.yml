@@ -200,22 +200,98 @@ infectious_disease:
       - { id: hbv_nat,    name: "Hepatitis B DNA by donor screening or diagnostic NAT" }
       - { id: anti_hcv,   name: "Hepatitis C antibody (anti-HCV) screening test" }
       - { id: hcv_nat,    name: "Hepatitis C RNA by donor screening or diagnostic NAT" }
+      - { id: cmv_ab,     name: "Cytomegalovirus (CMV) antibody (anti-CMV) screening or diagnostic test" }
+      - { id: ebv_ab,     name: "Epstein-Barr Virus (EBV) antibody (anti-EBV) screening or diagnostic test" }
+      - { id: syphilis,   name: "Syphilis donor screening or diagnostic test" }
+      - { id: toxo_igg,   name: "Toxoplasma Immunoglobulin G (IgG) antibody test" }
     note: >
-      **This list is transcribed from the pinned policy and is not complete.**
-      Policy 2.9(2) continues past item (g); the remainder has not yet been
-      transcribed and verified, so it is absent rather than guessed. Per
-      PROVENANCE.md §2 an element with no verified quote is a TODO — and a
-      partial panel presented as whole would be the worst possible error in
-      this file. See `incomplete` below.
+      **COMPLETE as of 2026-08-26.** All eleven items of Policy 2.9(2) plus the
+      two cultures of 2.9(1), transcribed from the pinned source and verified
+      byte-exact. The list previously stopped at item (g) and SAID SO — a
+      partial panel presented as whole would have been the worst possible error
+      in this file, and the honest gap is what made completing it a bounded job
+      rather than a rediscovery.
+
+    laboratory_requirement: >
+      Testing must be completed in CLIA-certified laboratories, "or in
+      laboratories meeting equivalent requirements as determined by the Centers
+      for Medicare and Medicaid Services (CMS)". The alternative is not
+      decoration: a site whose reference lab is not CLIA-certified is not
+      thereby non-compliant, and a validator that checked only for CLIA would
+      refuse a legal arrangement.
+
+    # ── L1 CARRIES TIME, NOT ONLY DATA ──────────────────────────────────────
+    sampling_window:
+      applies_to: [hiv_ab, hiv_nat, hbsag, anti_hbc, hbv_nat, anti_hcv, hcv_nat]
+      rule: obtained within 96 hours prior to organ procurement
+      hours: 96
+      anchor: organ procurement
+      direction: prior
+      note: >
+        **A CONSTRAINT ON WHEN, NOT ON WHAT — and it binds only the HIV, HBV
+        and HCV tests.** CMV, EBV, syphilis and toxoplasma carry no stated
+        window. A fit that applied 96 hours to the whole panel would be
+        enforcing something the policy does not say; one that applied it to
+        none would miss a real bound on seven of eleven.
+
+        This is the same class of finding as the serology-before-match-run rule:
+        **the clinical layer meets the schedule**, and a records system that
+        models L1 as static data cannot represent it. `floor/closure.py`
+        consumes this as an upper bound from procurement backwards.
+      provenance:
+        authority: OPTN Policy
+        locator: "Policy 2.9, closing paragraph"
+        quote: >-
+          Donor samples for all required HIV, HBV, and HCV testing must be
+          obtained within 96 hours prior to organ procurement.
+        accessed: 2026-08-26
+        quote_verified: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2.5 · HEMODILUTION — whether a sample may testify at all
+# ─────────────────────────────────────────────────────────────────────────────
+hemodilution:
+  rule: >
+    A qualified (non-hemodiluted) sample must be used where one is available.
+    Where none is, a hemodiluted sample MAY be used — the policy permits it and
+    does not forbid it.
+  assessment_required: >
+    The host OPO must assess ALL potential donor blood samples obtained for
+    screening, using a hemodilution calculation, BEFORE screening.
+  documentation_required: >
+    A complete history of all blood products and intravenous fluid transfusions
+    the donor received since admission to the donor hospital.
+  must_report_to_accepting_programs:
+    - any screening results from the hemodiluted specimens
+    - the tests completed on the hemodiluted specimens
+    - the hemodilution calculation used, if requested
+  note: >
+    **THIS IS A GATE ON EVIDENCE, NOT A TEST.** It decides whether a result may
+    be relied on — and the modelling consequence is easy to miss: a serology
+    result is not a fact standing alone. It is a fact ABOUT A SAMPLE, and the
+    sample carries a qualification status that changes what the result means.
+
+    A records system that stores results without their sample qualification
+    cannot answer *"was this donor screened on a qualified sample?"* — which is
+    the question an accepting programme is entitled to ask, and which 2.5
+    obliges the OPO to answer on request.
+
+    **The third reporting item is conditional — "if requested" — and that is
+    load-bearing.** A validator that demanded the calculation on every case
+    would refuse compliant work.
+  provenance:
+    authority: OPTN Policy
+    locator: "Policy 2.5, Hemodilution Assessment"
+    quote: >-
+      OPOs must use qualified (non-hemodiluted) blood samples for deceased donor
+      screening tests if available.
+    accessed: 2026-08-26
+    quote_verified: true
 
 # ─────────────────────────────────────────────────────────────────────────────
 # WHAT IS NOT HERE, STATED PLAINLY
 # ─────────────────────────────────────────────────────────────────────────────
 incomplete:
-  - id: infectious_disease.panel.remainder
-    note: >
-      Policy 2.9(2) items beyond (g) — untranscribed. The pinned source
-      contains them; this file does not yet.
   - id: viability_criteria
     note: >
       Organ-specific viability and ischemia tolerances. These are CLINICAL
@@ -226,8 +302,6 @@ incomplete:
     note: >
       OPTN Policy 2.11.A-E give per-organ required information (kidney, liver,
       heart, lung, pancreas). Pinned, not yet transcribed.
-  - id: hemodilution
-    note: OPTN Policy 2.5 — assessment affects test validity. Pinned, not transcribed.
 
 excluded_on_purpose:
   - "Any clinical decision. This file records what must be ESTABLISHED, never what it means."

@@ -296,6 +296,30 @@
       "locator": "42 U.S.C. 274e(b)",
       "quote": "Any person who violates subsection (a) shall be fined not more than $50,000 or imprisoned not more than five years, or both.",
       "establishes": "Criminal penalties. Relevant because it is the one place where a record system's contents could bear on a prosecution - which is an argument for the tape being tamper-evident and exportable, not merely durable."
+    },
+    {
+      "id": "optn-2.9-sampling-window",
+      "source": "optn-policies",
+      "locator": "Policy 2.9, closing paragraph",
+      "quote": "Donor samples for all required HIV, HBV, and HCV testing must be obtained within 96 hours prior to organ procurement.",
+      "accessed": "2026-08-26",
+      "why": "L1 carries TIME, not only data. Binds seven of the eleven required tests; the other four have no stated window, and a fit applying 96h to all of them would enforce something the policy does not say."
+    },
+    {
+      "id": "optn-2.5-hemodilution",
+      "source": "optn-policies",
+      "locator": "Policy 2.5, Hemodilution Assessment",
+      "quote": "OPOs must use qualified (non-hemodiluted) blood samples for deceased donor screening tests if available.",
+      "accessed": "2026-08-26",
+      "why": "A gate on EVIDENCE rather than a test. A serology result is a fact about a SAMPLE, and the sample carries a qualification status that changes what the result means."
+    },
+    {
+      "id": "optn-2.9-clia",
+      "source": "optn-policies",
+      "locator": "Policy 2.9, opening",
+      "quote": "or in laboratories meeting equivalent requirements as determined by the Centers for Medicare and Medicaid Services (CMS)",
+      "accessed": "2026-08-26",
+      "why": "The alternative to CLIA is not decoration. A validator checking only for CLIA certification would refuse a legal arrangement."
     }
   ]
 }

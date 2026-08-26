@@ -34,7 +34,37 @@ generated: 2026-08-26
 pathways:
   DBD:
     name: donation after brain death
-    provenance: { authority: OPTN Policy, locator: TODO-VERIFY }
+    provenance:
+      authority: design choice
+      locator: n/a
+      verified: false
+      unverified_because: design-choice
+      note: >
+        **FILLING THIS LOCATOR SHOWED THERE IS NOTHING TO FILL IT WITH.**
+
+        The entry claimed `authority: OPTN Policy`. **OPTN Policy does not use
+        the term "DBD" anywhere** — zero occurrences in the pinned text — and
+        does not define donation after brain death as a named pathway.
+
+        What it defines is the EXCEPTION. The glossary defines "Donation after
+        Circulatory Death (DCD)", and Policy 2.15 imposes a distinct protocol
+        on it, precisely because it departs from the unmarked default. **The
+        default is unmarked because it is the default: policy names what needs
+        naming.**
+
+        So "DBD" is industry vernacular this project adopted for symmetry, not
+        a citable object. **The name is ours; the pathway is real.** Kept
+        because a lifecycle with a DCD branch and no counterpart branch would
+        be harder to read, not because a source blesses it.
+
+        Marked `design-choice`, which is NOT the same as `known-incomplete`:
+        there is no document to go and find. Compare `referral_lapsed`, which
+        carries the same class for the same reason, and `authorization`, which
+        carries the other one.
+
+        Same shape as the `t_referral_response` finding: **a TODO-VERIFY that,
+        when filled, corrected the claim rather than confirming it. That is
+        what they are for.**
   DCD:
     name: donation after circulatory death
     provenance:
@@ -571,16 +601,55 @@ timers:
     from: cross_clamp
     to: implant
     bound: upper
-    value: TODO-VERIFY
+    value: null
     grain: per_organ
     layer: L1
+    verified: false
+    unverified_because: known-incomplete
     provenance:
       authority: peer-reviewed literature
-      locator: TODO-VERIFY
+      locator: null
       accessed: null
       note: >
-        Organ-specific and clinical rather than statutory. Cite the paper, not
-        the consensus. PROVENANCE.md §3.
+        **NOT A MISSING NUMBER. A MISSING MODEL.**
+
+        This carried `value: TODO-VERIFY` as though one literature search away
+        from a figure. Attempting it showed the marker was hiding a design
+        question, so it now says `null` and names what is actually wrong:
+
+        **① It is not one bound.** Tolerance is per organ and the ranges do not
+        overlap — a kidney and a heart are not the same problem, and `grain:
+        per_organ` was already saying so while `value:` waited for a single
+        scalar it could never legitimately hold.
+
+        **② It is not a bound at all; it is a gradient.** Cold ischemia raises
+        risk continuously. There is no hour at which an organ becomes
+        untransplantable, and a hard upper bound in `floor/closure.py` would
+        make the closure compute a deadline the clinical world does not
+        recognise. **The floor is exact arithmetic over stated constraints; a
+        stated constraint that is really a risk curve produces an exact answer
+        to the wrong question.**
+
+        **③ It is moving.** Machine perfusion is changing these figures now.
+        A value pinned to a 2019 paper and frozen in an L1 file would be wrong
+        by the time a site deployed it — and L1 is IMMUTABLE, so a site could
+        not correct it.
+
+        **What would close this, and it is not one citation:** a decision about
+        whether the seed should carry a clinical risk gradient at all, and per
+        organ; or whether cold ischemia belongs at L2/L3 as a site's own
+        accepted practice, cited to whatever its medical director actually
+        stands behind. **The second reading is probably right**, and it would
+        move this out of L1 entirely — the same correction `t_referral_response`
+        received, in the opposite direction.
+
+        Left in L1 and UNVERIFIED rather than moved on my own judgment: this is
+        a clinical modelling decision and `SPEC.md` §8 says a machine does not
+        make those. **Marked `known-incomplete`, not `design-choice`** — the
+        literature exists; what is missing is a decision about how to use it,
+        and that decision belongs to a medical director. See PROVENANCE.md §3:
+        cite the paper, not the consensus — and there is no single paper here
+        to cite.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # MEASURES
