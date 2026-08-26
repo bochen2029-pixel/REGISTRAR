@@ -75,6 +75,7 @@ def test_isolated_witnesses():
     witnesses("06-unsigned.json", "signature", "unsigned", state=UNVERIFIED)
     witnesses("21-partial-isolated.json", "totality on provision", "partial")
     witnesses("22-no-value.json", "schema shape", "value")
+    witnesses("23-superseded-evidence.json", "attest", "NO LONGER IN FORCE")
 
 
 def test_isolated_means_isolated():
@@ -87,7 +88,8 @@ def test_isolated_means_isolated():
     _, per_fixture = matrix()
     for f in ("07-generality.json", "08-no-denominator.json", "09-permanent.json",
               "10-no-way-back.json", "11-undeclared-target.json", "12-divergence.json",
-              "06-unsigned.json", "21-partial-isolated.json", "22-no-value.json"):
+              "06-unsigned.json", "21-partial-isolated.json", "22-no-value.json",
+              "23-superseded-evidence.json"):
         # `schema conformance` is a STRUCTURAL FLOOR beneath every gate, not a
         # peer of them. A file with `cases: 0` violates both the shadow-run gate
         # and the schema's `minimum: 1`; a file missing `value` violates both
@@ -258,7 +260,7 @@ def test_coverage_is_reported_not_asserted():
     print("\ncoverage is measured")
     per_gate, _ = matrix()
     states = [i["state"] for i in per_gate.values()]
-    check("fifteen gates", len(per_gate), 15)   # 14 schema conformance, 15 accountability
+    check("sixteen gates", len(per_gate), 16)   # 14 schema, 15 accountability, 16 attest
     check("at least nine cleanly witnessed", states.count("WITNESSED") >= 9, True)
     real_gaps = [g for g, i in per_gate.items()
                  if i["state"] == "UNWITNESSED" and g not in ENTANGLED]

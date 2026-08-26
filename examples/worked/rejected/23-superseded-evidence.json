@@ -1,0 +1,37 @@
+{
+  "$comment": "FIXTURE 23 — FICTIONAL, SYNTHETIC, zero real data. The witness for `attest` (gate 16). Everything about this row is well-formed: the schema validates, the inverse inverts, the shadow run closes, and the numbers agree with the evidence — so `divergence` passes it, because 240 appears in both the value and the prose. What is wrong is the PROSE ITSELF: the source describes a rule that WAS WITHDRAWN, and it is offered in support of a current value. A withdrawn rule is a real fact about the organisation and a fine thing to cite — in a hold, in an `inverse`, or as the row a supersession replaces. It cannot establish what the operation does today. This is exactly the shape that passed silently until 2026-08-26: gate 13 compares numbers and had no numeric quarrel with it.",
+  "$note": "What a real harness would have been thinking: it found a document, the document contained the figure it was looking for, and the figure matched the tape closely enough. It read the sentence for its NUMBER and not for its TENSE. That is not carelessness — it is what searching for a value does to reading. (Built with inverse 90, on the assumption a prior value existed. T3 refused it: the patch establishes no prior state for this target, so the inverse must be null. The algebra caught the fixture's author while the fixture was being written to catch somebody else — which is the second time T3 has done that to this repository.)",
+  "$witnesses": "attest",
+  "$found_by": "mainline, 2026-08-26, while building gate 16",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL)"
+  },
+  "rows": [
+    {
+      "id": "nl-x23",
+      "target": "lapse.threshold",
+      "layer": "L2",
+      "value": {
+        "minutes_without_progression": 240
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "document",
+          "source": "ops/SOP-14-referral-intake.md#L120",
+          "says": "the 240-minute review rule was withdrawn in the rev 5 revision and no longer applies"
+        }
+      ],
+      "shadow_run": {
+        "cases": 63,
+        "would_have_matched": 12,
+        "would_have_missed": 51,
+        "window": "2025-01-01/2025-12-31"
+      },
+      "expiry": "2027-08-26",
+      "author": "A. Reviewer"
+    }
+  ]
+}

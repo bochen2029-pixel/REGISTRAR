@@ -255,9 +255,27 @@ def check_capability(cap: dict) -> None:
         return
 
     # ── the declaration ─────────────────────────────────────────────────────
-    need = [k for k in ("version", "source", "pin", "entry", "licence") if not binding.get(k)]
+    #
+    # AN IN-TREE BINDING IS ALREADY PINNED — BY THE COMMIT.
+    #
+    # A sha256 in this file, for a file in this repository, would have to be
+    # updated by hand on every edit. It would go stale on the first change and
+    # then LIE — asserting a pin that no longer matches, which is worse than
+    # declaring none. Git already answers "are these the bytes that shipped".
+    #
+    # A MOUNTED binding is different and still needs its pin: it names bytes
+    # outside this tree, which nothing here can vouch for. That is the whole
+    # reason `pin` exists — see CHASSIS.pin.json, where the same argument
+    # produced a file-for-file verification rather than a trusted number.
+    src = str(binding.get("source", ""))
+    in_tree = bool(src) and os.path.exists(os.path.join(ROOT, src))
+
+    fields = ("version", "source", "entry", "licence") if in_tree else              ("version", "source", "pin", "entry", "licence")
+    need = [k for k in fields if not binding.get(k)]
     record(FAILED if need else GREEN, "binding declares",
-           f"missing {', '.join(need)}" if need else f"{binding.get('licence')}, pinned")
+           f"missing {', '.join(need)}" if need
+           else (f"{binding.get('licence')}, in-tree — pinned by the commit"
+                 if in_tree else f"{binding.get('licence')}, pinned"))
 
     # ── the licence, which is not negotiable ────────────────────────────────
     lic = os.path.join(cap_dir, "LICENSE")

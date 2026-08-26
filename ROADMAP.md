@@ -181,6 +181,22 @@ commit SHA. Pre-registration fixes the instrument; a rubric that shifts while Fo
 underneath it is not pre-registered. Fork C's work applies to the *next* run, **and the delta between the two
 runs is itself informative.**
 
+## 2c · The capabilities the forge did not know it needed `[2026-08-26]`
+
+Fork C, reading two estate organs, found **the enumeration tax inside `forge/plugins.yml` itself** — five
+capabilities chosen in advance, in the artifact that names work-as-imagined as the central problem. See
+[`plans/PROPOSAL_read-and-reach.md`](plans/PROPOSAL_read-and-reach.md), acted on the same day.
+
+- **`read`** — induce a schema from a corpus nobody can read. Declared, `binding: null`. **Carries the rule
+  that keeps it from breaking T4:** an induced variation point is a *proposal to the seed*, never a patch
+  row. And **induction does not subsume the twenty questions** — a corpus reflects what an organisation
+  records, so induction inherits the blind spots of the recording practice.
+- **`reach`** — addressable retrieval, every answer carrying its precision bound. Declared, `binding: null`,
+  **`beats: chunk`.** *Chunking is what you do when you have no index.*
+- **`attest` — BUILT, gate 16.** The fence: evidence *no longer in force*, evidence *denying its own bound*,
+  and *modality mismatch* — `may` is not `must`. **Not mountable** — a fence a site can swap is not a fence,
+  and declaring it a capability was a category error the forge checker caught.
+
 ## 3 · Two cheap gates with real teeth
 
 **The divergence gate — DONE `2026-08-26`, gate 13.** Every row exists three times — what it **says**

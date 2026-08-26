@@ -209,3 +209,77 @@ takes.
 
 **That is the completability argument, one level down, and it is the same answer: do not impose the shape —
 induce it, ratify it, freeze it.**
+
+
+---
+
+# OUTCOME · `2026-08-26` · acted on by mainline
+
+**All three declared. The fence built and shipped as gate 16.** `49 GREEN · 8 PASS-UNVERIFIED · 0 FAILED`,
+`77/77` on the witness battery, `22/22` adversarial fixtures refused.
+
+## The finding was accepted
+
+**The enumeration tax inside our own plugin contract is real**, and it is the sharpest self-criticism this
+project has produced. `chunk` as the `[NULL]` for `reach` is right and does not undo Fork A's plan. The
+independent convergence — CORTEX's *"never reimplement; call at fixed paths as subprocesses"* — is evidence
+rather than analogy.
+
+## Three corrections, made before acting
+
+**① `read` as written would have broken T4.** The seed's fixed variation list is what bounds the blast
+radius, and **that bound is what makes the reachable set independent of the agent.** A site inducing its own
+targets and patching them has no bound at all. Resolved by a rule that refuses the mount: **an induced
+variation point is a PROPOSAL TO THE SEED, never a patch row** — upstream, human-ratified, L0 for all
+fifty-five. A site can discover that a target is missing; it still cannot patch one.
+
+**② Induction does not subsume declaration.** An induced schema reflects what the corpus CONTAINS, and a
+corpus reflects what the organisation RECORDS. **A site that never records after-hours ownership has no
+after-hours ownership in its induced schema** — while the seed's a-priori question still asks, and a human
+answers from memory. Induction inherits the blind spots of the recording practice. Complementary, not
+successive.
+
+**③ `read` is not `required: true`.** Required means the forge cannot proceed without it — true of `chunk`
+and `phi_scan`, not of this. It would leave every instance permanently PASS-UNVERIFIED on a capability
+nobody can bind: a claim of brokenness rather than of ambition.
+
+## And one defect, caught by our own gate
+
+```yaml
+    null: chunk
+```
+
+**`null:` is a YAML reserved word.** It parses as the `None` key and the field vanishes — the exact trap the
+lab adapter hit, which the adapter checker now refuses. Shipped as `beats: chunk`. **A proposal for a gate,
+caught by a gate.**
+
+## The fence was the right thing to chase first — and it was not a capability
+
+Built, probed, shipped as **gate 16 · `attest`**. It checks three things `cite.py` and `divergence` cannot:
+evidence describing something **no longer in force**, evidence **denying that a bound exists** under a row
+asserting one, and a **modality mismatch** — `may` is not `must`, and OPTN 2.5's *"a hemodiluted sample MAY
+be used"* is exactly why that matters here.
+
+**A fourth check was built and deleted.** Target drift — evidence cited to the wrong row — produced two
+false positives in ten minutes: *"median elapsed to SECOND contact attempt"* matched
+`authorization.second_person_rule`, and after narrowing, *"a referral with no progress AFTER four HOURS"*
+matched `intake.after_hours_owner` **on the worked example.** It was doing a semantic job with a lexical
+tool, and **the vocabulary of an operation is shared across its targets by construction.** The funeral is in
+the source so nobody rebuilds it.
+
+**And declaring `attest` a capability was a category error the forge checker caught.** Every bound
+capability must live under `forge/plugins/<id>/` with its own LICENSE and PROVENANCE — because a capability
+is something **a site may bind its own version of.** A gate is the opposite: **a fence a site can swap is not
+a fence.** Moved to `not_mountable`, with the reasoning. *The capability was real; the category was wrong.*
+
+## What is now true
+
+| | |
+|---|---|
+| `chunk` · `phi_scan` | **bound**, required |
+| `search` · `fetch` · `render` | declared, `binding: null` |
+| **`read` · `reach`** | **declared, `binding: null`** — with the T4 rule and the local-leg rule on `read` |
+| **`attest`** | **built, gate 16, not mountable** |
+
+**Sequencing unchanged, as the proposal asked:** `chunk` first — now also the measured floor `reach` must
+clear.

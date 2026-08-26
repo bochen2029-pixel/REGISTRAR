@@ -258,6 +258,18 @@ def validate(patch: dict, targets: dict) -> Result:
     except Exception as _exc:
         r.add(UNVERIFIED, "accountability", f"unavailable: {_exc}")
 
+    # 11e · attest — does the CLAIM support the value?
+    #
+    # cite.py checks a QUOTE byte-exact. divergence checks the NUMBERS. Neither
+    # reads the evidence AS PROSE — so a superseded rule offered for a current
+    # value passed silently, measured 2026-08-26.
+    try:
+        from attest import validate as _att
+        _st, _msgs = _att(patch)
+        r.add(_st, "attest", "; ".join(_msgs)[:200])
+    except Exception as _exc:
+        r.add(UNVERIFIED, "attest", f"unavailable: {_exc}")
+
     # 12 · signature — the output commit
     unsigned = [row.get("target") for row in rows if not str(row.get("author") or "").strip()]
     if unsigned:

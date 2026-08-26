@@ -195,6 +195,147 @@ capabilities:
         severity: refuses_the_mount
     binding: null
 
+  # ───────────────────────────────────────────────────────────────────────────
+  # THE THREE THE FORGE DID NOT KNOW TO DECLARE — added 2026-08-26
+  #
+  # The five above were chosen in advance, which is THE ENUMERATION TAX
+  # APPEARING INSIDE THIS CONTRACT: you can only declare a capability you
+  # already knew you wanted. Same shape as `elicit/` imposing twenty questions
+  # the seed picked — work-as-imagined, at the meta level, inside the artifact
+  # that names work-as-imagined as the central problem.
+  #
+  # Found by Fork C reading two estate organs that had already factored
+  # themselves correctly and independently. See plans/PROPOSAL_read-and-reach.md.
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: read
+    required: false          # NOT required — see the note
+    need: >
+      Induce a schema from a corpus too large for any reader, and freeze it
+      under an operator-ratified charter. Not a summary — a STRUCTURE, with
+      every claim span-checked against a lossless tape by deterministic code.
+    why: >
+      `elicit/` asks twenty questions the SEED chose. **A site whose operation
+      differs in a way the seed never imagined is exactly the site the seed
+      fails.** This is the capability that finds an UNDECLARED variation point.
+    beats: >
+      the twenty declared questions — which it does not replace. See below.
+    binding: null
+    rules:
+      - id: induced_not_imposed
+        rule: >
+          The schema comes from the corpus and is ratified by a human. A
+          taxonomy applied to a corpus is a different capability.
+        severity: refuses_the_mount
+      - id: local_leg_only
+        rule: >
+          **Site material may not rent a reading.** PHI-bearing corpora are read
+          by the local leg or not at all — AGENTS.md §3. Both candidate organs
+          currently rent a frontier API, which is why this is declared and
+          unbound rather than bound today.
+        severity: refuses_the_mount
+      - id: proposes_upstream_never_patches
+        rule: >
+          **AN INDUCED VARIATION POINT IS A PROPOSAL TO THE SEED, NOT A PATCH
+          ROW.** It goes upstream, human-ratified, and becomes L0/L1 for all
+          fifty-five. A site still cannot patch an undeclared target — it can
+          DISCOVER that one is missing.
+
+          Without this rule the capability breaks T4: the seed's fixed variation
+          list is what bounds the blast radius, and that bound is what makes the
+          reachable set independent of the agent. A site inducing its own
+          targets and patching them has no bound at all.
+        severity: refuses_the_mount
+    note: >
+      **NOT `required: true`, deliberately.** Required means the forge cannot
+      proceed without it, which is true of `chunk` and `phi_scan` and is not
+      true of this. Marking it required would leave every forge instance
+      permanently PASS-UNVERIFIED on a capability nobody can bind — a claim of
+      brokenness rather than of ambition.
+
+      **And induction does not subsume declaration.** An induced schema reflects
+      what the corpus CONTAINS, and a corpus reflects what the organisation
+      RECORDS. A site that never records after-hours ownership has no
+      after-hours ownership in its induced schema — while the seed's a-priori
+      question still ASKS, and a human answers from memory. **Induction inherits
+      the blind spots of the recording practice, which is work-as-imagined
+      wearing a different coat.** The twenty questions catch a class induction
+      structurally cannot. They are complementary; neither dominates.
+
+  - id: reach
+    required: false
+    need: >
+      Complete addressability over a corpus larger than the window, with every
+      answer carrying its own precision bound — how much was touched, how well,
+      from how many independent sources, and WHAT COULD NOT BE SEEN.
+    why: >
+      *An unmarked bridge is a liability; a load-rated one is infrastructure.*
+    beats: chunk
+    binding: null
+    rules:
+      - id: load_rated
+        rule: >
+          An answer without its coverage, fidelity and corroboration is not an
+          answer.
+        severity: refuses_the_mount
+      - id: never_interchange_the_quantities
+        rule: >
+          Addressability is not coverage and is never printed as one. The same
+          law as three-states-never-two, at the measurement layer.
+        severity: refuses_the_mount
+      - id: beats_its_null
+        rule: >
+          **Must beat `chunk` on the site's own material, measured.** Chunking
+          is what you do when you have no index; a retrieval organ that does not
+          beat *split it and read the pieces* is theatre. No organ outlives its
+          null.
+    note: >
+      **`beats: chunk`, not `null: chunk`.** The proposal that raised this
+      capability wrote `null: chunk` — and `null:` is a YAML reserved word that
+      parses as the None KEY, so the field would have vanished silently. The
+      same trap the lab adapter hit, and the adapter checker now refuses it.
+      **A proposal for a gate, caught by a gate.**
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NOT MOUNTABLE — named here because the set must be complete, and refused here
+# because it is not the kind of thing a site substitutes
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# `attest` was raised as a sixth CAPABILITY and built as one. The forge's own
+# conformance checker refused it, and the refusal was right: every bound
+# capability must live under `forge/plugins/<id>/` with its own LICENSE and
+# PROVENANCE, because a capability is something a SITE MAY BIND ITS OWN VERSION
+# OF — the forge declares what it needs done and does not dictate what does it.
+#
+# **A gate is the opposite kind of object.** It is something the forge must
+# REFUSE with, and refusal is not substitutable: a fence a site can swap is not
+# a fence. Listing it among the capabilities invited exactly the substitution
+# that must not happen.
+#
+# So it is named here and lives in `gates/`, immutable to a completing harness
+# like every other gate. **The capability the proposal identified was real; the
+# category was wrong, and the checker caught the category error.**
+not_mountable:
+  - id: attest
+    is: gate 16 — gates/attest.py
+    need: >
+      Decide whether a claim, read AS PROSE, supports the value it is offered
+      for — deterministically, never by a model.
+    why: >
+      cite.py checks a QUOTE byte-exact. divergence checks the NUMBERS. Neither
+      reads the evidence as prose, so a superseded rule offered for a current
+      value passed silently. Measured 2026-08-26 with three probes, then built.
+    why_not_mountable: >
+      A site binding its own version of a refusal is a site removing the
+      refusal. Compare `chunk`: if your document splitter is better than ours,
+      mount it — the forge only needs the job done. There is no equivalent
+      sentence for a fence.
+    witnessed_by: examples/worked/rejected/23-superseded-evidence.json
+    bounded: >
+      It does not have the site's material and says so on every GREEN. It checks
+      the claim against itself and against the row — never against the source.
+      A human still reads the locator.
+
 # ─────────────────────────────────────────────────────────────────────────────
 # PROPOSED — capabilities the forge itself asked for
 # ─────────────────────────────────────────────────────────────────────────────
