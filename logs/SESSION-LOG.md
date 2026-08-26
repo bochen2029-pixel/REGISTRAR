@@ -626,3 +626,38 @@ asserting characterisations at the same confidence as measurements. `[M]` was al
 what went untagged was everything that was not a number.
 
 ---
+
+## 2026-08-26 · session `opus5-intake` · CORRECTION C11 — I published three of another session's hunks unattributed
+
+**`5431695` carries three `ROADMAP.md` hunks authored by the session working in main's tree, and its message
+credits none of them.** They asked for exactly that line before the push; I had already pushed. Correcting by
+new entry rather than by force-pushing a public branch.
+
+### Theirs, in my commit
+
+| Hunk | What it is |
+|---|---|
+| The Fork C row | branch-point figures kept **and** current ones added — 12 witnessed · 2 incidental · 1 unwitnessed · 1 undecidable, six live exposures |
+| `internal` §14 | citation corrected; `SPEC.md` ends at §12, so the old pointer resolved to nothing |
+| The six-not-seven block | `20-adverse-replay-UNCAUGHT` was **closed by gate 14** — the count moved because a hole got fixed, which is the good direction |
+
+**This is the third recorded instance of the same failure**, and it did not need `git add -A` to happen: I
+staged four paths by name, and three hunks inside one of them were someone else's. *A partition names files;
+authorship lives in hunks.* `FORKS.md`'s rule is necessary and not sufficient, and this is the case that
+shows why.
+
+### Not corrected, deliberately
+
+My line still reads *"seven exposures found and RETAINED"* with their *"SIX are live, not seven"* directly
+beneath it. **That is the append-only pattern working, not a defect** — the original stands so the correction
+has a referent. Collapsing them would delete the evidence that the count moved and why.
+
+### One more number I passed on without checking
+
+I told the operator that `fork/battery`'s battery-strength figure was **83.8%**. It is **74.8%** — 83.8 was
+withdrawn in that fork's own audit commit, because two operators were killed by a defect other than the one
+they named and a third could not test what it claimed. I read it off a screenshot and repeated it. **Sixth
+instance of the session's single error: a number or characterisation restated at measurement confidence
+without a check.**
+
+---
