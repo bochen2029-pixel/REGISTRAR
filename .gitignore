@@ -1,0 +1,36 @@
+# ── the chassis ───────────────────────────────────────────────────────────
+# A third-party snapshot lives here during development. It is NOT redistributed
+# from this repository: it has no asserted provenance yet (no upstream commit
+# recorded), and vendoring is a deliberate act that happens once, through the
+# upstream project's own documented vendor procedure, with the commit pinned and
+# THIRD_PARTY_NOTICES carried forward complete. Until that is done, it stays out.
+deepseek-harness-master/
+vendor/
+
+# ── internal working documents ────────────────────────────────────────────
+# Build notes, receipts and the internal spec. The public spec is SPEC.md.
+internal/
+
+# ── site material — never, under any circumstances ────────────────────────
+# A completed patch layer encodes how one organisation actually works, and a
+# tape is a record of real cases. Both belong to the site, in the site's own
+# version control. Nothing of the kind is ever committed here.
+*.patch.yml
+!examples/worked/*.patch.yml
+*.tape/
+*.jsonl
+
+# ── ordinary ──────────────────────────────────────────────────────────────
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+build/
+*.so
+*.o
+*.egg-info/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
