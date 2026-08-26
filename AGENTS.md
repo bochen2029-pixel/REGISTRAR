@@ -19,28 +19,43 @@ here is a slight. The containment is the product.
 python conformance/run.py
 ```
 
-It reports what is actually here and what is not. As of this writing it ends **PASS-UNVERIFIED**, and the
-reason matters to you specifically.
+It reports what is actually here and what is not. As of this writing it ends **PASS-UNVERIFIED** and exits
+non-zero, and the reason matters to you specifically. **Trust its output over this section**, which was
+reconciled at `a1149dc` on 2026-08-26 and will drift.
 
-**What exists and works:** `core/lifecycle/` (the spine, 15 states), `core/tape.py` (L4, append-only and
-hash-chained), `core/case.py` (replay against the lifecycle), `schema/`, `gates/` (12 gates), `floor/` (the
-temporal closure), `elicit/` (the question set), `examples/worked/` (a patch, and four that were refused),
-`fixtures/`, `conformance/`. 98 assertions, stdlib only.
+**What exists and runs, stdlib only — 396 assertions across 11 test modules:** `core/lifecycle/` (the spine,
+15 states, 20 declared variation points) · `core/tape.py` (L4, append-only and hash-chained, by type) ·
+`core/case.py` (replay against the lifecycle; ENFORCED vs PENDING) · `core/algebra.py` (`mount`/`retire`,
+observational equivalence — **T3 is computed, not asserted**) · `core/authority/` (six tiers, each naming its
+clock) · `core/authorization/` (the jurisdiction table and its fetcher) · `clinical/` (L1) · `schema/` ·
+`gates/` (**16 gates**) · `floor/` (the temporal closure, and the CUDA kernel with its parity check) ·
+`percepts/` (the deltas this repository already computes, to one append-only stream) · `profiles/` (`edr`
+and `forge`, with the subset check that keeps them apart) · `adapters/` (L3 shells, **bindings null by
+design**) · `forge/` (the plugin host) · `elicit/` · `examples/worked/` · `experiments/` · `fixtures/` ·
+`conformance/` · `tools/cite.py`.
 
-**What does not exist:** `clinical/` (L1) and `adapters/` (L3 shells).
+**Established, and you may rely on it:** **13 of the lifecycle's 15 states carry a verified provenance
+locator**, and **44 of 44 citations byte-match a sha256-pinned public source**. That is a real spine. It is
+also not a licence to stop citing: `PROVENANCE.md` still governs every element you touch.
 
-**What exists but is not established — read this twice.** **14 of the lifecycle's 15 states carry provenance
-locators reading `TODO-VERIFY`.** The authority is named; the citation has not been checked against live text.
-Per `PROVENANCE.md` §2 **those elements are not implemented — they are TODOs**, and `core/case.py` will
-report a guard on one of them as `PENDING` rather than enforcing it. **Do not treat an unverified element as
-policy, and do not write a validator that enforces one.** If your job is to fill those locators, that is the
-single most valuable work available in this repository.
+**The two states that are NOT established are open for non-equivalent reasons — read this twice.**
+`authorization` is **`known-incomplete`**: its state-law leg needs roughly fifty statutes and only Texas is
+filled, so **do not infer a surrogate priority list from a neighbouring state and do not let a model fill one
+in** (§9.2 and the laws in `SPEC.md`). `referral_lapsed` is a **`design-choice`**: no source exists and the
+state is ours. `core/case.py` reports a guard into an unverified state as `PENDING` rather than enforcing it.
+**Do not treat an unverified element as policy, and do not write a validator that enforces one.**
+
+**What is specified but not built:** the runtime composition. The chassis is vendored in place and **pinned**
+(`dsh-v0.1.1-rc.2` at `b150a551b8d4`, 7,895/7,895 files byte-identical, `CHASSIS.pin.json`), but **no boot
+profile is composed and the default plugin capabilities are unbound.** `adapters/` bindings are `null`
+deliberately — a real integration needs specs an OPO holds, and inventing one is exactly the fabrication
+`tools/cite.py` exists to prevent.
 
 That determines which of two jobs you are here to do:
 
 | If your operator asked you to… | Go to |
 |---|---|
-| **complete the fit** for a specific OPO | §1–§9. The kit is present and the gates run — but the spine is unverified, so any fit built on it inherits that. Say so before you start. |
+| **complete the fit** for a specific OPO | §1–§9. The kit is present, the gates run, and 13 of 15 states are established. **Check which two are not** — if your work touches `authorization` or `referral_lapsed`, say so before you start, because a fit built on an unverified element inherits that. |
 | **build the seed itself** — fill locators, add `clinical/`, extend the battery | §10 |
 
 **Do not produce a `<site>.patch.yml` you cannot ground.** A plausible, well-formed, unevidenced patch is the
@@ -58,8 +73,11 @@ produces it.
 4. `SPEC.md` §3 — the algebra. Read it if you want to understand *why* the rules are shaped the way they
    are; the rules bind whether or not you read it.
 5. `PROVENANCE.md` — the sourcing rule, if you will touch anything in `core/` or `clinical/`.
-6. `examples/worked/` — when it exists, read it before writing a single patch row. It is the highest-signal
-   artifact in this repository and it includes **rejected drafts with the gate output that rejected them.**
+6. `examples/worked/` — read it before writing a single patch row. It is the highest-signal artifact in this
+   repository: a complete patch, **rejected drafts with the real gate output that rejected them**, and — in
+   `rejected/`, with `UNCAUGHT` in the filename — **exposures this battery does NOT catch, committed as tests
+   that pass so the holes stay visible.** Read those last ones especially. They tell you where the oracle
+   grading your work is blind, which is exactly where your own care has to do the job instead.
 
 Then stop reading and start working. **Do not read the entire tree "for context."** In a repository whose
 seed layer is federal law, breadth of reading is not a proxy for correctness, and a large context window
@@ -357,8 +375,10 @@ Different job, same constitution. §2, §3, §7, §8 and §9 all still bind.
 ## §11 · The contract, machine-readable
 
 ```yaml
-contract_version: 0.1
-repository_state: specification    # Rev 0 — core/, gates/, floor/, elicit/ do not exist yet
+contract_version: 0.2
+repository_state: built            # the seed, gates, floor, algebra, percepts and switch all run
+pilot_state: none                  # Rev 0 — nothing has run inside an OPO; no patient data, ever
+reconciled_at: a1149dc             # 2026-08-26. Run conformance/run.py; trust it over this block.
 
 writable:
   - "<site>.patch.yml"             # exactly one file, in the SITE's own version control
@@ -369,17 +389,31 @@ immutable:
   - gates/                         # the battery you are graded by
   - schema/                        # the contract you are validated against
   - fixtures/                      # synthetic cases
+  - profiles/                      # what mounts where
+  - deepseek-harness-master/       # the pinned chassis. NEVER write inside it — see FORKS.md.
   - AGENTS.md                      # this file
   - PROVENANCE.md
 
 append_only:
   - "<site>.tape/"                 # L4 — the case record. never written by a machine.
+  - percepts/stream.jsonl          # what was surfaced, and what was held, with its reason
+
+operator_only:
+  - registrar.state                # off | shadow | live. no code path writes it, at any rung.
 
 required_row_fields: [target, value, inverse, evidence, shadow_run, expiry, author]
 author_filled_by: human            # never the agent
+gates: 16
 gate_states: [GREEN, PASS-UNVERIFIED, FAILED]
 pass_condition: all_gates == GREEN
 pass_unverified_is: failure
+account_for_every_declared_target: true   # a row, or a hold. never silence. §7b.
+declared_variation_points: 20
+
+established:
+  lifecycle_states_verified: 13    # of 15
+  citations_byte_exact: 44         # of 44, against 5 sha256-pinned public sources
+  unverified_states: [authorization, referral_lapsed]   # known-incomplete / design-choice
 
 phi:
   may_reach_frontier_model: false
