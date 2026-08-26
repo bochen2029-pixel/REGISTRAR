@@ -649,16 +649,39 @@ def check_forge_plugins() -> None:
     record(GREEN if t.returncode == 0 else FAILED, "forge · the gate refuses", last)
 
 
+# ── 6k · the schema is a contract, not a document ───────────────────────────
+def check_schema() -> None:
+    """
+    `patch.schema.json` shipped from the beginning and NOTHING VALIDATED
+    AGAINST IT — which is why two defects sat in it undetected until an
+    independent completion run reported them. This runs it.
+    """
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "schema", "validate.py"), "--self"],
+                       capture_output=True, text=True, encoding="utf-8",
+                       env=dict(os.environ, PYTHONIOENCODING="utf-8"))
+    last = [ln for ln in r.stdout.splitlines() if ln.strip()]
+    record(GREEN if r.returncode == 0 else FAILED, "schema · examples validate",
+           last[-1] if last else "no output")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
-    offenders = []
-    for dirpath, dirnames, filenames in os.walk(ROOT):
-        dirnames[:] = [d for d in dirnames if d not in (".git", "internal", "deepseek-harness-master")]
-        for fn in filenames:
-            if fn.endswith(".patch.yml") and "worked" not in dirpath:
-                offenders.append(os.path.relpath(os.path.join(dirpath, fn), ROOT))
+    # ASK GIT, NOT THE FILESYSTEM. The check is named "committed" and walked the
+    # working tree — so it failed on a patch that was correctly gitignored and
+    # never committed at all. A real fit is AUTHORED here during a completion
+    # and lives in the site's own version control; having one on disk is normal
+    # and is exactly what `.gitignore` covers.
+    #
+    # Caught 2026-08-26 when an arm-2 candidate landed as fairbank.patch.yml.
+    # The rule was about what SHIPS; the implementation asked what EXISTS, and
+    # those are different questions — the same location-versus-content error as
+    # the corpus leak earlier the same day.
+    r = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=ROOT)
+    offenders = [f for f in r.stdout.splitlines()
+                 if f.endswith(".patch.yml") and "worked" not in f]
     record(FAILED if offenders else GREEN, "hygiene · no site patch committed",
-           ", ".join(offenders) if offenders else "no <site>.patch.yml outside the worked example")
+           ", ".join(offenders) if offenders
+           else "no <site>.patch.yml tracked outside the worked example")
 
     fixtures = os.path.join(ROOT, "fixtures")
     unmarked = []
@@ -694,6 +717,7 @@ def main() -> int:
         ("the L3 adapters", check_adapters),
         ("the forge plugins", check_forge_plugins),
         ("redistribution", check_no_redistribution),
+        ("the schema", check_schema),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

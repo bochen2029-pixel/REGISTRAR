@@ -220,6 +220,28 @@ def validate(patch: dict, targets: dict) -> Result:
     except ImportError:
         r.add(UNVERIFIED, "divergence", "gates/divergence.py not importable")
 
+    # 11c · schema conformance — does the file match the contract it claims?
+    #
+    # patch.schema.json shipped from the beginning and NOTHING EVER VALIDATED
+    # AGAINST IT. That is why two defects sat in it undetected until an
+    # independent completion run reported them: `derived_from` was documented by
+    # gate 13 and undeclared here, and a declined target had no home. A schema
+    # nothing runs is a document, not a contract.
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "schema"))
+        import json as _json
+
+        from validate import SCHEMA as _S
+        from validate import validate as _sv
+        with open(_S, encoding="utf-8") as _fh:
+            _root = _json.load(_fh)
+        _fails = _sv(patch, _root, _root)
+        r.add(FAILED if _fails else GREEN, "schema conformance",
+              "; ".join(_fails[:3])[:200] if _fails
+              else "valid against patch.schema.json")
+    except Exception as _exc:
+        r.add(UNVERIFIED, "schema conformance", f"validator unavailable: {_exc}")
+
     # 12 · signature — the output commit
     unsigned = [row.get("target") for row in rows if not str(row.get("author") or "").strip()]
     if unsigned:

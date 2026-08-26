@@ -88,7 +88,18 @@ def test_isolated_means_isolated():
     for f in ("07-generality.json", "08-no-denominator.json", "09-permanent.json",
               "10-no-way-back.json", "11-undeclared-target.json", "12-divergence.json",
               "06-unsigned.json", "21-partial-isolated.json", "22-no-value.json"):
-        check(f"{f} fires exactly one", len(per_fixture.get(f, [])), 1)
+        # `schema conformance` is a STRUCTURAL FLOOR beneath every gate, not a
+        # peer of them. A file with `cases: 0` violates both the shadow-run gate
+        # and the schema's `minimum: 1`; a file missing `value` violates both
+        # schema shape and the schema's `required`. Counting the floor here
+        # would be like counting "the JSON parsed" as a gate — the isolation
+        # property this test protects is about the SEMANTIC gates, and it
+        # survives intact once the floor is excluded.
+        #
+        # Narrowed 2026-08-26 when gate 14 landed. Narrowed, not weakened:
+        # every fixture below still fires exactly one semantic gate.
+        fired = [g for g in per_fixture.get(f, []) if g != "schema conformance"]
+        check(f"{f} fires exactly one", len(fired), 1)
 
 
 # ── the findings ────────────────────────────────────────────────────────────
@@ -195,10 +206,25 @@ def test_uncaught_fixtures_are_still_uncaught():
     found = sorted(f for f in os.listdir(REJECTED) if "UNCAUGHT" in f)
     check("at least seven are retained", len(found) >= 7, True)
 
+    # 20-adverse-replay IS NO LONGER SILENT. Gate 14 (schema conformance,
+    # 2026-08-26) catches it: the fixture carries `shadow_run.cases` as a STRING
+    # and the schema types it as an integer. Nothing in the tree validated
+    # against patch.schema.json until that gate existed — which is precisely why
+    # the hole was open.
+    #
+    # ONE OF THE SEVEN EXPOSURES IS CLOSED. Recorded here rather than by quietly
+    # deleting the fixture: it is now a WITNESS for gate 14 instead of a hole,
+    # and the filename still says UNCAUGHT because renaming it belongs to
+    # whoever owns this battery.
+    CLOSED = {"20-adverse-replay-UNCAUGHT.json": "schema conformance"}
+
     for f in found:
         r = validate(load_patch(os.path.join(REJECTED, f)), load_targets())
         tripped = [g for s, g, _ in r.rows if s != GREEN and g not in ambient]
-        check(f"{f[:34]} still silent", tripped, [])
+        if f in CLOSED:
+            check(f"{f[:34]} NOW CAUGHT", tripped, [CLOSED[f]])
+        else:
+            check(f"{f[:34]} still silent", tripped, [])
 
 
 def test_every_uncaught_fixture_explains_itself():
@@ -221,7 +247,7 @@ def test_coverage_is_reported_not_asserted():
     print("\ncoverage is measured")
     per_gate, _ = matrix()
     states = [i["state"] for i in per_gate.values()]
-    check("thirteen gates", len(per_gate), 13)
+    check("fourteen gates", len(per_gate), 14)   # 14th: schema conformance, 2026-08-26
     check("at least nine cleanly witnessed", states.count("WITNESSED") >= 9, True)
     real_gaps = [g for g, i in per_gate.items()
                  if i["state"] == "UNWITNESSED" and g not in ENTANGLED]

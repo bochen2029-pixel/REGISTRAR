@@ -63,6 +63,19 @@ WORKED = os.path.join(ROOT, "examples", "worked", "northlake.patch.json")
 WITNESSED, INCIDENTAL, UNWITNESSED, UNDECIDABLE = (
     "WITNESSED", "INCIDENTAL", "UNWITNESSED", "UNDECIDABLE")
 
+# STRUCTURAL FLOORS — gates that answer "is this a well-formed patch at all",
+# beneath every semantic gate rather than beside them.
+#
+# A floor fires under any malformation that also violates the contract's shape,
+# so counting it as a peer entangles otherwise-clean witnesses wholesale. It is
+# excluded from the isolation measurement for the same reason "the JSON parsed"
+# is not counted as a gate.
+#
+# `schema conformance` landed 2026-08-26, after nothing in the tree had ever
+# validated against `patch.schema.json` — which is why two defects sat in that
+# schema undetected until an independent completion run reported them.
+FLOOR = {"schema conformance"}
+
 # Gates that CANNOT be isolated, and why. Recording this is not an excuse — it
 # is the finding. A fixture author who does not know these will chase an
 # impossible fixture, and a reader who does not know them will read "incidental"
@@ -179,8 +192,21 @@ def matrix() -> tuple[dict[str, dict], dict[str, list[str]]]:
 
     per_gate: dict[str, dict] = {}
     for g in gates:
-        alone = [f for f, fired in per_fixture.items() if fired == [g]]
-        among = [f for f, fired in per_fixture.items() if g in fired and len(fired) > 1]
+        # "Isolated by f" means: f fires g, and f fires no OTHER SEMANTIC gate.
+        #
+        # A STRUCTURAL FLOOR does not count as "another gate" — unless g IS the
+        # floor, in which case it is judged like anything else. `schema
+        # conformance` (gate 14, 2026-08-26) fires under any malformation that
+        # also violates the contract's shape: `cases: 0` trips both it and the
+        # shadow-run gate; a missing `value` trips both it and schema shape.
+        # Counted as a peer, it entangled three cleanly-witnessed gates at a
+        # stroke; erased entirely, it could never be witnessed itself. Excluding
+        # it only from OTHER gates' isolation is what makes both true at once.
+        def _others(fired: list[str], g: str = g) -> list[str]:
+            return [x for x in fired if x != g and x not in FLOOR]
+
+        alone = [f for f, fired in per_fixture.items() if g in fired and not _others(fired)]
+        among = [f for f, fired in per_fixture.items() if g in fired and _others(fired)]
         # Evidence first, decidability second. A gate that refuses something is
         # witnessed even if it cannot confirm — see half_decidable().
         if alone:

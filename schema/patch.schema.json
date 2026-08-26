@@ -3,39 +3,102 @@
   "$id": "https://github.com/bochen2029-pixel/REGISTRAR/schema/patch.schema.json",
   "title": "REGISTRAR site patch layer (L2 + L3)",
   "description": "The only mutable surface in the system. A patch file describes how one organisation differs from the mandated spine — and nothing else. It lives in the site's own version control and is never committed to this repository. Every row is a (change, inverse) pair: without the inverse the row is not a well-formed element of the patch monoid and cannot be mounted at all. See SPEC.md §2 and §3.",
-
   "type": "object",
-  "required": ["schema_version", "site", "rows"],
+  "required": [
+    "schema_version",
+    "site",
+    "rows"
+  ],
   "additionalProperties": false,
-
   "properties": {
-    "schema_version": { "const": "0.1" },
-
+    "schema_version": {
+      "const": "0.1"
+    },
     "site": {
       "type": "object",
       "description": "Identifies the organisation this fit belongs to. Deliberately minimal: this file describes an operation, not a population.",
-      "required": ["id"],
+      "required": [
+        "id"
+      ],
       "additionalProperties": false,
       "properties": {
-        "id":   { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$", "description": "A slug the site chooses for itself." },
-        "name": { "type": "string", "maxLength": 200 }
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+          "description": "A slug the site chooses for itself."
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 200
+        }
       }
     },
-
     "rows": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/row" }
+      "items": {
+        "$ref": "#/$defs/row"
+      }
+    },
+    "holds": {
+      "type": "array",
+      "description": "Targets the author CONSIDERED and DECLINED, with the reason. Optional, and the most reviewable part of a patch: without it, a completion that smoothed over a contradiction and one that never saw it produce identical output. `sources contradict, unresolved` is a finding about the organisation, not a gap in the work. OPTN Policy 2.3(4) requires the same discipline at the record layer — document what is unavailable AND why — and this applies it to the completion.",
+      "items": {
+        "type": "object",
+        "required": [
+          "target",
+          "searched",
+          "why"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^\\$": {
+            "description": "Annotation. Keys beginning with `$` are commentary for a human reader and carry no meaning to any gate. The worked example teaches through `$note`, and strict validation rejected it until this was declared — a schema that its own teaching example fails is a schema nothing validates against."
+          }
+        },
+        "properties": {
+          "target": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$"
+          },
+          "searched": {
+            "type": "string",
+            "minLength": 3,
+            "description": "What was actually looked at. A decline with no search behind it is an omission wearing a label."
+          },
+          "why": {
+            "type": "string",
+            "minLength": 3,
+            "description": "Why it came back empty, in words a reviewer can act on."
+          },
+          "class": {
+            "enum": [
+              "no_evidence",
+              "sources_contradict",
+              "requires_tier_1_5_change",
+              "phi_adjacent_declined",
+              "ambiguous_needs_human"
+            ],
+            "description": "The kind of decline. `sources_contradict` is the highest-value one and should never be silently resolved."
+          }
+        }
+      }
     }
   },
-
   "$defs": {
     "row": {
       "type": "object",
       "description": "One difference between this organisation and the seed.",
-      "required": ["target", "value", "inverse", "evidence", "shadow_run", "expiry", "author"],
+      "required": [
+        "target",
+        "value",
+        "inverse",
+        "evidence",
+        "shadow_run",
+        "expiry",
+        "author"
+      ],
       "additionalProperties": false,
-
       "properties": {
         "target": {
           "type": "string",
@@ -47,24 +110,24 @@
             "recovery.or_availability"
           ]
         },
-
         "value": {
           "description": "The change. Any JSON value the target accepts.",
           "$comment": "Deliberately untyped here; the target's own declaration constrains it."
         },
-
         "inverse": {
           "description": "What restores the prior state at the state where this row is applied. MANDATORY. A row without a genuine inverse is not an element of the monoid and mount is undefined on it (SPEC.md §3). The local-invertibility gate computes p-inverse(p(lambda)) and compares; a plausible-looking inverse that does not actually invert is caught there. If the prior value cannot be determined, that is a STOP condition, not a field to fill with something reasonable.",
           "$comment": "null is a legal inverse only when the target genuinely had no prior value."
         },
-
         "evidence": {
           "type": "array",
           "minItems": 1,
           "description": "Pointers into the SITE's own material. Not this repository — the seed says nothing about any particular organisation, so it can never be evidence for a site fact. Not general knowledge. Not 'standard practice'.",
           "items": {
             "type": "object",
-            "required": ["source", "says"],
+            "required": [
+              "source",
+              "says"
+            ],
             "additionalProperties": false,
             "properties": {
               "source": {
@@ -78,55 +141,93 @@
                 "minLength": 3
               },
               "kind": {
-                "enum": ["document", "ticket", "config", "tape", "interface", "observation"],
+                "enum": [
+                  "document",
+                  "ticket",
+                  "config",
+                  "tape",
+                  "interface",
+                  "observation"
+                ],
                 "description": "Where it came from. 'observation' carries the least weight and the gate treats it accordingly."
               }
             }
           }
         },
-
         "shadow_run": {
           "type": "object",
           "description": "A replay of this row against the site's own historical cases, before it is offered. A row nobody replayed is a guess with formatting.",
-          "required": ["cases", "would_have_matched"],
+          "required": [
+            "cases",
+            "would_have_matched"
+          ],
           "additionalProperties": false,
           "properties": {
-            "cases":              { "type": "integer", "minimum": 1, "description": "Denominator. A count without one is not a count." },
-            "would_have_matched": { "type": "integer", "minimum": 0 },
-            "would_have_missed":  { "type": "integer", "minimum": 0 },
-            "window":             { "type": "string", "description": "The period replayed, e.g. 2026-01-01/2026-06-30." },
-            "notes":              { "type": "string", "maxLength": 2000 }
+            "cases": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Denominator. A count without one is not a count."
+            },
+            "would_have_matched": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "would_have_missed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "window": {
+              "type": "string",
+              "description": "The period replayed, e.g. 2026-01-01/2026-06-30."
+            },
+            "notes": {
+              "type": "string",
+              "maxLength": 2000
+            }
           }
         },
-
         "expiry": {
           "type": "string",
           "format": "date",
           "description": "The date this row must re-earn its place. Nothing is permanent by default: an operation that changed and a row that did not is exactly the drift this field exists to surface."
         },
-
         "author": {
           "type": "string",
           "description": "The named human who signs. An automated author MUST leave this empty — a machine's output is a candidate, and the signature is what makes the mount legitimate. An empty author is legal in a draft and fatal at mount time.",
           "maxLength": 200
         },
-
         "layer": {
-          "enum": ["L2", "L3"],
+          "enum": [
+            "L2",
+            "L3"
+          ],
           "description": "Optional and advisory; the target's own declaration is authoritative."
         },
-
         "supersedes": {
           "type": "string",
           "description": "The id of a row this replaces. Retirement unwinds through inverses in reverse dependency order (SPEC.md §3, T2) — a correction is a new row, never an edit to an old one."
         },
-
         "id": {
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9-]{2,62}$",
           "description": "Stable identifier for this row, so it can be superseded and audited later."
+        },
+        "derived_from": {
+          "type": "string",
+          "minLength": 12,
+          "description": "How a stated figure was computed, when it does not appear verbatim in the evidence — a p75 over a distribution, a threshold rounded up from an observed worst case. MUST NAME A METHOD: the divergence gate refuses a declaration that is a formality rather than a derivation, so `computed` fails and `p90 of the observed distribution, rounded up` passes. Documented by gates/divergence.py since it was written and undeclared here until 2026-08-26, which made every row using it schema-invalid — found by an independent completion run, not by us."
+        }
+      },
+      "patternProperties": {
+        "^\\$": {
+          "description": "Annotation. Keys beginning with `$` are commentary for a human reader and carry no meaning to any gate. The worked example teaches through `$note`, and strict validation rejected it until this was declared — a schema that its own teaching example fails is a schema nothing validates against."
         }
       }
+    }
+  },
+  "patternProperties": {
+    "^\\$": {
+      "description": "Annotation. Keys beginning with `$` are commentary for a human reader and carry no meaning to any gate. The worked example teaches through `$note`, and strict validation rejected it until this was declared — a schema that its own teaching example fails is a schema nothing validates against."
     }
   }
 }
