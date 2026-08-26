@@ -7,12 +7,32 @@
 # This one resolves to fifty-odd state statutes, each an adoption of some
 # vintage of the Uniform Anatomical Gift Act, each amended locally.
 #
-# **The rows below are empty on purpose.** They are not an oversight and they
-# are not waiting on effort — they are waiting on evidence, per state, of a
-# kind nothing in this repository has yet gathered. `authorization` reports
-# `verified: false` for exactly this reason, and the generator will not let
-# that flag be cleared by rewording (that was tried, caught, and fixed —
-# see PROVENANCE.md).
+# **ONE ROW IS FILLED. THE REST ARE YOURS.**
+#
+#   Texas is here because it is the author's own state — highest familiarity,
+#   so a misreading is likeliest to be caught, and it makes the row contract
+#   copyable instead of hypothetical.
+#
+#   The other forty-nine are not a backlog anyone here intends to work
+#   through. They belong to the OPOs that operate under them, whose counsel
+#   has already read the statute. **See PROCEDURE.md — filling your own state
+#   takes about an hour, and it is the one thing this repository actively
+#   wants pushed back.**
+#
+# CONTRIBUTED, NOT CONFIGURED
+#
+#   A jurisdiction row is NOT a site patch. It does not go in <site>.patch.yml
+#   and it is not private to you. It goes UPSTREAM, into this file, because
+#   the law is the same for everyone operating in that state.
+#
+#   A site does not get to DECIDE who may authorize donation. A site is
+#   exactly the right party to CITE its own state's statute. Those are
+#   different acts and only the second is asked for.
+#
+#   Note the asymmetry that makes this work: your L2/L3 fit is deliberately
+#   worthless to anyone else. Your jurisdiction row is worth little to you
+#   alone and a great deal to the other fifty-four — and because donation
+#   service areas span state lines, **you will need rows you did not write.**
 #
 # WHY THIS IS THE MOST DANGEROUS FILE TO GET WRONG
 #
@@ -87,7 +107,79 @@ row_schema:
 # ─────────────────────────────────────────────────────────────────────────────
 # THE TABLE
 # ─────────────────────────────────────────────────────────────────────────────
-jurisdictions: []      # EMPTY. Deliberately. See the header.
+jurisdictions:
+
+  - state: TX
+    name: Texas
+    act: Revised Uniform Anatomical Gift Act (2006)
+    adopted: Acts 2009, 81st Leg., R.S., Ch. 186 (H.B. 2027), Sec. 1, eff. September 1, 2009
+    code: Texas Health and Safety Code, Chapter 692A
+    source_id: tx-hs-692A
+    accessed: 2026-08-26
+    currency: >
+      Source states it is current through the 89th 2nd Called Legislative
+      Session, 2025. Recorded because a statute citation is a claim about a
+      document at a date.
+    acquisition: >
+      **curl cannot retrieve this.** statutes.capitol.texas.gov is an Angular
+      single-page app with catch-all routing: every path returns 250 KB of
+      identical application shell with HTTP 200. Retrieved with a headless
+      browser instead. See PROCEDURE.md — this is the failure mode most likely
+      to bite a contributor, because it looks exactly like success.
+
+    first_person:
+      binding: true
+      locator: § 692A.008(a)
+      quote_verified: true
+      quote: >
+        "…in the absence of an express, contrary indication by the donor, a
+        person other than the donor is barred from making, amending, or
+        revoking an anatomical gift of a donor's body or part if the donor made
+        an anatomical gift of the donor's body or part under Section 692A.005"
+      note: >
+        Family cannot override a registered donor in Texas. Note this is
+        Section 692A.008 — the *preclusive effect* section — not the surrogate
+        list. Numbering diverges from base RUAGA; do not assume section numbers
+        transfer between states.
+
+    surrogate_priority:
+      locator: § 692A.009(a)
+      quote_verified: true
+      classes:
+        - agent of the decedent at the time of death (per § 692A.004(2))
+        - spouse of the decedent
+        - adult children of the decedent
+        - parents of the decedent
+        - adult siblings of the decedent
+        - adult grandchildren of the decedent
+        - grandparents of the decedent
+        - an adult who exhibited special care and concern for the decedent
+        - persons acting as guardians of the person of the decedent at the time of death
+        - the hospital administrator
+        - any other person having the authority to dispose of the decedent's body
+      note: >
+        Eleven classes. Classes (10) and (11) — hospital administrator, and any
+        person with authority to dispose of the body — are **not present in
+        every state's list.** Do not copy this list to another state.
+
+    within_class_rule:
+      locator: § 692A.009(b)-(c)
+      quote_verified: true
+      quote: >
+        "If an objection is known, the gift may be made only by a majority of
+        the members of the class who are reasonably available."
+      note: >
+        A known objection inside a class escalates to a **majority of
+        reasonably available members** — not unanimity, and not
+        first-to-answer. And under (c) no one may act while a person in a
+        *prior* class is reasonably available.
+
+    counsel_reviewed: false
+    counsel_note: >
+      **Not yet reviewed by a lawyer.** Every quote above is byte-verified
+      against the pinned source, which proves the text and not the reading.
+      This row is a worked example that sets the shape; it must be reviewed
+      before it load-bears on any real case.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # HOW TO FILL IT — the honest procedure
@@ -112,10 +204,13 @@ procedure:
       misreading it is not a bad metric.
 
 scope_note: >
-  Fifty-odd jurisdictions, each needing a pinned source and a verified quote,
-  is a different order of work from the batches that established the rest of
-  this spine — those drew on three documents. Nothing about it is blocked;
-  it is simply large, and it is left visibly undone rather than approximated.
+  1 of ~51 jurisdictions filled. This was originally written up as "large and
+  left undone", which was the wrong frame: it is not one fifty-state problem,
+  it is **fifty one-state problems, each with a natural owner better placed
+  than this repository's author.**
 
-  **An empty table is honest. A plausible one would be the single most
-  dangerous artifact this project could ship.**
+  **A cited row is honest. A plausible one would be the single most dangerous
+  artifact this project could ship** — and fifty plausible rows could be
+  generated in ten minutes by anything that can write YAML. That is precisely
+  why the gate requires a pinned source and a byte-exact quote, and why
+  `counsel_reviewed` is a separate field that no automated check can set.

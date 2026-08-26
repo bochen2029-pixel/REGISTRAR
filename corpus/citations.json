@@ -251,6 +251,30 @@
       "locator": "OPTN Policy 2.14.E (p.36)",
       "quote": "whether that be the donor or a surrogate donation decision-maker consistent with applicable state law",
       "establishes": "Who may act as surrogate is determined by state law. Federal rule and OPTN policy both DEFER; neither supplies the answer."
+    },
+    {
+      "element": "core/authorization/jurisdiction/TX/first_person",
+      "source": "tx-hs-692A",
+      "locator": "Tex. Health & Safety Code § 692A.008(a)",
+      "quote": "in the absence of an express, contrary indication by the donor, a person other than the donor is barred from making, amending, or revoking an anatomical gift of a donor's body or part if the donor made an anatomical gift of the donor's body or part under Section 692A.005",
+      "establishes": "First-person authorization is BINDING in Texas: a person other than the donor is barred from revoking it. Family cannot override a registered donor.",
+      "counsel_reviewed": false
+    },
+    {
+      "element": "core/authorization/jurisdiction/TX/surrogate_priority",
+      "source": "tx-hs-692A",
+      "locator": "Tex. Health & Safety Code § 692A.009(a)",
+      "quote": "(1) an agent of the decedent at the time of death who could have made an anatomical gift under Section 692A.004(2) immediately before the decedent's death; (2) the spouse of the decedent; (3) adult children of the decedent; (4) parents of the decedent; (5) adult siblings of the decedent; (6) adult grandchildren of the decedent; (7) grandparents of the decedent; (8) an adult who exhibited special care and concern for the decedent; (9) the persons who were acting as the guardians of the person of the decedent at the time of death; (10) the hospital administrator; and (11) any other person having the authority to dispose of the decedent's body.",
+      "establishes": "Eleven classes in order of priority. Note (10) hospital administrator and (11) any other person with authority to dispose - classes absent from some other states' lists.",
+      "counsel_reviewed": false
+    },
+    {
+      "element": "core/authorization/jurisdiction/TX/class_objection",
+      "source": "tx-hs-692A",
+      "locator": "Tex. Health & Safety Code § 692A.009(b)-(c)",
+      "quote": "If an objection is known, the gift may be made only by a majority of the members of the class who are reasonably available.",
+      "establishes": "Within a class, a known objection escalates to MAJORITY of reasonably available members - not unanimity, and not first-to-answer.",
+      "counsel_reviewed": false
     }
   ]
 }

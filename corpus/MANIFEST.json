@@ -25,6 +25,13 @@
       "pdf_generated": "2026-08-12",
       "retrieved": "live download by the operator, 2026-08-26",
       "note": "Effective date is 2025-08-01 per the PDF's own title, though the file was generated 2026-08-12 and downloaded live 2026-08-26. The twelve-month gap is OPTN's publication cadence, not staleness on our side — this is the edition OPTN currently serves. Extracted text carries [[PAGE n]] markers so a citation can name its page."
+    },
+    "tx-hs-692A": {
+      "file": "tx-hs-692A.txt",
+      "sha256": "acded5638283b71070a3604ebc7ae542d0890129fcf2a93e6c5f787f9b5f3d23",
+      "bytes": 49043,
+      "url": "https://statutes.capitol.texas.gov/Docs/HS/htm/HS.692A.htm",
+      "accessed": "2026-08-26"
     }
   }
 }

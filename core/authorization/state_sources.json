@@ -1,0 +1,378 @@
+{
+  "$comment": "Source index for core/authorization/fetch_states.py. ONE ENTRY IS REAL. The rest have url: null on purpose — a fabricated URL is worse than an absent one, because the fetcher would dutifully download whatever is at it. Find your own state's URL, verify it serves statutory text rather than an app shell, and add it with your row. See PROCEDURE.md.",
+  "how_to_add": {
+    "state": "two-letter postal code",
+    "name": "state name",
+    "url": "a URL that serves the STATUTE TEXT, not a search page or an app shell",
+    "slug": "short id for the filename, e.g. hs-692A",
+    "renderer": "'browser' if the site is a SPA and curl cannot reach the text; omit otherwise",
+    "note": "anything the next contributor needs to know"
+  },
+  "states": [
+    {
+      "state": "AL",
+      "name": "Alabama",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "AK",
+      "name": "Alaska",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "AZ",
+      "name": "Arizona",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "AR",
+      "name": "Arkansas",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "CA",
+      "name": "California",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "CO",
+      "name": "Colorado",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "CT",
+      "name": "Connecticut",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "DE",
+      "name": "Delaware",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "DC",
+      "name": "District of Columbia",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "FL",
+      "name": "Florida",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "GA",
+      "name": "Georgia",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "HI",
+      "name": "Hawaii",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "ID",
+      "name": "Idaho",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "IL",
+      "name": "Illinois",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "IN",
+      "name": "Indiana",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "IA",
+      "name": "Iowa",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "KS",
+      "name": "Kansas",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "KY",
+      "name": "Kentucky",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "LA",
+      "name": "Louisiana",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "ME",
+      "name": "Maine",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "MD",
+      "name": "Maryland",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "MA",
+      "name": "Massachusetts",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "MI",
+      "name": "Michigan",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "MN",
+      "name": "Minnesota",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "MS",
+      "name": "Mississippi",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "MO",
+      "name": "Missouri",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "MT",
+      "name": "Montana",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "NE",
+      "name": "Nebraska",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "NV",
+      "name": "Nevada",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "NH",
+      "name": "New Hampshire",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "NJ",
+      "name": "New Jersey",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "NM",
+      "name": "New Mexico",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "NY",
+      "name": "New York",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "NC",
+      "name": "North Carolina",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "ND",
+      "name": "North Dakota",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "OH",
+      "name": "Ohio",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "OK",
+      "name": "Oklahoma",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "OR",
+      "name": "Oregon",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "PA",
+      "name": "Pennsylvania",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "PR",
+      "name": "Puerto Rico",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "RI",
+      "name": "Rhode Island",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "SC",
+      "name": "South Carolina",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "SD",
+      "name": "South Dakota",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "TN",
+      "name": "Tennessee",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "TX",
+      "name": "Texas",
+      "url": "https://statutes.capitol.texas.gov/Docs/HS/htm/HS.692A.htm",
+      "slug": "hs-692A",
+      "renderer": "browser",
+      "note": "VERIFIED 2026-08-26. curl CANNOT retrieve this: the site is an Angular SPA with catch-all routing and returns an identical 250,874-byte shell with HTTP 200 for every path, including nonsense ones. Retrieved with a headless browser. The fetcher will correctly report MISS here — that is the content check working, not a bug."
+    },
+    {
+      "state": "UT",
+      "name": "Utah",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "VT",
+      "name": "Vermont",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "VA",
+      "name": "Virginia",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "WA",
+      "name": "Washington",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "WV",
+      "name": "West Virginia",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "WI",
+      "name": "Wisconsin",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    },
+    {
+      "state": "WY",
+      "name": "Wyoming",
+      "url": null,
+      "slug": null,
+      "note": "URL not yet found. Do not guess one."
+    }
+  ]
+}

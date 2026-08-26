@@ -280,17 +280,49 @@ def check_jurisdiction() -> None:
         doc = yaml.safe_load(fh)
 
     rows = doc.get("jurisdictions") or []
-    bad = [r for r in rows if r.get("quote_verified") is not True or not r.get("citation")]
-    if bad:
-        record(FAILED, "authorization · jurisdiction table",
-               f"{len(bad)} row(s) without a verified statute citation — "
-               f"a row without one is not a row")
+
+    def row_ok(r: dict) -> list[str]:
+        """A row is well-formed only if every legal block is quote-verified."""
+        faults = []
+        if not r.get("source_id"):
+            faults.append("no pinned source_id")
+        if not r.get("code"):
+            faults.append("no statutory code citation")
+        for block in ("first_person", "surrogate_priority", "within_class_rule"):
+            b = r.get(block)
+            if b is None:
+                continue
+            if b.get("quote_verified") is not True:
+                faults.append(f"{block} not quote-verified")
+            if not b.get("locator"):
+                faults.append(f"{block} has no locator")
+        if "counsel_reviewed" not in r:
+            faults.append("counsel_reviewed absent — must be present, may be false")
+        return faults
+
+    faults = {r.get("state", "?"): row_ok(r) for r in rows}
+    broken = {k: v for k, v in faults.items() if v}
+    if broken:
+        record(FAILED, "authorization · jurisdiction rows",
+               "; ".join(f"{k}: {', '.join(v)}" for k, v in broken.items()))
     elif rows:
-        record(GREEN, "authorization · jurisdiction table", f"{len(rows)} states, each with a verified citation")
+        record(GREEN, "authorization · jurisdiction rows",
+               f"{len(rows)} row(s) — {', '.join(sorted(faults))} — each pinned and quote-verified")
     else:
-        record(UNVERIFIED, "authorization · jurisdiction table",
-               "0 of ~50 states — empty on purpose; an empty table is honest, "
-               "a plausible one would be dangerous")
+        record(UNVERIFIED, "authorization · jurisdiction rows", "no rows yet")
+
+    # counsel review is a HUMAN act. No automated check may set it, and a row
+    # that is cited but unreviewed is legitimate — it just isn't finished.
+    unreviewed = [r.get("state") for r in rows if r.get("counsel_reviewed") is not True]
+    record(UNVERIFIED if unreviewed else (GREEN if rows else UNVERIFIED),
+           "authorization · counsel review",
+           f"{len(unreviewed)} row(s) cited but not lawyer-reviewed: {', '.join(unreviewed)} — "
+           f"byte-exactness proves the text, never the reading"
+           if unreviewed else "every row reviewed")
+
+    record(UNVERIFIED, "authorization · coverage",
+           f"{len(rows)} of ~51 jurisdictions — the rest belong to the OPOs that "
+           f"operate under them (see PROCEDURE.md)")
 
     record(GREEN if doc.get("keyed_on") == "donor_state_of_residence" else FAILED,
            "authorization · keyed on residence",

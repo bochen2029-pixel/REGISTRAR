@@ -382,6 +382,59 @@ vintage, each locally amended. The file carries the row contract, the procedure,
 `authorization` therefore remains `verified: false`, reported as `known-incomplete`, and conformance reports
 the table as PASS-UNVERIFIED with its reason rather than passing over it.
 
+### Batch 6 — Texas filled, and the acquisition trap that nearly got past me
+
+**38 citations byte-exact.** `core/authorization/jurisdiction.yml` has its first row: **Texas**, Health &
+Safety Code Ch. 692A, RUAGA (2006) as adopted by Acts 2009, 81st Leg., R.S., Ch. 186, current through the
+89th 2nd Called Legislative Session, 2025.
+
+- **§ 692A.008(a)** — first-person authorization **binds**: *"a person other than the donor is barred from making, amending, or revoking an anatomical gift…"* Family cannot override a registered donor.
+- **§ 692A.009(a)** — eleven classes in priority order. **Classes (10) and (11) — hospital administrator, and any person with authority to dispose of the body — are not in every state's list.** Copying this list one state over would authorise people who are not authorised.
+- **§ 692A.009(b)–(c)** — a known objection inside a class escalates to a **majority of reasonably available members**, not unanimity and not first-to-answer.
+
+`counsel_reviewed: false`, and the gate cannot set it. **This is the one part of the seed where a byte-exact
+citation is necessary and not sufficient.**
+
+### THE PROBE THAT LIED — recorded, because I acted on it
+
+Before starting, I probed whether Texas statutes were fetchable and reported **"it fetches"** on the strength
+of an **HTTP 200 and 250,874 bytes.** That was wrong, and I stated it in a brainstorm as though it were a
+finding.
+
+`statutes.capitol.texas.gov` is an Angular single-page application with catch-all routing. **Every path
+returns the identical 250,874-byte shell with HTTP 200** — the statute URL, a PDF path, a ZIP path, a
+nonsense path. The statute text is never in it. Texas was eventually retrieved with a headless browser.
+
+**A fetch loop over fifty states would have reported 50/50 success and written fifty copies of Angular
+boilerplate.** `tools/cite.py` would have caught it downstream — no quote would byte-match — but only after
+somebody spent a day writing rows against nothing.
+
+I checked a status code and called it evidence. That is the exact failure this repository is built to refuse,
+committed by its author, in a brainstorm, one turn before building the thing that refuses it.
+
+**What came of it, and it is worth more than the row:**
+- `fetch_states.py` validates **content, never status codes**. A download succeeds only when the bytes
+  contain statutory language; anything else is a MISS that names its reason. Running it against Texas
+  correctly reports MISS — **the script's own demo case is the failure it exists to catch.**
+- `PROCEDURE.md` opens with it, before any instruction: *"Do not trust an HTTP 200."*
+- The Texas row carries an `acquisition` field recording that curl cannot reach it.
+
+### The reframe — fifty one-state problems, not one fifty-state problem
+
+This table was written up as *"large and left undone."* Wrong frame, and wrong in a way this project should
+have known better than: it is **fifty one-state problems, each with a natural owner better placed than this
+repository's author** — the OPO operating under that statute, whose counsel has already read it.
+
+So a **third category** now exists alongside seed and site-patch: **contributed**. A jurisdiction row is not
+configured, it is contributed upstream. A site does not get to *decide* who may authorize donation; a site is
+exactly the right party to *cite* its own state's statute.
+
+And there is an asymmetry that makes it work. A site's L2/L3 fit is **deliberately worthless to anyone
+else** — which means the repository is take-only by construction, and no site has any reason to push. A
+jurisdiction row inverts that: worth little to its author alone, valuable to the other fifty-four, and
+**because service areas span state lines you will need rows you did not write.** It is the first artifact
+here with a real reason to contribute back.
+
 ---
 
 ### Design choices, marked as such
