@@ -200,6 +200,40 @@ def check_gates() -> None:
            "local invertibility, shadow-run fidelity, totality — need a runtime and the site's tape")
 
 
+# ── 5b · does the battery have evidence it works? ───────────────────────────
+def check_witnesses() -> None:
+    """
+    `SPEC.md` §14's first-ranked risk is a WEAK BATTERY. A gate nobody has
+    watched refuse anything may work; nothing shows that it does. This reports
+    the coverage rather than assuming it.
+    """
+    sys.path.insert(0, os.path.join(ROOT, "gates"))
+    from witness import ENTANGLED, matrix
+
+    per_gate, _ = matrix()
+    n = len(per_gate)
+    wit = sum(1 for i in per_gate.values() if i["state"] == "WITNESSED")
+    gaps = [g for g, i in per_gate.items()
+            if i["state"] == "UNWITNESSED" and g not in ENTANGLED]
+
+    record(FAILED if gaps else GREEN, "battery · witnessed",
+           f"{len(gaps)} gate(s) never seen to refuse anything: {', '.join(gaps)}" if gaps
+           else f"{wit} of {n} gates cleanly witnessed; every gap explained")
+
+    weak = [g for g, i in per_gate.items()
+            if i["state"] == "INCIDENTAL" and g not in ENTANGLED]
+    record(UNVERIFIED if weak else GREEN, "battery · isolation",
+           f"{len(weak)} gate(s) fire only alongside others — a regression there would "
+           f"still look green: {', '.join(weak)}" if weak
+           else "every witnessed gate fires alone")
+
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "gates", "test_witness.py")],
+                       capture_output=True, text=True, encoding="utf-8",
+                       env=dict(os.environ, PYTHONIOENCODING="utf-8"))
+    last = (r.stdout.strip().splitlines() or ["no output"])[-1]
+    record(GREEN if r.returncode == 0 else FAILED, "battery · witness battery", last)
+
+
 # ── 6 · the floor works with everything learned disabled ────────────────────
 def check_floor() -> None:
     src = open(os.path.join(ROOT, "floor", "closure.py"), encoding="utf-8").read()
@@ -591,6 +625,7 @@ def main() -> int:
         ("the tape (L4)", check_tape),
         ("case replay", check_replay),
         ("the gates", check_gates),
+        ("the battery itself", check_witnesses),
         ("the floor", check_floor),
         ("provenance", check_citations),
         ("the clinical layer (L1)", check_clinical),
