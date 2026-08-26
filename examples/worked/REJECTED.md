@@ -121,9 +121,13 @@ If a row cannot be made total, **split it into rows that are.**
 python gates/validate_patch.py examples/worked/northlake.patch.json
 ```
 
-Every decidable gate is `GREEN`. Three report **`PASS-UNVERIFIED`** — local invertibility, shadow-run
-fidelity, and totality — because they cannot be decided from a file. They need a runtime to apply the row and
-compare, and they need the site's own tape to confirm a replay actually happened.
+Every decidable gate is `GREEN`. Two report **`PASS-UNVERIFIED`** — shadow-run fidelity and totality on
+provision — because they cannot be *confirmed* from a file. They need the site's own tape to show a replay
+actually happened, and a runtime to show that applying a row installs every key it declares.
+
+*(Local invertibility was the third until `core/algebra.py` landed. It had reported PASS-UNVERIFIED on the
+reasoning that T3 "needs a runtime" — half true, and unquestioned for weeks. T3's hypothesis is **pointwise**,
+and the patch file plus the seed determine that state exactly. It was computable all along.)*
 
 **The validator therefore exits non-zero on a patch with nothing wrong with it**, and says so:
 
@@ -132,3 +136,105 @@ compare, and they need the site's own tape to confirm a replay actually happened
 That is deliberate, and it is the lesson the whole battery exists to teach. `GREEN`, `PASS-UNVERIFIED` and
 `FAILED` are three different states. **A checker that reported GREEN for a check it never ran would be
 committing the exact error the three-state gate exists to prevent** — so this one refuses to, about itself.
+
+
+---
+
+# The witness audit
+
+**`2026-08-26`.** `SPEC.md` §14 ranks the risks and puts one first:
+
+> **The central risk is not a wrong patch. It is a weak battery.** A foreign harness produces confident,
+> plausible, wrong work all day, and the gates are the only thing between that and an organisation where
+> wrong loses an organ.
+
+That risk was **unmeasured**, and worse than unmeasured: the four fixtures that existed were written by the
+same author as the gates they test. A battery validated only against adversaries its own author imagined has
+exactly its author's blind spots.
+
+So the battery was audited against itself. `python gates/witness.py` reports the result, and conformance
+carries it, because **coverage is a number this repository must print rather than a property it may assume.**
+
+## What a witness is, and why the definition is strict
+
+> **A witness is a fixture that fires exactly one gate.**
+
+Not fussiness. A fixture that trips three gates proves that *something* refused the patch — **not which**.
+And if one of those three silently stopped working, the fixture would still fail, still be green, and still
+tell you nothing.
+
+By that definition the starting position was **one** cleanly witnessed gate out of thirteen. Every other
+fixture fired two to four gates at once, mostly because all four were unsigned and `signature` rode along
+with everything.
+
+**Now: seven cleanly witnessed, three entangled by construction, one uncaught and retained.**
+
+## Three gates cannot be isolated, and that is structural
+
+Recording this is the finding, not an excuse. **A fixture author who does not know will chase an impossible
+fixture; a reader who does not know will read "incidental" as sloppiness.**
+
+**`target syntax`** — a syntactically malformed target is *by definition* not a declared target, so
+`blast radius` always fires alongside it. It cannot be isolated, ever. **Its value is teaching, not
+catching:** *"your target has capital letters"* is actionable where *"that target does not exist"* is not.
+
+**`inverse declared`** — it fires only when the `inverse` KEY is absent, and an absent required field always
+trips `schema shape` first. Same entanglement, same conclusion.
+
+**`L0/L1/L4 immutability`** — **unreachable from any patch file.** It fires only when a target is *declared*
+**and** its layer is not L2/L3 — but every entry in `targets.json` is lifted from a `local_variation`, and
+all twenty are L2/L3. A row naming an undeclared target is caught by blast radius first; a row naming a
+declared one is L2/L3 by construction.
+
+> **It is a seed invariant living in a patch validator.** It would fire only if the *seed* declared an
+> L0/L1/L4 variation point — which is a defect in `lifecycle.yml`, not in anyone's patch. It is witnessed
+> with a synthetic target table in `test_witness.py`, and it should probably move to conformance, where seed
+> invariants live.
+
+## `signature` refuses in the middle state, and that is correct
+
+It never returns `FAILED`, and it must not. `AGENTS.md` has **a machine leave `author` empty**, and the
+signature is the output commit — so unsigned is *not yet*, never *wrong*. **A gate that FAILED there would
+refuse the very artifact a harness is meant to produce.**
+
+Its witness therefore asserts `PASS-UNVERIFIED`. The first version of the audit tool counted only `FAILED`
+and reported the unsigned fixture as **silent**, when the gate had refused it correctly.
+
+---
+
+# What still gets through
+
+## `14-silent-partial-UNCAUGHT.json` — retained, uncaught, on purpose
+
+**The most valuable output of the audit, and it is a fixture that passes.**
+
+`REJECTED.md` has always named *the silent one* as the worst shape a defect can take — a row that installs
+half of what it declares and stops convergence with no error and no symptom. `totality on provision` is the
+gate written to catch it.
+
+**It fires only when a row carries a literal `__partial__` marker.** That is, only when the author
+**annotates their own omission** — and a harness that forgets a key does not annotate the omission. The
+gate catches honest mistakes and misses real ones.
+
+The fixture is an operating-room window with an **opening time and no closing time**. It is signed, grounded,
+replayed, invertible, on the declared surface, syntactically valid, and its numbers agree with its sources.
+**Its own cited evidence says `06:00-10:00` twice.** The value carries only the `06:00`.
+
+**Thirteen gates. None of them refuse it.**
+
+`divergence` does not catch it either, and for a reason worth stating: clock times were deliberately excluded
+from quantity comparison after an earlier false positive, where the gate flagged a hospital identifier as an
+unsupported claim. **The exclusion that made gate 13 correct is what makes it blind here.**
+
+**Do not delete this file, and do not make it pass by weakening anything.** It is retained so the exposure
+stays visible instead of becoming a story — the same reason the expired regime is kept in `citations.json`.
+
+## The shape of the remaining exposure
+
+Completeness cannot be checked from a file. **Nothing in a patch says what a full value for a target looks
+like** — the seed declares *that* `recovery.or_availability` is a variation point, not *what shape* an answer
+must have.
+
+Closing it properly means the seed declaring a schema per target, so a partial answer is a type error rather
+than a silent one. **That is a change to the seed, not to the battery**, and it is out of this fork's
+partition — recorded here as the next thing anyone hunting this should read.
