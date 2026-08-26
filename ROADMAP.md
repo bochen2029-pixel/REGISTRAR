@@ -10,6 +10,14 @@ baseline it must beat. **Where this and a dated receipt disagree, the receipt wi
 **Standing rule, and it governs the whole document: no rung ships without its null.** If the cheap baseline
 wins, the funeral prints and that rung dies. A roadmap that cannot lose is a brochure.
 
+> ### Working in parallel? Read [`FORKS.md`](FORKS.md) first.
+>
+> As of `2026-08-26` this work is deliberately split across concurrent sessions. `FORKS.md` carries the
+> write-surface partition, the shared-file rules, and **the one constraint that is not negotiable:**
+> **`deepseek-harness-master/` is read-only to every fork.** It is pinned byte-for-byte against upstream,
+> and writing inside it converts a composition into a fork — the exact failure *compose, never fork* exists
+> to prevent. **Plugins are mounted beside it, never added to it.**
+
 ---
 
 ## Where it stands · `2026-08-26` · 40 GREEN · 7 PASS-UNVERIFIED · 0 FAILED · 197 assertions
@@ -98,6 +106,34 @@ and a negative result is uninformative — and finding that out costs an afterno
 
 **Pin the chassis.** Blocking, and it now blocks *wiring* rather than acquisition — the bytes are already
 here. `internal` §14 item 1. **Unpinned third-party code must not become load-bearing.**
+
+## 2b · The three-way split `[2026-08-26]`
+
+Concurrent, partitioned by write surface, contract in [`FORKS.md`](FORKS.md).
+
+| Fork | Doing | Owns |
+|---|---|---|
+| **mainline** | pre-register F-PATCH-DELTA | `experiments/` |
+| **A** | fold the estate tools in as forge capabilities, then mount the first two as dsh plugins | `forge/plugins/`, `forge/dsh/` |
+| **C** | **a witness for every gate** | `examples/worked/rejected/`, `gates/test_*.py` |
+
+**Fork A, in one line:** level 1 is *a bound capability* — the tool lands under `forge/plugins/<id>/`, adapted
+rather than copied, and `binding:` stops being `null`. Level 2 is *a mounted dsh plugin* — a thin package
+that registers the capability as a **tool in the harness's registry**, so a model discovers it instead of
+being told about it. **Level 1 for all of them; level 2 for `chunk` and `phi_scan` only, at first.**
+**Licences are a hard prerequisite** — only one estate tool currently carries one, and the contract refuses a
+mount without SPDX.
+
+**Fork C, and why it earns a whole session:** thirteen gates, **four** adversarial fixtures — nine gates have
+no evidence they can fire, and the four that exist were written by the same author as the gates. That is
+`SPEC.md` §14's *first-ranked* risk, unmeasured. **And it makes the falsifier stronger:** F-PATCH-DELTA
+grades against these gates, so a weak battery makes its verdict weak in the same proportion — a pass could
+mean *the harness did well* or *the battery is easy*, with nothing to tell them apart.
+
+**One coordination point:** F-PATCH-DELTA's pre-registration **pins the gate battery it grades against**, by
+commit SHA. Pre-registration fixes the instrument; a rubric that shifts while Fork C strengthens the gates
+underneath it is not pre-registered. Fork C's work applies to the *next* run, **and the delta between the two
+runs is itself informative.**
 
 ## 3 · Two cheap gates with real teeth
 
