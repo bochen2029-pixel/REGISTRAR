@@ -71,6 +71,19 @@ enforced structurally, and the blast-radius gate will refuse a patch that touche
 yourself reasoning toward *"the cleanest fix is a small change to `core/`"* — **that reasoning is the
 failure mode, and the correct action is §8.**
 
+### On composing new capability at runtime
+
+This runtime can build components from within a running session, and you may use that. It is jailed by
+design — in memory, discarded on restart, unable to promote itself, and a person has to start it — and the
+project does not disable it.
+
+But understand exactly what it is for. **Composing a tool to help you read, parse, diff or replay the site's
+own material is fine.** Composing anything that reaches the standing instance is not. Whatever you build, its
+*output* still leaves by one door: a candidate patch row, through the gates, under a signature. **There is no
+path from a component you authored to a mounted fit that skips §7.** The containment result in `SPEC.md` §3
+holds only because that is true; an agent that routes around it has not found a shortcut, it has broken the
+one property the whole design rests on.
+
 > **If L0 appears to be wrong, you have found something valuable and you must not fix it.** L0 encodes federal
 > policy. If it genuinely contradicts current policy, that is a defect in the seed affecting all fifty-five
 > organisations, and it is resolved by an issue against this repository with the public source cited — never
@@ -167,6 +180,11 @@ checked mechanically — the local-invertibility gate computes it. A plausible-l
 actually invert will be caught, and a row that fails it is worthless. Do not guess. If you cannot determine
 the prior value, that is a `STOP` (§8), not a field to fill with something reasonable.
 
+**On totality:** a row must install **every** key it declares, or none. A row that half-applies and returns
+looks successful, passes casual review, and **silently breaks the guarantee that independent completions
+converge** — with no error until something downstream reads a key nobody wrote. If you cannot make a row
+total, split it into rows that are. Gate 11 checks this.
+
 **On `author`:** leave it empty. **You do not sign.** A named human signs, and that signature is the thing
 that makes this whole architecture legitimate. Your output is a *candidate*.
 
@@ -243,13 +261,15 @@ These are ranked by how likely you are to do them.
 4. **Writing rows for the general case.** "Most OPOs use…" is not a fit. If it is not *this* organisation,
    it does not belong.
 5. **Fabricating a plausible inverse.** See §5.
-6. **Filling `author`.** See §5. You do not sign.
-7. **Producing volume.** A hundred shallow rows is worse than fifteen sourced ones — it buries the real
+6. **Writing a row that half-installs.** The most invisible error available to you: it passes review, runs,
+   and breaks convergence with no symptom. See §5, *On totality*.
+7. **Filling `author`.** See §5. You do not sign.
+8. **Producing volume.** A hundred shallow rows is worse than fifteen sourced ones — it buries the real
    findings and exhausts the human reviewing them. **The reviewer's attention is the scarcest resource in
    this process. Spend it deliberately.**
-8. **Smoothing over a contradiction.** When two sources conflict, that conflict is a *finding*. Surface it;
+9. **Smoothing over a contradiction.** When two sources conflict, that conflict is a *finding*. Surface it;
    do not resolve it silently by picking the more plausible one.
-9. **Treating the gates as an obstacle.** They are the specification. An agent that experiences the gates as
+10. **Treating the gates as an obstacle.** They are the specification. An agent that experiences the gates as
    friction is an agent about to do something the gates exist to prevent.
 
 ---

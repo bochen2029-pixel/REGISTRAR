@@ -114,6 +114,40 @@ PHI, nothing to protect and nothing to negotiate. A local open-weight model on y
 your SOPs, your tickets, your configs, your tape. It never egresses. Unplug the network cable and it behaves
 identically.
 
+That split is not two stacks. The runtime resolves providers as **configuration**: an OpenAI-compatible
+gateway, a self-hosted endpoint, or a provider newer than the shipped catalog is a config route, and
+credentials are references resolved per request rather than secrets sitting in a file. **One runtime, two
+routes, and no path from the site route to the public one.**
+
+---
+
+## The runtime, named
+
+REGISTRAR ships no plugin system of its own. **It is a distribution** — a pinned runtime, packages beside it,
+and a profile that mounts only what an electronic donor record needs.
+
+The runtime is [**Cordis**](https://github.com/deepseek-ai/deepseek-harness) (MIT), the effect and coeffect
+kernel formalised in *A Programming Paradigm for Spatiotemporal Composability* (Peking University and
+DeepSeek-AI). The algebra in [`SPEC.md` §3](SPEC.md) is that kernel's semantics with this domain's objects
+substituted in. The alternative was re-deriving a published, tested effect system ourselves — novel,
+unaudited, unmaintained, and it would make the theorems claims about code nobody has reviewed.
+
+Two maturity facts, deliberately kept apart:
+
+- **The kernel is `cordis` v4.0.1**, with roughly four years and several thousand community plugins behind it
+  before it was adopted here. This is where the guarantees live.
+- **The harness built on it is a release candidate** and says so. That is the layer a distribution composes
+  down — pinned and vendored, never tracked.
+
+**Compose, never fork.** A fork inherits permanent maintenance burden and destroys the upgrade path. Because
+the mounted surface is a profile, **your audit surface is what you mount, not what is in the tree** — and the
+seed itself, the part that decides anything, is small enough to read.
+
+**Your harness, not ours.** Any competent coding harness can complete the fit; [`AGENTS.md`](AGENTS.md) is
+written for all of them and names none. The runtime happens to be able to serve as one *and* to drive Claude
+Code or Codex as subagents, so the two can compose — but that is a convenience, never a requirement. **Nothing
+in this design cares which harness you point at it.**
+
 ---
 
 ## Repository status

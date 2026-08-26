@@ -119,6 +119,17 @@ A patch row is a **pair** — a change and its inverse. Without `p⁻` the pair 
 and `mount` is undefined. **The inverse is required by the algebra, not by a policy somebody could relax
 under deadline.**
 
+### A note on `=`
+
+Throughout this section, an equality between contexts is **observational equivalence**, written `≃`: two
+states are related when no observer can distinguish them.
+
+This is not a hedge, and it is not a weakening. The strict form is unattainable in any real runtime — freeing
+a block does not restore the heap's prior layout, and a discarded generative name is not the one the next
+allocation draws. Observational equivalence is the established notion of program equivalence, and for a
+configuration layer it is also the *correct* notion: what matters is that nothing downstream can tell the
+difference, not that the bytes match.
+
 ### Theorems
 
 **T1 · the lift projects.**
@@ -142,9 +153,23 @@ change the mounted fit. Fifty-five teams completing the seed separately, in any 
 places. And the *twist* — inverses composing in reverse — is the formal reason retirement must unwind in
 reverse dependency order. The algebra forces it; no implementation gets a vote.
 
+**The preconditions, stated rather than assumed.** T2 is associativity, and it gives order-independence for a
+*given set* of rows. Lifting that to the full runtime claim — two completions of the same row set settling
+into equivalent states — carries four hypotheses, and they are load-bearing:
+
+1. **Quiescence.** Both settle; the claim is about settled states, not states mid-flight.
+2. **Acyclic dependencies** among rows.
+3. **The same set of operations.** Different row sets are not claimed to converge, and never were.
+4. **Every row total on its provision** — a row whose application completes must have installed *every* key
+   it declares.
+
+The fourth is the one a machine-authored row can violate: a row that half-installs and returns breaks the
+guarantee **silently**, with no error and no symptom until something downstream reads a key that was never
+written. It is therefore not left to authorial care. **It is gate 11.**
+
 **T3 · retirement is invariant under mounting.**
 ```
-retire( mount(p,p⁻)(λ,ρ) ) = retire(λ,ρ)        whenever   p⁻(p(λ)) = λ
+retire( mount(p,p⁻)(λ,ρ) ) ≃ retire(λ,ρ)        whenever   p⁻(p(λ)) ≃ λ
 ```
 *Proof.* The left side is `((ρ ∘ p⁻)(p(λ)), id) = (ρ(p⁻(p(λ))), id)`, and the hypothesis collapses the inner
 term to `λ`. ∎
@@ -161,7 +186,7 @@ G : M_Λ × ∂Λ → { GREEN, PASS-UNVERIFIED, FAILED }
 ```
 and let gated mounting be the identity unless the verdict is `GREEN` **and** a signature is present. Then
 ```
-∀A,   Reach_G(λ₀, id)  ⊆  { (λ,ρ) : retire(λ,ρ) = (λ₀, id) }
+∀A,   Reach_G(λ₀, id)  ⊆  { (λ,ρ) : retire(λ,ρ) ≃ (λ₀, id) }
 ```
 *Proof.* Induction on the number of gated mounts. Base: `retire(λ₀, id) = (λ₀, id)`. Each step is either the
 identity, or a mount whose local-inverse hypothesis the gate has verified — and T3 preserves the retirement
@@ -210,6 +235,7 @@ hard stop **naming the exact defect in words** and escalates to a human, rather 
 | Evidence binding | a row asserting local practice with no cited source and no shadow run |
 | **Local invertibility** | a row where `p⁻(p(λ)) ≠ λ` at the current `λ` — the T3 hypothesis, mechanised |
 | Floor-with-learned-zeroed | a release where the deterministic floor fails with every model component disabled |
+| **Totality on provision** | a row whose application completes without having installed every key it declares — the silent breaker of confluence |
 | Three-state honesty | reporting `GREEN` where the truth is `PASS-UNVERIFIED` |
 
 That last row is the one everybody collapses. **`GREEN`, `PASS-UNVERIFIED` and `FAILED` are three different
@@ -326,6 +352,31 @@ Written as prohibitions because they should be unreachable rather than discourag
    different object entirely.
 7. It does not **make or override a clinical determination.** It surfaces and cites; the human decides.
 
+### Why this list is a boundary rather than a policy
+
+Every operation that reaches outside a system proceeds in two stages, and they fall on opposite sides of the
+line that decides what can be undone.
+
+- **Acquisition** — opening a descriptor, reserving a block, starting a process. It installs a record *inside*
+  the boundary, and that record is revertible.
+- **Emission** — the write, the send, the submission. It pushes data through the channel that acquisition
+  opened, leaves it where other parties may read it, and **has no inverse.** Nothing in any runtime can
+  retract it.
+
+There are exactly two recoveries available for an emission. **Withhold** it until the state that produced it
+is certain to persist. Or **compensate** — an action restoring things up to some coarser equivalence the
+application supplies: delete the file that was created, refund the charge that was made. Compensations compose
+in the same order inverses do, but the guarantees do not travel with them; each one has to be argued again on
+its own terms.
+
+**REGISTRAR acquires and never emits.** It reads, connects, computes and holds. It does not submit, send,
+sign, allocate or act. The list above is therefore not caution and not a product decision — **it is the system
+boundary drawn where the theory says it has to be. An emission never made needs no compensation.**
+
+And the other recovery has a name here too. *Withholding an emission until the state that produced it is
+certain to persist* is precisely what a human signature does in this design. **The signature is the output
+commit.**
+
 **Advisory by construction.** The clinical-decision-support carve-out turns on whether software presents the
 basis of its recommendation so a professional can independently review it and does not rely primarily on the
 software. That clause is not merely compatible with this design — **it is this design, arrived at from the
@@ -334,7 +385,43 @@ no regulatory status it has not had reviewed.
 
 ---
 
-## §9 · Repository layout `[SPEC — to be created]`
+## §9 · The distribution
+
+REGISTRAR is not a framework and does not ship its own plugin system. **It is a distribution**: a pinned
+runtime, a set of out-of-tree packages, and a profile that mounts only what an electronic donor record needs.
+
+**The runtime is [Cordis](https://github.com/deepseek-ai/deepseek-harness)** (MIT), the effect and coeffect
+kernel formalised in *A Programming Paradigm for Spatiotemporal Composability* (Shi, Zhang & Cui; Peking
+University and DeepSeek-AI), together with the harness built on it. The algebra in §3 is not an abstraction
+over nothing — `mount`, `retire`, the twisted product and confluence are that kernel's semantics with the
+objects of this domain substituted in. **The alternative to depending on it was re-deriving a published,
+tested effect system ourselves, which would be novel, unaudited and unmaintained, and would make §3's
+theorems claims about code nobody has reviewed.**
+
+Two maturity facts, kept separate because they carry different risk:
+
+- **The kernel is `cordis` v4.0.1**, authored by Shigma, with roughly four years and several thousand
+  community plugins behind it in the Koishi ecosystem before DeepSeek adopted it. This is where §3 lives.
+- **The harness around it is a release candidate** and says so. That is the layer a distribution composes
+  down, and it is pinned and vendored rather than tracked.
+
+**Compose, never fork.** A fork inherits permanent maintenance burden and destroys the upgrade path. The
+distribution is a pinned tree plus `@registrar/*` packages beside it plus a profile — so the mounted surface
+is a configuration, and **the audit surface is what you mount, not what is in the tree.**
+
+**Provider-agnostic by construction.** The runtime's LLM seam resolves providers as configuration rather than
+code: an OpenAI-compatible gateway, a self-hosted endpoint, or a provider newer than the shipped catalog is a
+config route. Credentials are *references* resolved per request, so no secret enters a config file. **This is
+what makes §5's two-model split one runtime with two routes rather than two stacks** — a public route for the
+seed, a local route for the site, and no way for the second to reach the first.
+
+**Self-modification is permitted inward and gated outward.** The runtime can compose new components from
+within a running session — in process memory, discarded on restart, unable to promote themselves, and
+requiring a person to start them. That is a real capability and this project does not disable it. But nothing
+it authors reaches the standing instance except as a **candidate patch row**, through the gates of §4, under a
+signature. The runtime's own design already draws that line; REGISTRAR only insists on it.
+
+### Repository layout `[SPEC — to be created]`
 
 ```
 core/            L0 — lifecycle · elements + validators · submission · measures · timers
