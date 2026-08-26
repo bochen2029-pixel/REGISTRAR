@@ -21,7 +21,7 @@
       "locator": "42 CFR 486.318(d)",
       "quote": "An OPO is evaluated by measuring the donation rate and the organ transplantation rate in their DSA.",
       "establishes": "TWO outcome measures, codified. Confirms the fact-sheet claim against the regulation itself.",
-      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-25."
+      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-26."
     },
     {
       "element": "core/lifecycle/measures/donation_rate",
@@ -29,7 +29,7 @@
       "locator": "42 CFR 486.318(d)(1)(i)",
       "quote": "The donation rate is calculated as the number of donors in the DSA as a percentage of the donor potential.",
       "establishes": "Numerator: donors in the DSA. Denominator: donor potential.",
-      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-25."
+      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-26."
     },
     {
       "element": "core/lifecycle/measures/transplantation_rate",
@@ -37,7 +37,7 @@
       "locator": "42 CFR 486.318(d)(1)(ii)",
       "quote": "The organ transplantation rate is calculated as the number of organs transplanted from donors in the DSA as a percentage of the donor potential.",
       "establishes": "Numerator: organs transplanted from DSA donors. Denominator: the same donor potential.",
-      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-25."
+      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-26."
     },
     {
       "element": "core/lifecycle/measures/denominator",
@@ -45,7 +45,7 @@
       "locator": "42 CFR 486.318(d)(1)(iv)",
       "quote": "The denominator for the outcome measures is the donor potential and is based on inpatient deaths within the DSA from patients 75 or younger with a primary cause of death that is consistent with organ donation.",
       "establishes": "The denominator is far more specific than 'inpatient death records': patients 75 or younger, primary cause consistent with organ donation, from state death certificates, most recent 12 months.",
-      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-25."
+      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-26."
     },
     {
       "element": "core/lifecycle/tiering",
@@ -53,7 +53,7 @@
       "locator": "42 CFR 486.318(e)(6)",
       "quote": "Tier 3—OPOs that have an upper limit of the one-sided 95 percent confidence interval for their donation or organ transplantation rates that are below the median threshold rate established for their DSA will be identified at each assessment period.",
       "establishes": "Tier 3 is triggered by falling below median on donation OR transplantation - either measure, not both. Tiers are computed per DSA.",
-      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-25."
+      "currency_confirmed": "486.318(a)(4) scopes the sunset to (a)(1)-(3) only; this quote is from paragraph (d), which carries no sunset and is the regime in force. Confirmed against the full section 2026-08-26."
     },
     {
       "element": "core/lifecycle/states/death_determination",
@@ -125,6 +125,76 @@
       "locator": "42 CFR 121.11(a)(2)(i)",
       "quote": "All OPOs and transplant programs shall maintain such records pertaining to each potential donor identified, each organ retrieved, each recipient transplanted and such other transplantation-related matters as the Secretary deems necessary to carry out her/his responsibilities under the Act.",
       "establishes": "Records are required for EACH POTENTIAL DONOR IDENTIFIED - not only converted cases. The non-conversion terminals in the lifecycle are therefore mandated record-keeping, not a design nicety."
+    },
+    {
+      "element": "core/lifecycle/states/referral_triaged",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.3 (p.24-25)",
+      "quote": "Attempt to obtain the deceased donor’s medical and behavioral history from one or more individuals familiar with the donor according to Policy 2.4: Deceased Donor Medical and Behavioral History, to screen for medical conditions that may affect the decision to use the donated organ.",
+      "establishes": "Screening is a defined four-step duty. Note step 4: if information is unavailable, the ABSENCE and its reason must be documented — an absence is a required record, not a blank."
+    },
+    {
+      "element": "core/lifecycle/states/referral_triaged/absence",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.3(4)",
+      "quote": "Document in the deceased donor medical record if any of this information is not available and the reason it is not available.",
+      "establishes": "MISSING INFORMATION IS ITSELF A REQUIRED ENTRY. The policy mandates recording an absence with its reason - which is the ledger-of-silence property, already required by rule."
+    },
+    {
+      "element": "core/lifecycle/states/donor_management",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.13 (p.33)",
+      "quote": "The host OPO must make reasonable efforts to manage the deceased donor by addressing all of the following: 1. Maintaining blood pressure for perfusion of vital organs 2. Monitoring vital signs 3. Administering IV therapy or drugs, as required 4. Administering antibiotic therapy, as required 5. Administering and monitoring fluid intake and output",
+      "establishes": "Five enumerated management duties, with documentation and reporting required. The standard is 'reasonable efforts', not an outcome."
+    },
+    {
+      "element": "core/lifecycle/states/authorization",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.14.E (p.36)",
+      "quote": "The host OPO may only recover organs that it has received authorization to recover.",
+      "establishes": "Authorization is a hard precondition on recovery, per organ. Exactly a transition guard."
+    },
+    {
+      "element": "core/lifecycle/states/no_organs_recovered",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.14.E (p.36)",
+      "quote": "If an authorized organ is not recovered, the host OPO must document the specific reason for non-recovery.",
+      "establishes": "Non-recovery requires a documented SPECIFIC REASON. The non-conversion terminal is a mandated record with a required reason code."
+    },
+    {
+      "element": "core/lifecycle/states/death_determination/separation",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.15.G (p.38)",
+      "quote": "The donor hospital healthcare team member who declares the death of the potential deceased donor cannot be involved in any aspect of the organ recovery procedure or transplantation of that donor’s organs.",
+      "establishes": "SEPARATION OF FUNCTIONS, explicitly. The declarer may not participate in recovery or transplantation. This is the claim originally drafted for this element and not found in the CFR - it is here."
+    },
+    {
+      "element": "core/lifecycle/pathways/DCD",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.15",
+      "quote": "2.15 Requirements for Controlled Donation after Circulatory Death",
+      "establishes": "Controlled DCD is a distinct pathway with its own protocol, evaluation, consent, authorization, withdrawal, pronouncement and recovery requirements (2.15.A-I)."
+    },
+    {
+      "element": "core/lifecycle/states/disposition",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.12 (p.33)",
+      "quote": "The host OPO is responsible for follow up and reporting of deceased donor test results received after procurement.",
+      "establishes": "Disposition does not close the case: results arriving AFTER procurement must still be obtained and reported. The record stays open to late-arriving truth."
+    },
+    {
+      "element": "core/lifecycle/states/recovery",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.14.B (Table 2-2)",
+      "quote": "Host OPOs must develop and comply with a written protocol to perform a pre-recovery verification for each organ recovered as required below.",
+      "establishes": "A written pre-recovery verification protocol is required, PER ORGAN, before recovery."
+    },
+    {
+      "element": "core/lifecycle/states/recovery/two_person",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.14.B",
+      "quote": "Qualified health care professionals, as defined in the host OPO’s protocol, must perform all verifications. At least one of the individuals performing a verification must be an OPO staff member.",
+      "establishes": "Verification is TWO-PERSON, at least one of whom is OPO staff - a four-eyes requirement, and the definition of 'qualified' is delegated to the OPO's own protocol (an L2 variation point)."
     }
   ]
 }

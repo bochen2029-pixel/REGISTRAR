@@ -86,12 +86,34 @@ def build_machine() -> dict:
             "grain": st.get("grain", "case"),
             "concurrent_with": st.get("concurrent_with") or [],
             "requires_elements": st.get("requires_elements") or [],
-            # an element whose locator is unverified is a TODO, not a mandate —
-            # the runtime must know which is which
-            "verified": all(
-                (p or {}).get("locator") not in (None, "TODO-VERIFY")
+            # An element is verified only if EVERY provenance entry carries
+            # quote_verified: true — i.e. its quote was byte-checked against a
+            # pinned source by tools/cite.py.
+            #
+            # The earlier rule was "locator is not the literal string
+            # TODO-VERIFY", and it was gameable: renaming a locator to anything
+            # else silently flipped the flag. That happened, to authorization,
+            # whose state-law leg cannot be established by any single citation.
+            # A status flag that can be cleared by rewording is not a status
+            # flag. This one requires evidence.
+            "verified": bool(st.get("provenance")) and all(
+                (p or {}).get("quote_verified") is True
                 for p in (st.get("provenance") or [])
-            ) if st.get("provenance") else False,
+            ),
+            # WHY it is unverified, because the reasons are not equivalent:
+            #   design-choice   no source exists — this element is ours
+            #   known-incomplete  cannot be established by a single citation
+            #   unverified      nobody has checked yet
+            "unverified_because": (
+                None if bool(st.get("provenance")) and all(
+                    (p or {}).get("quote_verified") is True for p in st.get("provenance") or []
+                ) else next(
+                    ((p.get("kind") or p.get("status") or "unverified")
+                     for p in (st.get("provenance") or [])
+                     if (p or {}).get("quote_verified") is not True),
+                    "no-provenance",
+                )
+            ),
         }
 
     transitions = [

@@ -9,7 +9,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": true
+      "verified": true,
+      "unverified_because": null
     },
     "referral_triaged": {
       "name": "Referral triaged",
@@ -17,7 +18,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true,
+      "unverified_because": null
     },
     "evaluation": {
       "name": "Donor evaluation",
@@ -29,7 +31,8 @@
         "donor_management"
       ],
       "requires_elements": [],
-      "verified": true
+      "verified": true,
+      "unverified_because": null
     },
     "death_determination": {
       "name": "Death determination",
@@ -37,7 +40,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": true
+      "verified": true,
+      "unverified_because": null
     },
     "authorization": {
       "name": "Authorization",
@@ -45,7 +49,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": false,
+      "unverified_because": "known-incomplete"
     },
     "donor_management": {
       "name": "Donor management",
@@ -56,7 +61,8 @@
         "allocation"
       ],
       "requires_elements": [],
-      "verified": false
+      "verified": true,
+      "unverified_because": null
     },
     "allocation": {
       "name": "Allocation",
@@ -68,7 +74,8 @@
         "typing_complete",
         "authorization_valid"
       ],
-      "verified": true
+      "verified": true,
+      "unverified_because": null
     },
     "recovery": {
       "name": "Surgical recovery",
@@ -76,7 +83,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true,
+      "unverified_because": null
     },
     "packaging_transport": {
       "name": "Packaging and transport",
@@ -84,7 +92,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": true
+      "verified": true,
+      "unverified_because": null
     },
     "disposition": {
       "name": "Disposition",
@@ -92,7 +101,8 @@
       "grain": "per_organ",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true,
+      "unverified_because": null
     },
     "reporting_closed": {
       "name": "Reporting closed",
@@ -100,7 +110,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": true
+      "verified": true,
+      "unverified_because": null
     },
     "ruled_out_medical": {
       "name": "Ruled out — medically unsuitable",
@@ -108,7 +119,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true,
+      "unverified_because": null
     },
     "authorization_declined": {
       "name": "Authorization declined",
@@ -116,7 +128,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true,
+      "unverified_because": null
     },
     "no_organs_recovered": {
       "name": "No organs recovered",
@@ -124,7 +137,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true,
+      "unverified_because": null
     },
     "referral_lapsed": {
       "name": "Referral lapsed",
@@ -132,7 +146,8 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": true
+      "verified": false,
+      "unverified_because": "design-choice"
     }
   },
   "transitions": [

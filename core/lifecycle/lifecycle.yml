@@ -24,7 +24,7 @@
 schema_version: 0.1
 layer: L0
 status: SPEC                      # structure drafted; locators unverified
-generated: 2026-08-25
+generated: 2026-08-26
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PATHWAYS
@@ -37,7 +37,15 @@ pathways:
     provenance: { authority: OPTN Policy, locator: TODO-VERIFY }
   DCD:
     name: donation after circulatory death
-    provenance: { authority: OPTN Policy, locator: TODO-VERIFY }
+    provenance:
+      authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+      locator: OPTN Policy 2.15 (Requirements for Controlled Donation after Circulatory Death)
+      accessed: 2026-08-26
+      quote_verified: true
+      note: >
+        A distinct pathway with its own agreement, protocols, evaluation,
+        consent, authorization, withdrawal, pronouncement and recovery
+        requirements (2.15.A-I) — not a variant of the DBD path.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # STATES
@@ -57,7 +65,7 @@ states:
           The OPO-hospital referral relationship is a written agreement the OPO
           is required to hold, at a stated coverage threshold of its service area.
         locator: 42 CFR 486.322(a)
-        accessed: 2026-08-25
+        accessed: 2026-08-26
         quote_verified: true
     local_variation:
       - id: intake.timely_referral_definition
@@ -81,10 +89,20 @@ states:
       to evaluation or terminates as medically unsuitable.
     terminal: false
     provenance:
-      - authority: OPTN Policy
-        establishes: medical suitability screening criteria
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          A four-step screening duty: obtain medical and behavioural history,
+          review the record, complete a physical examination, and "Document in
+          the deceased donor medical record if any of this information is not
+          available and the reason it is not available."
+        locator: OPTN Policy 2.3 (p.24-25)
+        accessed: 2026-08-26
+        quote_verified: true
+        note: >
+          Step 4 is what matters architecturally. **Missing information is
+          itself a required entry, with its reason.** The ledger-of-silence
+          property this project argued for on design grounds turns out to be
+          required by rule.
     local_variation:
       - id: triage.ruleout_authority
         note: which role may rule out without escalation, and at what hour
@@ -108,7 +126,7 @@ states:
           blood samples." And: "Document potential donor's record with all test
           results, including blood type, before organ recovery."
         locator: 42 CFR 486.344(c)(3)-(4)
-        accessed: 2026-08-25
+        accessed: 2026-08-26
         quote_verified: true
         note: >
           Two findings. Typing requires TWO separate samples — a duplication
@@ -141,13 +159,24 @@ states:
           State, and Federal laws." The OPO's duty is to VERIFY a pronouncement
           made elsewhere. It does not pronounce.
         locator: 42 CFR 486.344(b)(1)
-        accessed: 2026-08-25
+        accessed: 2026-08-26
         quote_verified: true
         note: >
-          Stronger than the drafted claim, which said "separation of death
-          determination from donation activity". The text is narrower and more
-          useful: the duty is verification, which is exactly what the
-          constitutional note below already required of this system.
+          Narrower than the drafted claim — the CFR duty is verification.
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          "The donor hospital healthcare team member who declares the death of
+          the potential deceased donor cannot be involved in any aspect of the
+          organ recovery procedure or transplantation of that donor's organs."
+        locator: OPTN Policy 2.15.G (p.38)
+        accessed: 2026-08-26
+        quote_verified: true
+        note: >
+          **Separation of functions, explicitly** — the claim originally drafted
+          for this element, corrected away when it could not be found in the
+          CFR, and now recovered from its actual source. Both are true: the CFR
+          gives the OPO a duty to VERIFY, and OPTN Policy forbids the DECLARER
+          from participating in recovery. Only the attribution was wrong.
     constitutional_note: >
       REGISTRAR never determines or asserts death. It records a determination
       made and attributed elsewhere. See SPEC.md §8, prohibition 2.
@@ -161,18 +190,33 @@ states:
       every downstream step depends on.
     terminal: false
     provenance:
-      - authority: 42 CFR 486 Subpart G
-        establishes: authorization requirements and documentation
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          "The host OPO may only recover organs that it has received
+          authorization to recover."
+        locator: OPTN Policy 2.14.E (p.36)
+        accessed: 2026-08-26
+        quote_verified: true
+        note: >
+          A hard precondition on recovery, per organ — exactly a transition guard.
       - authority: state anatomical gift act (UAGA as adopted)
         establishes: who may authorize, and the standing of first-person authorization
-        locator: TODO-VERIFY
+        locator: PER-JURISDICTION — REQUIRES A STATE TABLE
         accessed: null
+        status: known-incomplete
         note: >
-          Varies by state. This is a rare case where L0 is not byte-identical
-          nationally; the variation is statutory rather than operational, so it
-          belongs in the seed as a jurisdiction table, NOT in a site patch.
+          **This is not an unfilled TODO; it is a different class of work.**
+          Every other locator in this file resolves to one document. This one
+          resolves to fifty-odd state statutes, and no single citation can
+          establish it. It therefore stays unverified — and `authorization`
+          stays `verified: false` — until a jurisdiction table exists with a
+          citation per state.
+
+          That is the honest state, and it is deliberately not gamed: the flag
+          reports that this element is not fully established, which is true.
+          The variation is statutory rather than operational, so the table
+          belongs in the seed, NOT in a site patch — a site does not get to
+          author who may authorize donation.
     local_variation:
       - id: authorization.approach_sequence
         note: observed order of approach (in person, telephonic) and who accompanies
@@ -193,10 +237,20 @@ states:
     terminal: false
     concurrent_with: [ evaluation, allocation ]
     provenance:
-      - authority: OPTN Policy
-        establishes: donor management goals and reportable measurements
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          Five enumerated duties — maintain blood pressure for perfusion,
+          monitor vital signs, administer IV therapy or drugs as required,
+          administer antibiotic therapy as required, administer and monitor
+          fluid intake and output — documented and reported.
+        locator: OPTN Policy 2.13 (p.33)
+        accessed: 2026-08-26
+        quote_verified: true
+        note: >
+          The standard is "reasonable efforts", not an outcome. A validator may
+          check that effort was documented; it may never check that a
+          physiologic target was met — that is a clinical judgment this system
+          is prohibited from making.
     local_variation:
       - id: management.protocol_variant
         note: which management protocol is in local use and who may deviate
@@ -221,7 +275,7 @@ states:
           whether to transplant the organ into the potential recipient has been
           given to the transplant hospital."
         locator: 42 CFR 121.7(a)(1) and 121.7(b)(3)
-        accessed: 2026-08-25
+        accessed: 2026-08-26
         quote_verified: true
         note: >
           Ranking is done by the OPTN match program; the OPO OPERATES it and
@@ -248,10 +302,19 @@ states:
       ischemia clock for each organ independently.
     terminal: false
     provenance:
-      - authority: OPTN Policy
-        establishes: recovery documentation and organ disposition recording
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          "Host OPOs must develop and comply with a written protocol to perform
+          a pre-recovery verification for each organ recovered." Verification is
+          performed by qualified health care professionals, "At least one of the
+          individuals performing a verification must be an OPO staff member."
+        locator: OPTN Policy 2.14.B (Table 2-2)
+        accessed: 2026-08-26
+        quote_verified: true
+        note: >
+          A four-eyes requirement, per organ, before recovery — and note that
+          "qualified" is delegated to the OPO's own written protocol, which
+          makes it a local variation point rather than a national definition.
     local_variation:
       - id: recovery.or_availability
         note: >
@@ -276,7 +339,7 @@ states:
           determine the suitability of the organ donor and shall maintain this
           document for one year."
         locator: 42 CFR 121.7(c)
-        accessed: 2026-08-25
+        accessed: 2026-08-26
         quote_verified: true
         note: >
           Documentation travels WITH the organ and is retained a year. The
@@ -298,17 +361,25 @@ states:
     terminal: false
     grain: per_organ
     provenance:
-      - authority: OPTN Policy
-        establishes: disposition reporting and reason codes
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          "The host OPO is responsible for follow up and reporting of deceased
+          donor test results received after procurement."
+        locator: OPTN Policy 2.12 (p.33)
+        accessed: 2026-08-26
+        quote_verified: true
+        note: >
+          **Disposition does not close the case.** Results arriving after
+          procurement must still be obtained and reported — the record stays
+          open to late-arriving truth, which is why L4 is append-only and a
+          correction is an append rather than an edit.
     local_variation: []
 
   # L4's statutory basis. Note the scope: records are required for EACH
   # POTENTIAL DONOR IDENTIFIED, not only for converted cases — which makes the
   # non-conversion terminals below mandated record-keeping rather than a design
   # choice this project made for tidiness.
-  #   42 CFR 121.11(a)(2)(i), accessed 2026-08-25, quote verified:
+  #   42 CFR 121.11(a)(2)(i), accessed 2026-08-26, quote verified:
   #   "All OPOs and transplant programs shall maintain such records pertaining
   #    to each potential donor identified, each organ retrieved, each recipient
   #    transplanted…"
@@ -327,7 +398,7 @@ states:
           corrected data to the OPTN within 30 days of the end of the month in
           which the error is identified."
         locator: 42 CFR 486.328(d)
-        accessed: 2026-08-25
+        accessed: 2026-08-26
         quote_verified: true
         note: >
           The regulation is itself append-with-correction: an error is REPORTED,
@@ -343,13 +414,28 @@ states:
   - id: ruled_out_medical
     name: Ruled out — medically unsuitable
     terminal: true
-    provenance: [ { authority: OPTN Policy, establishes: suitability criteria, locator: TODO-VERIFY, accessed: null } ]
+    provenance:
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          Screening under Policy 2.3 determines suitability; where information
+          is unavailable the absence and its reason are themselves recorded.
+        locator: OPTN Policy 2.3 (p.24-25)
+        accessed: 2026-08-26
+        quote_verified: true
     local_variation: []
 
   - id: authorization_declined
     name: Authorization declined
     terminal: true
-    provenance: [ { authority: 42 CFR 486 Subpart G, establishes: authorization outcome recording, locator: TODO-VERIFY, accessed: null } ]
+    provenance:
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          "The host OPO may only recover organs that it has received
+          authorization to recover." Absent authorization, recovery does not
+          occur and the case terminates here.
+        locator: OPTN Policy 2.14.E (p.36)
+        accessed: 2026-08-26
+        quote_verified: true
     local_variation: []
     constitutional_note: >
       No REGISTRAR component participates in, scripts, prompts, or observes the
@@ -358,7 +444,17 @@ states:
   - id: no_organs_recovered
     name: No organs recovered
     terminal: true
-    provenance: [ { authority: OPTN Policy, establishes: disposition reason codes, locator: TODO-VERIFY, accessed: null } ]
+    provenance:
+      - authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+        establishes: >
+          "If an authorized organ is not recovered, the host OPO must document
+          the specific reason for non-recovery."
+        locator: OPTN Policy 2.14.E (p.36)
+        accessed: 2026-08-26
+        quote_verified: true
+        note: >
+          A mandated record with a required reason code — the non-conversion
+          terminal is an obligation, not an absence.
     local_variation: []
 
   - id: referral_lapsed
@@ -376,7 +472,7 @@ states:
           PROVENANCE.md §5.
         kind: design-choice
         locator: n/a
-        accessed: 2026-08-25
+        accessed: 2026-08-26
     local_variation:
       - id: lapse.threshold
         note: when a site considers a referral lapsed rather than open
@@ -417,12 +513,12 @@ timers:
     to: referral_triaged
     bound: upper
     value: null
-    layer: L3            # CORRECTED 2026-08-25 — was L0
+    layer: L3            # CORRECTED 2026-08-26 — was L0
     target: intake.timely_referral_definition
     provenance:
       authority: 42 CFR 486 Subpart G
       locator: 42 CFR 486.322(a)
-      accessed: 2026-08-25
+      accessed: 2026-08-26
       quote_verified: true
       establishes: >
         "The agreement must specify the meaning of the terms 'timely referral'
@@ -461,7 +557,7 @@ timers:
     provenance:
       authority: 42 CFR 486 Subpart G
       locator: 42 CFR 486.328(d)
-      accessed: 2026-08-25
+      accessed: 2026-08-26
       quote_verified: true
       establishes: >
         "Data reported by the OPO to the OPTN must be reported within 30 days
@@ -499,7 +595,7 @@ measures:
     provenance:
       authority: 42 CFR 486 Subpart G
       locator: 42 CFR 486.318(d)(1)(i)
-      accessed: 2026-08-25
+      accessed: 2026-08-26
       quote_verified: true
       currency_confirmed: >
         486.318(a)(4) sunsets paragraphs (a)(1)-(3) only; (d) carries no sunset
@@ -518,7 +614,7 @@ measures:
     provenance:
       authority: 42 CFR 486 Subpart G
       locator: 42 CFR 486.318(d)(1)(ii)
-      accessed: 2026-08-25
+      accessed: 2026-08-26
       quote_verified: true
       establishes: >
         "The organ transplantation rate is calculated as the number of organs
@@ -535,7 +631,7 @@ measures:
     provenance:
       authority: 42 CFR 486 Subpart G
       locator: 42 CFR 486.318(d)(1)(iv)
-      accessed: 2026-08-25
+      accessed: 2026-08-26
       quote_verified: true
       establishes: >
         "The denominator for the outcome measures is the donor potential and is
@@ -553,7 +649,7 @@ measures:
     provenance:
       authority: 42 CFR 486 Subpart G
       locator: 42 CFR 486.318(e)(6)
-      accessed: 2026-08-25
+      accessed: 2026-08-26
       quote_verified: true
       establishes: >
         "Tier 3 - OPOs that have an upper limit of the one-sided 95 percent

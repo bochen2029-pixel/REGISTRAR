@@ -5,14 +5,26 @@
       "sha256": "cc14fbe7cc703cdd9e9075f4b746d2b1914b90381fbceaa1d8b2d465b7ddee9a",
       "bytes": 76253,
       "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-24/title-42.xml?chapter=IV&subchapter=G&part=486&subpart=G",
-      "accessed": "2026-08-25"
+      "accessed": "2026-08-26"
     },
     "ecfr-42-121": {
       "file": "ecfr-42-121.txt",
       "sha256": "5bda10732755110e3d2c23b3945c5cba85509041e21637e5d519b41dc3e2a6b2",
       "bytes": 47236,
       "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-24/title-42.xml?chapter=I&subchapter=K&part=121",
-      "accessed": "2026-08-25"
+      "accessed": "2026-08-26"
+    },
+    "optn-policies": {
+      "file": "optn-policies.txt",
+      "sha256": "88e73522ec02d8a79be1e6ec0d0965395fd49e66abf318d50286aa0f53c010ac",
+      "bytes": 784630,
+      "url": "https://optn.transplant.hrsa.gov/media/eavh5bf3/optn_policies.pdf",
+      "accessed": "2026-08-26",
+      "document_title": "OPTN Policies Effective as of August 1, 2025",
+      "effective_as_of": "2025-08-01",
+      "pdf_generated": "2026-08-12",
+      "retrieved": "live download by the operator, 2026-08-26",
+      "note": "Effective date is 2025-08-01 per the PDF's own title, though the file was generated 2026-08-12 and downloaded live 2026-08-26. The twelve-month gap is OPTN's publication cadence, not staleness on our side — this is the edition OPTN currently serves. Extracted text carries [[PAGE n]] markers so a citation can name its page."
     }
   }
 }

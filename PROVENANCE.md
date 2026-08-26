@@ -134,7 +134,7 @@ because it launders an opinion into apparent law and every downstream reader inh
 
 ## §6 · The ledger
 
-**Opened 2026-08-25**, in the same commit as the first `core/` file. Rows below cover
+**Opened 2026-08-26**, in the same commit as the first `core/` file. Rows below cover
 `core/lifecycle/lifecycle.yml` and `floor/`.
 
 **Read the coverage honestly.** The lifecycle file's *structure* is drafted, but most of its elements carry
@@ -150,7 +150,7 @@ locator is filled. What follows is what has actually been verified.
 - **kind** mandate
 - **source** CMS — *Organ Procurement Organizations (OPOs) Conditions for Coverage: Revisions* (CMS-3409-P), fact sheet and proposed rule
 - **locator** CMS fact sheet, 2026-01-28; Federal Register document 2026-01833, published 2026-01-30
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** CMS grades OPOs on two outcome measures — a donation rate and a transplantation rate — whose denominators are derived from inpatient death records rather than from OPO self-report.
 - **notes** The *denominator source* is verified. The precise numerator definition is **not** and remains TODO-VERIFY in the element file. The element therefore records where the denominator comes from and refuses to assert the numerator.
 
@@ -160,7 +160,7 @@ locator is filled. What follows is what has actually been verified.
 - **kind** mandate
 - **source** CMS — CMS-3409-P, fact sheet and proposed rule
 - **locator** CMS fact sheet, 2026-01-28; FR doc 2026-01833, 2026-01-30
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** As above; the second of the two graded measures, same denominator construction.
 - **notes** Same numerator caveat.
 
@@ -170,9 +170,9 @@ locator is filled. What follows is what has actually been verified.
 - **kind** mandate
 - **source** CMS — CMS-3409-P; corroborated by Crowell & Moring and Holland & Knight client alerts
 - **locator** FR doc 2026-01833, 2026-01-30; comment period closed 2026-03-31
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** **Tiers attach to donation service areas, not to organisations.** An OPO holding at least one Tier 1 DSA is recertified automatically; one holding Tier 2 areas is not out of compliance but must compete for areas that open; an OPO holding *only* Tier 3 areas is non-compliant and decertified.
-- **notes** **This corrected a published error.** Project material previously stated "Tier 3 is decertified" at organisation grain, which materially overstated decertification exposure. Corrected 2026-08-25.
+- **notes** **This corrected a published error.** Project material previously stated "Tier 3 is decertified" at organisation grain, which materially overstated decertification exposure. Corrected 2026-08-26.
 
 ### core/lifecycle/timeline
 - **layer** L0
@@ -180,7 +180,7 @@ locator is filled. What follows is what has actually been verified.
 - **kind** mandate
 - **source** CMS — CMS-3409-P; supplementary CMS guidance issued 2026-03-11
 - **locator** FR doc 2026-01833, 2026-01-30
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** Final rule expected late 2026, effective 60 days after publication; recertification and decertification proceedings for Tier 2 and Tier 3 commence January 2027. The March 2026 guidance is complementary and does not alter the tier architecture or the timeline.
 - **notes** **Re-verify before any distribution.** A citation is a claim about a document at a date, and the final rule has not landed.
 
@@ -190,7 +190,7 @@ locator is filled. What follows is what has actually been verified.
 - **kind** mandate
 - **source** eCFR — 42 CFR Part 486, Subpart G
 - **locator** `ecfr.gov`, Title 42 → Chapter IV → Subchapter G → Part 486 → Subpart G
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** Subpart G is the location of the OPO certification, designation and Conditions for Coverage requirements.
 - **notes** Existence and scope verified. **Individual section citations within Subpart G are not yet verified** and appear as TODO-VERIFY throughout the lifecycle file.
 
@@ -200,7 +200,7 @@ locator is filled. What follows is what has actually been verified.
 - **kind** mandate
 - **source** eCFR — 42 CFR Part 486, Subpart G, § 486.322(a) *Standard: Hospital agreements*
 - **locator** 42 CFR 486.322(a) · issue date 2026-08-24 · pinned `ecfr-42-486-subpartG` sha256 `cc14fbe7cc703cdd…`
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** *"An OPO must have a written agreement with 95 percent of the Medicare and Medicaid participating hospitals and critical access hospitals in its service area that have both a ventilator and an operating room and have not been granted a waiver by CMS to work with another OPO."*
 - **notes** Quote verified **byte-exact** against the pinned source by `tools/cite.py`. First locator filled; the element is now implemented rather than a TODO.
 
@@ -210,7 +210,7 @@ locator is filled. What follows is what has actually been verified.
 - **kind** mandate (that a definition must exist) + **site-authored** (what it is)
 - **source** eCFR — 42 CFR Part 486, Subpart G, § 486.322(a)
 - **locator** 42 CFR 486.322(a) · issue date 2026-08-24 · pinned, sha256 as above
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** *"The agreement must specify the meaning of the terms “timely referral” and “imminent death.”"*
 - **notes**
   **This timer was mislayered, and verification is what found it.** It was drafted `layer: L0` on the
@@ -219,7 +219,7 @@ locator is filled. What follows is what has actually been verified.
   The bound is therefore **per donor hospital**, authored on site, and a validator that enforced one national
   figure would be enforcing something the rule does not say.
 
-  Consequences, all applied 2026-08-25: the timer moved to L3; a new variation point
+  Consequences, all applied 2026-08-26: the timer moved to L3; a new variation point
   `intake.timely_referral_definition` was added; the elicit coverage test immediately failed for having no
   question about it, and one was written.
 
@@ -231,7 +231,7 @@ locator is filled. What follows is what has actually been verified.
 - **layer** L0 · **kind** mandate
 - **source** eCFR — 42 CFR 486.318(d) and (e)
 - **locator** 486.318(d) regime · (d)(1)(i)-(ii) numerators · (d)(1)(iv) denominator · (e)(6) Tier 3
-- **accessed** 2026-08-25 · quotes verified byte-exact
+- **accessed** 2026-08-26 · quotes verified byte-exact
 - **establishes** *"An OPO is evaluated by measuring the donation rate and the organ transplantation rate in their DSA."* Numerators, denominator and the tier thresholds are all codified, with one-sided 95% confidence intervals against top-quartile and median thresholds.
 - **notes**
   Three things this changed. **(1)** The two-measure claim was previously sourced to a CMS fact sheet; it is now citable to the regulation. **(2)** The denominator is far more specific than "inpatient death records" — *patients 75 or younger, primary cause of death consistent with organ donation, most recent 12 months of state death certificate data.* **(3)** Tier 3 triggers on donation **or** transplantation — either measure, not both. Stricter than a summary conveys.
@@ -239,7 +239,7 @@ locator is filled. What follows is what has actually been verified.
   **And a finding that changes a gate.** T5 requires a denominator be reconstructible as a fold over the tape. **This one is not**: donor potential comes from state death certificates, which are outside the OPO's record entirely. That is exactly what makes the measure hard to game — and it means the measure-denominator gate must verify reconstruction against an **external** source, not the tape alone. The gate as specified would have checked the wrong thing.
 
 ### SUPERSEDED · 42 CFR 486.318(a)–(c) — the three-measure regime — **A NEAR-MISS, RECORDED**
-- **date** 2026-08-25 · **class** expired, still in the codified text
+- **date** 2026-08-26 · **class** expired, still in the codified text
 - **establishes** *"The outcome measures described in § 486.318(a)(1) through (3) are effective until July 31, 2022."*
 - **notes**
   § 486.318(a)–(c) describes an expired three-measure regime and **is still present in the current codified text.** A search for "outcome measures" lands there *first*. Reading only the search hit would have produced a citation to law that has not been in force since 2022 — and **the byte-match gate would have passed it**, because the passage is real. It is merely dead.
@@ -249,12 +249,12 @@ locator is filled. What follows is what has actually been verified.
   **Mechanical response, applied the same day:** the gate now scans the neighbourhood of every quote for sunset language and returns `CHECK-CURRENCY`. A human may close the warning only by recording *why* in a `currency_confirmed` field — never by silencing it. Five citations tripped it; each carries its reasoning. **The expired passage is retained in `citations.json` on purpose, so the failure mode stays visible instead of becoming a story.**
 
 ### core/lifecycle/states/death_determination
-- **layer** L0 · **kind** mandate · **locator** 42 CFR 486.344(b)(1) · **accessed** 2026-08-25
+- **layer** L0 · **kind** mandate · **locator** 42 CFR 486.344(b)(1) · **accessed** 2026-08-26
 - **establishes** *"Verify that death has been pronounced according to applicable local, State, and Federal laws."*
 - **notes** The drafted claim said "separation of death determination from donation activity." The text is narrower and better: the duty is **verification of a pronouncement made elsewhere.** The system's constitutional prohibition on asserting death was already correct; it now rests on the regulation rather than on inference.
 
 ### core/lifecycle/states/reporting_closed · core/lifecycle/timers/t_data_reporting
-- **layer** L0 · **kind** mandate · **locator** 42 CFR 486.328(d) · **accessed** 2026-08-25
+- **layer** L0 · **kind** mandate · **locator** 42 CFR 486.328(d) · **accessed** 2026-08-26
 - **establishes** *"Data reported by the OPO to the OPTN must be reported within 30 days after the end of the month in which a death occurred."* And: *"If an OPO determines … that the data it reported to the OPTN was incorrect, it must report the corrected data … within 30 days of the end of the month in which the error is identified."*
 - **notes**
   **A real federal deadline with a number** — the contrast case to `t_referral_response`, which turned out to be per-agreement. One verification pass moved one timer out of L0 and put another firmly into it.
@@ -267,24 +267,70 @@ Four elements were drafted pointing at OPTN Policy, whose own site returns 403 t
 of them are established by the CFR instead** — which is fetchable, and which nobody had checked.
 
 ### core/lifecycle/states/evaluation
-- **locator** 42 CFR 486.344(c)(3)-(4) · **accessed** 2026-08-25 · verified byte-exact
+- **locator** 42 CFR 486.344(c)(3)-(4) · **accessed** 2026-08-26 · verified byte-exact
 - **establishes** *"Ensure that the potential donor's blood is typed using two separate blood samples."* and *"Document potential donor's record with all test results, including blood type, before organ recovery."*
 - **notes** Typing requires **two separate samples** — a duplication requirement, not a single test. And results must be in the record **before recovery**, which makes completeness a **transition guard** rather than a reporting obligation. The lifecycle now enforces it as one.
 
 ### core/lifecycle/states/allocation
-- **locator** 42 CFR 121.7(a)(1) and 121.7(b)(3) · **accessed** 2026-08-25 · verified byte-exact
+- **locator** 42 CFR 121.7(a)(1) and 121.7(b)(3) · **accessed** 2026-08-26 · verified byte-exact
 - **establishes** *"An OPTN member procuring an organ shall operate the OPTN computer match program … to identify and rank potential recipients."* and *"An organ offer is made when all information necessary to determine whether to transplant the organ into the potential recipient has been given to the transplant hospital."*
 - **notes** Ranking is performed by the **OPTN match program**; the OPO *operates* it and does not rank. This system's prohibition 6 — *it does not rank donors, recipients or families* — now rests on the rule rather than on our own restraint. And an offer is defined by **completeness of information transferred**, not by a message being sent: exactly the class of condition the gates check.
 
 ### core/lifecycle/states/packaging_transport
-- **locator** 42 CFR 121.7(c) · **accessed** 2026-08-25 · verified byte-exact
+- **locator** 42 CFR 121.7(c) · **accessed** 2026-08-26 · verified byte-exact
 - **establishes** *"…accompanied by written documentation of activities conducted to determine the suitability of the organ donor and shall maintain this document for one year."*
 - **notes** Documentation travels **with the organ** and is retained a year. The record is a conserved artifact rather than a database row — which is why chain-of-custody continuity is a gate.
 
 ### core/lifecycle/L4 — the statutory basis for the tape
-- **locator** 42 CFR 121.11(a)(2)(i) · **accessed** 2026-08-25 · verified byte-exact
+- **locator** 42 CFR 121.11(a)(2)(i) · **accessed** 2026-08-26 · verified byte-exact
 - **establishes** *"All OPOs and transplant programs shall maintain such records pertaining to **each potential donor identified**, each organ retrieved, each recipient transplanted…"*
 - **notes** Note the scope: **each potential donor *identified*** — not only converted cases. The non-conversion terminals (`ruled_out_medical`, `authorization_declined`, `no_organs_recovered`, `referral_lapsed`) are therefore **mandated record-keeping**, not a design choice this project made for tidiness. `referral_lapsed` remains marked a design choice because the *state* is ours; the *obligation to keep the record* is not.
+
+### Batch 4 — OPTN Policies, and **the spine is established**
+
+Operator downloaded the OPTN corpus live 2026-08-26. `optn-policies.txt` pinned, 374 pages, 752k chars,
+**"OPTN Policies Effective as of August 1, 2025"** per the PDF's own title. Extracted text carries
+`[[PAGE n]]` markers so every citation names its page.
+
+**13 of 15 states established. 27 citations, all byte-exact, across three pinned sources.**
+
+Highlights, each verified:
+
+- **`referral_triaged` — OPTN 2.3(4):** *"Document in the deceased donor medical record if any of this information is not available and the reason it is not available."* **Missing information is itself a required entry, with its reason.** The ledger-of-silence property this project argued for on design grounds turns out to be *required by rule*.
+- **`donor_management` — OPTN 2.13:** five enumerated duties, and the standard is **"reasonable efforts"**, not an outcome. A validator may check that effort was documented; it may never check that a physiologic target was met.
+- **`authorization` — OPTN 2.14.E:** *"The host OPO may only recover organs that it has received authorization to recover."* A hard precondition, per organ.
+- **`no_organs_recovered` — OPTN 2.14.E:** *"If an authorized organ is not recovered, the host OPO must document the specific reason for non-recovery."* The non-conversion terminal is a mandated record with a required reason code.
+- **`recovery` — OPTN 2.14.B:** a written pre-recovery verification protocol per organ, and *"At least one of the individuals performing a verification must be an OPO staff member."* **Four eyes**, one of them the OPO's — and "qualified" is delegated to the OPO's own protocol, which makes it a local variation point.
+- **`disposition` — OPTN 2.12:** *"…follow up and reporting of deceased donor test results received after procurement."* **Disposition does not close the case.** The record stays open to late-arriving truth — which is why L4 is append-only and a correction is an append.
+
+### death_determination — **the original claim was right; the attribution was wrong**
+- **locator** OPTN Policy 2.15.G (p.38) · verified byte-exact
+- **establishes** *"The donor hospital healthcare team member who declares the death of the potential deceased donor cannot be involved in any aspect of the organ recovery procedure or transplantation of that donor's organs."*
+- **notes** This element was drafted claiming "separation of death determination from donation activity," **corrected away** in batch 2 when it could not be found in the CFR, and now **recovered from its actual source.** Both are true: the CFR gives the OPO a duty to *verify*; OPTN Policy forbids the *declarer* from participating. The correction was right and the original instinct was right — only the attribution was wrong. Both citations are retained.
+
+### authorization — **known-incomplete, and deliberately not resolved**
+- **locator** PER-JURISDICTION — REQUIRES A STATE TABLE · **status** known-incomplete
+- **notes** Every other locator in this file resolves to one document. The state-anatomical-gift-act leg resolves to **fifty-odd state statutes**, and no single citation can establish it. `authorization` therefore stays `verified: false` until a jurisdiction table exists with a citation per state. The variation is statutory rather than operational, so that table belongs in the seed — **a site does not get to author who may authorize donation.**
+
+### A STATUS FLAG THAT COULD BE CLEARED BY REWORDING — **caught, and fixed**
+
+Marking the UAGA locator `PER-JURISDICTION` instead of `TODO-VERIFY` **silently flipped `authorization` to
+`verified: true`.** The generator's rule was *"the locator is not the literal string TODO-VERIFY"* — so
+renaming it was enough. Nothing checked evidence.
+
+That is the exact failure this ledger exists to prevent, committed by its own tooling, and it would have
+reported a fully-established spine while one element rested on nothing.
+
+**Fixed the same hour.** `verified` now requires **`quote_verified: true` on every provenance entry** — the
+quote having been byte-checked against a pinned source. **A status flag that can be cleared by rewording is
+not a status flag.** And because the reasons are not equivalent, the machine form now carries
+`unverified_because`: `design-choice` (no source exists — the element is ours), `known-incomplete` (no single
+citation can establish it), or `unverified` (nobody has checked). Conformance reports them separately.
+
+### Correction · accessed dates
+Twenty-nine accessed dates recorded as **2026-08-25** were corrected to **2026-08-26**, the true retrieval
+date. Recorded here rather than quietly amended, per §9. Nothing material turns on the day, but a ledger
+whose dates are approximate is not a ledger.
 
 ---
 
@@ -297,7 +343,7 @@ are choices. Nothing above compels them.
 - **layer** L0 (structural)
 - **kind** **design-choice**
 - **source** none — introduced by this project
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** Nothing. It is not a mandated state.
 - **notes** Added so that non-progression is representable. A referral that quietly stops moving is a real and measurable failure with **no event, only an absence** — and a state machine with no terminal for it cannot express the thing the missed-referral audit is about. Marked a design choice so no reader mistakes it for policy.
 
@@ -305,19 +351,19 @@ are choices. Nothing above compels them.
 - **layer** floor
 - **kind** **design-choice**
 - **source** classical result: an STN is consistent iff its distance graph has no negative cycle; minimal network = all-pairs shortest paths
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **establishes** The algorithm is standard and not this project's invention.
 - **notes** The *choice* is whole minutes and integer arithmetic with `INF = 0x3f3f3f3f`. Exactly associative, no floating point, no drift — which is what lets an accelerated implementation be compared to this one **by equality rather than tolerance**, and is therefore a precondition of replay determinism rather than a style preference.
 
 ### fixtures/ — JSON rather than YAML
 - **layer** fixtures
 - **kind** **design-choice**
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **notes** So the floor runs on a bare Python with nothing installed. A reference artifact that requires a dependency install before it does anything is a worse reference artifact.
 
 ### fixtures/cases/* — all values illustrative
 - **kind** **design-choice**
-- **accessed** 2026-08-25
+- **accessed** 2026-08-26
 - **notes** Every duration in every fixture is **synthetic and illustrative**, including the cold-ischemia budget in `infeasible-transport.json`. Organ-specific ischemia tolerances are clinical figures requiring citation to published literature before any validator enforces one; `t_cold_ischemia` in the lifecycle file is deliberately TODO-VERIFY. **No fixture value should be read as a clinical or regulatory claim.**
 
 ---
@@ -329,7 +375,7 @@ to the same funeral discipline as everything else in this project: **what was re
 the record.**
 
 ### Excluded — CMS and Federal Register primary sources, retrieved indirectly
-- **date** 2026-08-25
+- **date** 2026-08-26
 - **class** access, not admissibility
 - **notes** `cms.gov` returned HTTP 403 and `federalregister.gov` redirected to a bot-check on automated retrieval. The figures above were corroborated through published law-firm client alerts (Crowell & Moring, Holland & Knight) and search summaries of the CMS fact sheet. **The sources are admissible; this retrieval was indirect, and that is recorded rather than hidden.** Every row above should be re-checked against the primary text by a human before it load-bears.
 
@@ -380,5 +426,5 @@ Written for a hostile reviewer, which is the only kind worth designing for. This
 
 ---
 
-*v0.1 · 2026-08-25 · Rev 0, specification. The ledger is empty because the seed is unbuilt, and it will be
+*v0.1 · 2026-08-26 · Rev 0, specification. The ledger is empty because the seed is unbuilt, and it will be
 written one row at a time, in the commits that build it.*

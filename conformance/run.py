@@ -80,12 +80,17 @@ def check_lifecycle() -> None:
            f"{len(terminals)} terminal states, {len(terminals) - 1} of them non-conversion")
 
     unverified = sorted(s for s, v in states.items() if not v.get("verified"))
-    record(UNVERIFIED if unverified else GREEN, "lifecycle · provenance",
-           f"{len(unverified)} of {len(states)} states still TODO-VERIFY — "
-           f"specified, not established")
+    # The reasons are not equivalent, and collapsing them would misreport.
+    why = {}
+    for s in unverified:
+        why.setdefault(states[s].get("unverified_because") or "unverified", []).append(s)
+    detail = (f"{len(states) - len(unverified)} of {len(states)} established"
+              + (" — " + "; ".join(f"{k}: {', '.join(v)}" for k, v in sorted(why.items()))
+                 if unverified else ""))
+    record(UNVERIFIED if unverified else GREEN, "lifecycle · provenance", detail)
     if VERBOSE and unverified:
-        for s in unverified:
-            print(f"                     · {s}")
+        for k, v in sorted(why.items()):
+            print(f"                     · {k}: {', '.join(v)}")
 
 
 # ── 2 · generated artifacts have not drifted ────────────────────────────────
@@ -267,9 +272,9 @@ def main() -> int:
         return 1
     if worst == UNVERIFIED:
         print("PASS-UNVERIFIED — nothing failed, but checks did not run.")
-        print("  Most of the spine's provenance is still TODO-VERIFY, so most of it is")
-        print("  specified rather than established. THIS IS NOT A PASS. Fill the locators")
-        print("  against the published sources and run this again.")
+        print("  Some element of the spine is specified rather than established, or a")
+        print("  check needs a runtime this battery does not have. THIS IS NOT A PASS.")
+        print("  Run with --verbose to see exactly which, and why each one is open.")
         return 2
     print("GREEN — every check passed.")
     return 0
