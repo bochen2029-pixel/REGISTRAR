@@ -140,11 +140,24 @@ def main(argv: list[str]) -> int:
 
     path = argv[0]
     with open(path, encoding="utf-8") as fh:
-        patch = json.load(fh)
+        if path.endswith((".yml", ".yaml")):
+            import yaml
+            patch = yaml.safe_load(fh)
+        else:
+            patch = json.load(fh)
 
     delta = load_delta()
     rows = {r.get("target"): r for r in (patch.get("rows") or [])}
-    holds = {h.get("target"): h for h in (patch.get("holds") or [])}
+    # The schema admits NO HOME for a declined target — the arm-2 harness
+    # reported this as a seed defect and put its holds in `$holds`, following
+    # the `$note`/`$comment` convention the worked example itself uses.
+    #
+    # MY SCORER INHERITED THE SAME GAP: it assumed a key name the schema never
+    # defines. Accepting both is not a rubric change — §4 asks whether a decline
+    # was recorded WITH A REASON, and the key it rides under is an encoding
+    # detail nothing ever specified. Recorded here so the decision is auditable.
+    holds = {h.get("target"): h
+             for h in (patch.get("holds") or patch.get("$holds") or [])}
 
     print(f"F-PATCH-DELTA · scoring {os.path.basename(path)}")
     print(f"arm: {patch.get('arm', '?')}\n")

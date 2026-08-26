@@ -131,8 +131,20 @@ fixed before any corpus was written.
 - **The gates refused arm ① independently, without the answer key** — evidence binding caught *"asserts
   generality, not this site"*, and 20/20 shadow runs had no denominator. **A harness could produce arm ① at
   any site and the battery would refuse it at every one.**
-- **Arm ② is BLOCKED by §6** — I wrote the corpus, and writing the corpus is having the delta. **The
-  protocol for a clean run is in `RESULTS.md`; it needs a session that did not build this.**
+- **ARM ② RUN — `S = 0.57`, ZERO fabrications, SHAPED.** A session that did not build the corpus. It
+  **declined to score itself** (reading per-target output would be the delta *"in any form"*), skipped
+  §3 rather than reading around it, and disclosed an `internal/` grep hit it did not open.
+- **Floor 0.47 → candidate 0.57, and the gap is exactly where the site departs from the industry.** All
+  three planted contradictions resolved to the tape rather than the binder; the unanswerable target was
+  **declined rather than filled** — arm ① fabricated there. Those four targets are the whole difference.
+- **Gates: 10/13 GREEN, identical at HEAD and at the pin.** The §6 deviation is **neutralised** — Fork C's
+  gate-13 fix did not change the verdict, and that null delta is itself the measurement Fork C predicted.
+- **THE CORPUS HAD TWO DEFECTS I DID NOT PLANT, AND THE CANDIDATE FOUND BOTH TO THE EXACT COUNT** —
+  `after_hours` is an independent coin flip contradicting the stated business hours in 197 of 420 rows, and
+  `H-1490` is called low-volume at four referrals while the tape carries 71. **It surfaced both rather than
+  smoothing either**, and declined to adjudicate the second because the tape is undated. Recorded as an
+  instrument defect; **the corpus is NOT being corrected, because changing it after a run would invalidate
+  the comparison.**
 
 **Pin the chassis.** Blocking, and it now blocks *wiring* rather than acquisition — the bytes are already
 here. `internal` §14 item 1. **Unpinned third-party code must not become load-bearing.**

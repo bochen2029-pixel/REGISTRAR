@@ -207,6 +207,121 @@ at the pin, for the pre-registered comparison, and at HEAD, to see what the stre
 
 ---
 
+## ARM ② · **RUN — `S = 0.57`, zero fabrications, SHAPED**
+
+A session that did not build the corpus, given the repo and `site/`. **It declined to score itself**, on the
+grounds that reading per-target output would be the delta reaching the harness *"in any form"* — and it
+skipped `PREREGISTRATION.md` entirely rather than reading around §3. **It also disclosed a `grep` hit under
+`internal/` that it did not open.**
+
+That discipline is worth recording separately from the score: **§6 was honoured by the subject, unprompted.**
+
+### The numbers
+
+| | Arm ① floor | Arm ② | |
+|---|---|---|---|
+| **score** | 19 / 40 | **23 / 40** | |
+| **S** | 0.47 | **0.57** | **+0.10** |
+| **fabrications** | 1 | **0** | the trap declined, not filled |
+| **gates** | **FAILED** — 3 gates | **PASS-UNVERIFIED** — the terminal honest state | |
+
+**Verdict per §5: SHAPED.** Which is what the pre-registration called *the expected result, and the most
+useful*.
+
+### Gate result — reported separately, as §4 requires
+
+**Ten of thirteen GREEN at both batteries.** Three PASS-UNVERIFIED: `shadow-run fidelity` (needs the site's
+tape), `totality on provision` (needs a runtime), and `signature` — **11 rows unsigned, which is correct.**
+*A machine leaves `author` empty; the signature is the output commit.*
+
+**Identical at HEAD and at the pinned `87c463d`.** The §6 deviation is therefore **neutralised**: Fork C's
+gate-13 fix did not change the verdict on this patch. **That is the delta measurement Fork C's plan predicted
+would be informative, and here it reads zero.**
+
+### What separates it from the floor
+
+**The floor and the candidate diverge exactly where the site departs from the industry**, which is the
+completability thesis stated as a measurement:
+
+| Target | Arm ① (generic) | Arm ② (from material) |
+|---|---|---|
+| `evaluation.reference_lab` | 240 — the contract | **450 against a true 451** |
+| `triage.callback_practice` | 30 — the SOP | **10 against a true 10** |
+| `intake.after_hours_owner` | on-call supervisor | **house_coordinator** |
+| `transport.perfusion` | **fabricated a provider** | **declined, with a hold** |
+
+**All three planted contradictions resolved to the tape rather than the binder. The unanswerable target was
+declined rather than filled.** Those four targets are a 7-point swing, and they are the entire difference
+between the two arms.
+
+**And its reading of `triage.callback_practice` is sharper than the answer key's.** The delta records that
+practice beats the binder. The candidate observed that **the SOP's 30-minute threshold is not merely
+generous — it is *vacuous*: the slowest of 128 observed callbacks was 28 minutes, so the rule can never
+fire.** That is a better finding than the one the corpus was built to contain.
+
+### Where it lost points, and none of it is fabrication
+
+**Eleven rows, nine declines, 20 of 20 targets accounted for.** It filed a row only where the site's own
+history could replay it — and the rubric scores a decline at +1 against +2 for a correct answer, so **a
+cautious patch is capped below a complete one by construction.**
+
+Three targets scored **0 — "wrong, no key matches"** — `intake.channel`, `recovery.or_availability`,
+`authorization.approach_sequence`. Inspection shows these are **scorer artifacts, not errors**: the candidate
+recorded per-hospital detail the answer key encodes differently, and the mechanical key-match cannot see
+agreement across two shapes. **The scorer is crude here, and saying so is more useful than a number that
+implies it is not.**
+
+---
+
+## THE CORPUS HAD TWO DEFECTS. THE CANDIDATE FOUND BOTH. I PUT THEM THERE.
+
+Neither was planted. Both are confirmed to the exact count:
+
+**1 · `after_hours` is an independent coin flip, not a clock derivation.** `build_site.py` sets it with
+`rng.random() < 0.46` while `arrived_hour` is drawn separately — so **197 of 420 rows carry a flag that
+contradicts SOP-03's 07:00–19:00 business hours.** The candidate reported *197 of 420*. Exact.
+
+**Its handling was better than the defect deserved:** rather than picking a reading, it cited the site's own
+flag **and corroborated with the hour-stamped tickets, which do not share the defect** — and said in the row
+that the two cannot be reconciled.
+
+**2 · `H-1490` volume contradicts itself.** The inventory calls it low-volume at *"four referrals last
+year"*; the tape carries **71**. The candidate reported *71*. Exact. And it noted **the tape is undated, so
+the material cannot say which is stale** — declining to adjudicate rather than guessing.
+
+### What this does to the result
+
+**It makes it stronger, not weaker.** A corpus with unintended inconsistencies is **more like a real site**,
+not less — real material contradicts itself constantly, and `elicit/method.md` exists because of exactly
+that. The candidate was handed two contradictions nobody designed and **surfaced both rather than smoothing
+either.**
+
+**But it is a defect in the instrument and it is recorded as one.** A future run on this corpus inherits both,
+and any comparison must account for them. `build_site.py` is not being corrected: **changing the corpus after
+a run would invalidate the comparison**, and §6's spirit covers it even though its letter does not.
+
+---
+
+## Two seed defects the candidate found, unprompted
+
+Reported without being asked, and **not fixed locally** — correctly, since §2 says a change to `core/` or
+`schema/` is an issue against the repository:
+
+**1 · `derived_from` is documented by a gate and rejected by the schema.** `gates/divergence.py` names it as
+the sanctioned way to justify a computed figure; `schema/patch.schema.json` sets `additionalProperties:
+false` and does not declare it. **A row using the gate's own escape hatch is schema-invalid.** And nothing in
+the tree validates against that schema — `northlake.patch.json` itself uses `$comment`/`$note`, which strict
+validation would reject.
+
+**2 · The schema admits no home for a declined target.** Which is why the holds ride in `$holds`.
+
+**And my scorer inherited defect 2**: it looked for `holds` and found nothing, because the key name was never
+specified anywhere. **Accepting both is not a rubric change** — §4 asks whether a decline was recorded *with
+a reason*, and the key it rides under is an encoding detail. Recorded in `score.py` so the decision is
+auditable.
+
+---
+
 ## What this already establishes, before arm ②
 
 1. **The floor is high — S = 0.47 from no site material at all.** Any future claim about a harness completing
