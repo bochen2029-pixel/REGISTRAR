@@ -40,6 +40,27 @@ questions:
       the pattern of past cross-clamp times. If someone hands you a policy that
       says "as needed," that is the binder, not the behaviour — go to the tape.
 
+  - target: intake.timely_referral_definition
+    tier: 1
+    ask: >
+      For each donor hospital: what does your written agreement with them
+      actually say "timely referral" means — and does it say the same thing at
+      every hospital?
+    sources:
+      - your written agreements with each participating hospital
+      - the case tape — referral received to first OPO response, grouped by hospital
+    impact: >
+      This is the clock the donation-rate measure is ultimately built on, and it
+      is the first deadline in the case.
+    trap: >
+      **There is no federal number here.** 42 CFR 486.322(a) requires the
+      agreement to define the term and does not define it itself, so a system
+      that enforces one national response bound is enforcing something the rule
+      does not say. Expect the definitions to differ between hospitals, and
+      expect some agreements to be vague. Where an agreement is silent, that is
+      a finding to take to whoever owns the relationship — not a gap to fill
+      with a plausible figure.
+
   - target: evaluation.reference_lab
     tier: 1
     ask: >

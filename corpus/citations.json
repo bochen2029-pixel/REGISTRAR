@@ -1,0 +1,19 @@
+{
+  "$comment": "Verified citations. Every quote here byte-matches its pinned source; run `python tools/cite.py --check`. That the quote EXISTS is mechanical. That it ESTABLISHES its element is a human judgment, recorded in PROVENANCE.md.",
+  "citations": [
+    {
+      "element": "core/lifecycle/states/referral_received",
+      "source": "ecfr-42-486-subpartG",
+      "locator": "42 CFR 486.322(a)",
+      "quote": "An OPO must have a written agreement with 95 percent of the Medicare and Medicaid participating hospitals and critical access hospitals in its service area that have both a ventilator and an operating room and have not been granted a waiver by CMS to work with another OPO.",
+      "establishes": "The OPO-hospital referral relationship is a written agreement the OPO is required to hold, at a stated coverage threshold of its service area."
+    },
+    {
+      "element": "core/lifecycle/timers/t_referral_response",
+      "source": "ecfr-42-486-subpartG",
+      "locator": "42 CFR 486.322(a)",
+      "quote": "The agreement must specify the meaning of the terms “timely referral” and “imminent death.”",
+      "establishes": "The CFR requires that 'timely referral' be DEFINED IN THE AGREEMENT, and does not define it federally. The response bound is therefore per-hospital and not identical nationally."
+    }
+  ]
+}

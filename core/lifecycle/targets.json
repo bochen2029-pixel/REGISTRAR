@@ -2,7 +2,7 @@
   "$comment": "GENERATED from lifecycle.yml by gen_targets.py. Do not edit by hand. This is the complete set of legal patch targets: the seed's declared mutable surface. A target absent from this file does not exist, and a patch row naming one fails the blast-radius gate.",
   "schema_version": 0.1,
   "generated_from": "lifecycle.yml",
-  "count": 19,
+  "count": 20,
   "targets": {
     "allocation.credentials": {
       "layer": "L3",
@@ -53,6 +53,11 @@
       "layer": "L3",
       "state": "referral_received",
       "note": "which lanes referrals actually arrive on (interfaced, phone, fax-to-email) and per donor hospital"
+    },
+    "intake.timely_referral_definition": {
+      "layer": "L3",
+      "state": "referral_received",
+      "note": "What \"timely referral\" MEANS at each donor hospital. The CFR requires the agreement to define it and does not define it federally, so this is per-agreement and not identical nationally. See the correction on t_referral_response below.\n"
     },
     "lapse.threshold": {
       "layer": "L2",

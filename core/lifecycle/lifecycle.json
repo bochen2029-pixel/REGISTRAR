@@ -9,7 +9,7 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true
     },
     "referral_triaged": {
       "name": "Referral triaged",

@@ -53,10 +53,20 @@ states:
     terminal: false
     provenance:
       - authority: 42 CFR 486 Subpart G
-        establishes: donor-hospital referral obligation and OPO response duties
-        locator: TODO-VERIFY
-        accessed: null
+        establishes: >
+          The OPO-hospital referral relationship is a written agreement the OPO
+          is required to hold, at a stated coverage threshold of its service area.
+        locator: 42 CFR 486.322(a)
+        accessed: 2026-08-25
+        quote_verified: true
     local_variation:
+      - id: intake.timely_referral_definition
+        note: >
+          What "timely referral" MEANS at each donor hospital. The CFR requires
+          the agreement to define it and does not define it federally, so this is
+          per-agreement and not identical nationally. See the correction on
+          t_referral_response below.
+        layer: L3
       - id: intake.channel
         note: which lanes referrals actually arrive on (interfaced, phone, fax-to-email) and per donor hospital
         layer: L3
@@ -348,9 +358,25 @@ timers:
     from: referral_received
     to: referral_triaged
     bound: upper
-    value: TODO-VERIFY
-    layer: L0
-    provenance: { authority: 42 CFR 486 Subpart G, locator: TODO-VERIFY, accessed: null }
+    value: null
+    layer: L3            # CORRECTED 2026-08-25 — was L0
+    target: intake.timely_referral_definition
+    provenance:
+      authority: 42 CFR 486 Subpart G
+      locator: 42 CFR 486.322(a)
+      accessed: 2026-08-25
+      quote_verified: true
+      establishes: >
+        "The agreement must specify the meaning of the terms 'timely referral'
+        and 'imminent death.'" The CFR requires the term to be DEFINED IN THE
+        AGREEMENT and does not fix a federal value.
+      correction: >
+        This timer was drafted as L0 on the assumption that a federally
+        mandated response bound existed. Verification against the live text
+        shows the opposite: the definition is delegated to a per-hospital
+        written agreement. The bound is therefore authored on site, per donor
+        hospital, and a validator must not enforce a national figure here.
+        Found by filling a TODO-VERIFY locator, which is what they are for.
 
   - id: t_serology_turnaround
     from: serology_drawn

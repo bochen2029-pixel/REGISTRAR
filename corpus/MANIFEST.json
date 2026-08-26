@@ -1,0 +1,11 @@
+{
+  "sources": {
+    "ecfr-42-486-subpartG": {
+      "file": "ecfr-42-486-subpartG.txt",
+      "sha256": "cc14fbe7cc703cdd9e9075f4b746d2b1914b90381fbceaa1d8b2d465b7ddee9a",
+      "bytes": 76253,
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-24/title-42.xml?chapter=IV&subchapter=G&part=486&subpart=G",
+      "accessed": "2026-08-25"
+    }
+  }
+}

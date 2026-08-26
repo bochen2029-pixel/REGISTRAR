@@ -194,6 +194,39 @@ locator is filled. What follows is what has actually been verified.
 - **establishes** Subpart G is the location of the OPO certification, designation and Conditions for Coverage requirements.
 - **notes** Existence and scope verified. **Individual section citations within Subpart G are not yet verified** and appear as TODO-VERIFY throughout the lifecycle file.
 
+### core/lifecycle/states/referral_received
+- **layer** L0
+- **element** The referral relationship between an OPO and its donor hospitals.
+- **kind** mandate
+- **source** eCFR — 42 CFR Part 486, Subpart G, § 486.322(a) *Standard: Hospital agreements*
+- **locator** 42 CFR 486.322(a) · issue date 2026-08-24 · pinned `ecfr-42-486-subpartG` sha256 `cc14fbe7cc703cdd…`
+- **accessed** 2026-08-25
+- **establishes** *"An OPO must have a written agreement with 95 percent of the Medicare and Medicaid participating hospitals and critical access hospitals in its service area that have both a ventilator and an operating room and have not been granted a waiver by CMS to work with another OPO."*
+- **notes** Quote verified **byte-exact** against the pinned source by `tools/cite.py`. First locator filled; the element is now implemented rather than a TODO.
+
+### core/lifecycle/timers/t_referral_response — **A CORRECTION**
+- **layer** **L3** — *was drafted L0*
+- **element** The bound on OPO response to a referral.
+- **kind** mandate (that a definition must exist) + **site-authored** (what it is)
+- **source** eCFR — 42 CFR Part 486, Subpart G, § 486.322(a)
+- **locator** 42 CFR 486.322(a) · issue date 2026-08-24 · pinned, sha256 as above
+- **accessed** 2026-08-25
+- **establishes** *"The agreement must specify the meaning of the terms “timely referral” and “imminent death.”"*
+- **notes**
+  **This timer was mislayered, and verification is what found it.** It was drafted `layer: L0` on the
+  assumption that a federally mandated response bound exists. The live text says the opposite: the CFR
+  requires that *"timely referral"* be **defined in the agreement**, and does not define it federally.
+  The bound is therefore **per donor hospital**, authored on site, and a validator that enforced one national
+  figure would be enforcing something the rule does not say.
+
+  Consequences, all applied 2026-08-25: the timer moved to L3; a new variation point
+  `intake.timely_referral_definition` was added; the elicit coverage test immediately failed for having no
+  question about it, and one was written.
+
+  **This is the case for filling locators rather than deferring them.** An unverified element is not merely
+  uncited — it can be *wrong in a way that moves a layer boundary*, and every hour it stays unverified is an
+  hour the architecture rests on an assumption nobody checked.
+
 ---
 
 ### Design choices, marked as such
