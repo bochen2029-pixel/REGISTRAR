@@ -332,6 +332,56 @@ Twenty-nine accessed dates recorded as **2026-08-25** were corrected to **2026-0
 date. Recorded here rather than quietly amended, per §9. Nothing material turns on the day, but a ledger
 whose dates are approximate is not a ledger.
 
+### Batch 5 — the clinical layer (L1), and the jurisdiction table left empty
+
+**35 citations, all byte-exact.** `clinical/donor_testing.yml` created: blood type determination, subtyping,
+the general risk assessment and infectious disease testing, every provenance block quote-verified against the
+pinned OPTN corpus.
+
+Three findings worth carrying forward:
+
+- **L1 carries time, not only data.** *"…at least two donor blood samples **prior to the match run**"* (2.6.A)
+  and *"Urinalysis, **within 24 hours before cross clamp**"* (2.8) are temporal constraints, not fields. They
+  are marked `feeds_closure: true` and belong in `floor/closure.py` alongside the L2/L3 bounds. **The clinical
+  layer meets the schedule**, which nothing in the design anticipated.
+- **A conflict is withheld, not resolved.** *"If there are conflicting or indeterminate subtype results, the
+  subtype results must not be reported to the OPTN and the deceased donor must be allocated based on the
+  primary blood type."* (2.6.B) Not a tiebreak, not the more recent result — **withheld**, with a fallback to
+  the safer type. The same shape this system uses everywhere: when the evidence does not settle, decline.
+- **Two requirements that look like one.** CLIA-certified *laboratory* (2.9) and FDA licensed/approved/cleared
+  *assay* (2.9(2)) are distinct properties. A certified lab running an unapproved test fails one; an approved
+  test in an uncertified lab fails the other. **A validator checking only one is checking half a rule.**
+
+`clinical/donor_testing.yml` declares four gaps in its own `incomplete` section — the remainder of the 2.9
+panel, per-organ required information (2.11.A–E), hemodilution (2.5), and viability criteria. A
+complete-looking L1 would be a claim; conformance now checks that the file names its gaps.
+
+### core/authorization/jurisdiction.yml — **empty, and that is the point**
+
+- **keyed_on** `donor_state_of_residence` · 42 CFR 486.342(b) · verified byte-exact
+- **establishes** *"…in a manner that satisfied applicable State law requirements in the potential donor's **State of residence**"*
+- **and** OPTN 2.14.E: *"…whether that be the donor or a surrogate donation decision-maker **consistent with applicable state law**"*
+
+**The key is residence — not the state of death, not the hospital's state, not the OPO's.** Those differ
+routinely: service areas span state lines and patients are transferred across them. A table keyed on the
+hospital's state would be wrong in exactly the cases where it matters, and wrong silently. That was worth
+finding before building the table rather than after.
+
+Both the federal rule and OPTN policy **defer** on who may act as surrogate. Neither supplies the answer,
+which is precisely why the table must exist.
+
+**The fifty rows are empty.** They are not an oversight and not waiting on effort — they are waiting on
+evidence of a kind nothing here has gathered: a pinned statute per state, each an adoption of some UAGA
+vintage, each locally amended. The file carries the row contract, the procedure, and this:
+
+> This is the one part of the seed where a byte-exact citation is **necessary and not sufficient** — a
+> correctly quoted statute can still be misread, and the consequence of misreading it is not a bad metric.
+> **An empty table is honest. A plausible one would be the single most dangerous artifact this project could
+> ship.**
+
+`authorization` therefore remains `verified: false`, reported as `known-incomplete`, and conformance reports
+the table as PASS-UNVERIFIED with its reason rather than passing over it.
+
 ---
 
 ### Design choices, marked as such

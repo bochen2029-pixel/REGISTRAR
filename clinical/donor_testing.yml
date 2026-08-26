@@ -1,0 +1,235 @@
+# REGISTRAR · L1 · what must be established about a donor
+# ─────────────────────────────────────────────────────────────────────────────
+# The clinical invariants. Same discipline as L0: every element carries its
+# provenance, and an element without a verified quote is not implemented.
+#
+# WHAT L1 IS, AND WHAT IT IS NOT
+#
+#   L1 records WHAT MUST BE ESTABLISHED and BY WHAT PROCESS. It never encodes
+#   a clinical decision. "Two blood samples, drawn on separate occasions,
+#   before the match run" is a process requirement and belongs here. "This
+#   donor is suitable" is a clinical judgment and belongs to a clinician —
+#   this system is prohibited from making it (SPEC.md §8, prohibition 7).
+#
+#   The test: could a validator check this without exercising medical
+#   judgment? If yes, it is L1. If no, it is not in this file.
+#
+# L1 CARRIES TIME, NOT ONLY DATA. Several requirements below have temporal
+# bounds — "prior to the match run", "within 24 hours before cross clamp" —
+# and those are constraints for floor/closure.py, not merely fields. This is
+# where the clinical layer meets the schedule.
+
+schema_version: 0.1
+layer: L1
+status: SPEC
+generated: 2026-08-26
+
+source: &optn
+  authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+  accessed: 2026-08-26
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BLOOD TYPE — the most consequential single fact about a donor
+# ─────────────────────────────────────────────────────────────────────────────
+blood_type:
+
+  determination:
+    requirement: >
+      At least two donor blood samples, tested, before the match run.
+    temporal_bound:
+      before: match_run
+      feeds_closure: true
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.6.A (p.25-26)
+      quote_verified: true
+      establishes: >
+        "The host OPO must ensure that each deceased donor's blood type is
+        determined by testing at least two donor blood samples prior to the
+        match run."
+
+  independence:
+    requirement: >
+      The two samples must be genuinely independent — not two aliquots of one
+      draw.
+    conditions:
+      - drawn on two separate occasions
+      - different collection times
+      - submitted as separate samples
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.6.A
+      quote_verified: true
+      establishes: >
+        "Be drawn on two separate occasions 2. Have different collection times
+        3. Be submitted as separate samples"
+    note: >
+      A validator can check all three mechanically, and should: splitting one
+      draw into two tubes satisfies "two samples" and defeats the purpose of
+      the rule, which is to catch a mislabelled specimen rather than a bad assay.
+
+  subtyping:
+    required_when: primary blood type is A
+    optional_when: primary blood type is AB
+    conditions:
+      - tested using pre-red-blood-cell-transfusion samples
+      - drawn on two separate occasions, different collection times, separate samples
+      - two separate tests must indicate the same result before reporting
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.6.B
+      quote_verified: true
+
+  on_conflict:
+    rule: >
+      Conflicting or indeterminate subtype results are NOT reported, and the
+      donor is allocated on the primary blood type.
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.6.B
+      quote_verified: true
+      establishes: >
+        "If there are conflicting or indeterminate subtype results, the subtype
+        results must not be reported to the OPTN and the deceased donor must be
+        allocated based on the primary blood type."
+    note: >
+      **Worth reading twice.** A conflict is not resolved by judgment, by a
+      tiebreak, or by picking the more recent result. It is WITHHELD, and
+      allocation falls back to the safer primary type. That is a refusal rule,
+      and it is exactly the shape this system uses everywhere else: when the
+      evidence does not settle, do not settle it — decline and say so.
+
+  documentation:
+    required:
+      - that determination followed the OPO's written protocol
+      - a complete history of all blood products received since admission
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.6.A
+      quote_verified: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GENERAL RISK ASSESSMENT — seven items, one of them on a clock
+# ─────────────────────────────────────────────────────────────────────────────
+risk_assessment:
+  provenance:
+    <<: *optn
+    locator: OPTN Policy 2.8 (p.27)
+    quote_verified: true
+    establishes: >
+      "1. Arterial blood gas results 2. Blood type determination and reporting
+      … 3. Chest x-ray 4. Complete blood count (CBC) 5. Electrolytes
+      6. Serum glucose 7. Urinalysis, within 24 hours before cross clamp"
+  required:
+    - id: abg
+      name: Arterial blood gas results
+    - id: blood_type
+      name: Blood type determination and reporting
+      see: blood_type.determination
+      note: including sub-typing for blood type A donors
+    - id: chest_xray
+      name: Chest x-ray
+    - id: cbc
+      name: Complete blood count
+    - id: electrolytes
+      name: Electrolytes
+    - id: serum_glucose
+      name: Serum glucose
+    - id: urinalysis
+      name: Urinalysis
+      temporal_bound:
+        within_before: cross_clamp
+        minutes: 1440
+        feeds_closure: true
+      note: >
+        The only item here carrying its own deadline. It is a *freshness*
+        bound rather than a sequencing one — the result must be recent at
+        cross-clamp, so a urinalysis drawn too early expires and must be
+        repeated. The closure treats it as an interval constraint.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# INFECTIOUS DISEASE TESTING
+#   Two separate properties, and conflating them is a real error: one is a
+#   property of the LABORATORY, the other of the ASSAY.
+# ─────────────────────────────────────────────────────────────────────────────
+infectious_disease:
+
+  laboratory_requirement:
+    rule: >
+      Testing completed in CLIA-certified laboratories, or laboratories meeting
+      equivalent requirements as determined by CMS.
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.9 (p.28)
+      quote_verified: true
+      establishes: >
+        "The host OPO is responsible for ensuring that all of the following
+        infectious disease testing is completed in Clinical Laboratory
+        Improvement Amendments (CLIA)-certified laboratories, or in laboratories
+        meeting equivalent requirements as determined by the Centers for
+        Medicare and Medicaid Services (CMS)"
+
+  assay_requirement:
+    rule: FDA licensed, approved or cleared tests.
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.9(2)
+      quote_verified: true
+      establishes: >
+        "Infectious disease testing for all potential deceased organ donors
+        using FDA licensed, approved or cleared tests"
+    note: >
+      Distinct from the laboratory requirement above. A CLIA-certified lab
+      running an unapproved assay fails this; an approved assay run by an
+      uncertified lab fails the other. **Both must hold, and a validator that
+      checks only one is checking half a rule.**
+
+  panel:
+    provenance:
+      <<: *optn
+      locator: OPTN Policy 2.9(1)-(2)
+      quote_verified: true
+    cultures:
+      - blood
+      - urine
+    serology_and_nat:
+      - { id: hiv_ab,     name: "HIV antibody (anti-HIV) screening, or HIV Ag/Ab combination test" }
+      - { id: hiv_nat,    name: "HIV RNA by donor screening or diagnostic NAT" }
+      - { id: hbsag,      name: "Hepatitis B surface antigen (HBsAg) screening test" }
+      - { id: anti_hbc,   name: "Hepatitis B core antibody (total anti-HBc) screening test" }
+      - { id: hbv_nat,    name: "Hepatitis B DNA by donor screening or diagnostic NAT" }
+      - { id: anti_hcv,   name: "Hepatitis C antibody (anti-HCV) screening test" }
+      - { id: hcv_nat,    name: "Hepatitis C RNA by donor screening or diagnostic NAT" }
+    note: >
+      **This list is transcribed from the pinned policy and is not complete.**
+      Policy 2.9(2) continues past item (g); the remainder has not yet been
+      transcribed and verified, so it is absent rather than guessed. Per
+      PROVENANCE.md §2 an element with no verified quote is a TODO — and a
+      partial panel presented as whole would be the worst possible error in
+      this file. See `incomplete` below.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WHAT IS NOT HERE, STATED PLAINLY
+# ─────────────────────────────────────────────────────────────────────────────
+incomplete:
+  - id: infectious_disease.panel.remainder
+    note: >
+      Policy 2.9(2) items beyond (g) — untranscribed. The pinned source
+      contains them; this file does not yet.
+  - id: viability_criteria
+    note: >
+      Organ-specific viability and ischemia tolerances. These are CLINICAL
+      figures requiring citation to published literature, not to policy —
+      PROVENANCE.md §3 says cite the paper, not the consensus. `t_cold_ischemia`
+      in the lifecycle remains TODO-VERIFY for the same reason.
+  - id: required_organ_information
+    note: >
+      OPTN Policy 2.11.A-E give per-organ required information (kidney, liver,
+      heart, lung, pancreas). Pinned, not yet transcribed.
+  - id: hemodilution
+    note: OPTN Policy 2.5 — assessment affects test validity. Pinned, not transcribed.
+
+excluded_on_purpose:
+  - "Any clinical decision. This file records what must be ESTABLISHED, never what it means."
+  - "Any suitability determination. See SPEC.md §8, prohibition 7."
+  - "Any figure not verified byte-exact against a pinned source."

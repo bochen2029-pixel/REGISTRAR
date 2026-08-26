@@ -195,6 +195,62 @@
       "locator": "OPTN Policy 2.14.B",
       "quote": "Qualified health care professionals, as defined in the host OPO’s protocol, must perform all verifications. At least one of the individuals performing a verification must be an OPO staff member.",
       "establishes": "Verification is TWO-PERSON, at least one of whom is OPO staff - a four-eyes requirement, and the definition of 'qualified' is delegated to the OPO's own protocol (an L2 variation point)."
+    },
+    {
+      "element": "clinical/blood_type/determination",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.6.A (p.25-26)",
+      "quote": "The host OPO must ensure that each deceased donor’s blood type is determined by testing at least two donor blood samples prior to the match run.",
+      "establishes": "Two samples, and a TEMPORAL bound: prior to the match run. An L1 constraint that feeds the closure."
+    },
+    {
+      "element": "clinical/blood_type/independence",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.6.A",
+      "quote": "Be drawn on two separate occasions 2. Have different collection times 3. Be submitted as separate samples",
+      "establishes": "The two samples must be INDEPENDENT - separate occasions, different collection times, separate submissions. Two aliquots of one draw do not satisfy it."
+    },
+    {
+      "element": "clinical/blood_type/conflict",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.6.B",
+      "quote": "If there are conflicting or indeterminate subtype results, the subtype results must not be reported to the OPTN and the deceased donor must be allocated based on the primary blood type.",
+      "establishes": "Conflicting results are NOT resolved by judgment - they are withheld, and allocation falls back to primary type. A refusal-to-report rule."
+    },
+    {
+      "element": "clinical/risk_assessment",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.8 (p.27)",
+      "quote": "Arterial blood gas results 2. Blood type determination and reporting according to Policy 2.6: Deceased Donor Blood Type Determination and Reporting, including sub-typing for blood type A donors 3. Chest x-ray 4. Complete blood count (CBC) 5. Electrolytes 6. Serum glucose 7. Urinalysis, within 24 hours before cross clamp",
+      "establishes": "Seven required elements of the general risk assessment, one of which carries its own temporal bound: urinalysis within 24 hours before cross clamp."
+    },
+    {
+      "element": "clinical/infectious_disease/labs",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.9 (p.28)",
+      "quote": "The host OPO is responsible for ensuring that all of the following infectious disease testing is completed in Clinical Laboratory Improvement Amendments (CLIA)-certified laboratories, or in laboratories meeting equivalent requirements as determined by the Centers for Medicare and Medicaid Services (CMS)",
+      "establishes": "Testing must be performed in CLIA-certified laboratories or CMS-determined equivalents. A property of the LABORATORY, not of the result."
+    },
+    {
+      "element": "clinical/infectious_disease/panel",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.9(2)",
+      "quote": "Infectious disease testing for all potential deceased organ donors using FDA licensed, approved or cleared tests",
+      "establishes": "The assays themselves must be FDA licensed, approved or cleared. A property of the TEST, distinct from the property of the lab."
+    },
+    {
+      "element": "core/authorization/jurisdiction/key",
+      "source": "ecfr-42-486-subpartG",
+      "locator": "42 CFR 486.342(b)",
+      "quote": "a potential donor consented to donation before his or her death in a manner that satisfied applicable State law requirements in the potential donor’s State of residence",
+      "establishes": "The governing law is that of the donor's STATE OF RESIDENCE - not the state of death, not the hospital's state. The jurisdiction table is keyed on residence."
+    },
+    {
+      "element": "core/authorization/jurisdiction/surrogate",
+      "source": "optn-policies",
+      "locator": "OPTN Policy 2.14.E (p.36)",
+      "quote": "whether that be the donor or a surrogate donation decision-maker consistent with applicable state law",
+      "establishes": "Who may act as surrogate is determined by state law. Federal rule and OPTN policy both DEFER; neither supplies the answer."
     }
   ]
 }

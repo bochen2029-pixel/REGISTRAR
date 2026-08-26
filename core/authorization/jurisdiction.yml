@@ -1,0 +1,121 @@
+# REGISTRAR · L0 · the authorization jurisdiction table
+# ─────────────────────────────────────────────────────────────────────────────
+# WHO MAY AUTHORIZE DONATION — and why this file is mostly empty.
+#
+# This is the one element of the seed that cannot be established by a single
+# citation. Every other locator in this repository resolves to one document.
+# This one resolves to fifty-odd state statutes, each an adoption of some
+# vintage of the Uniform Anatomical Gift Act, each amended locally.
+#
+# **The rows below are empty on purpose.** They are not an oversight and they
+# are not waiting on effort — they are waiting on evidence, per state, of a
+# kind nothing in this repository has yet gathered. `authorization` reports
+# `verified: false` for exactly this reason, and the generator will not let
+# that flag be cleared by rewording (that was tried, caught, and fixed —
+# see PROVENANCE.md).
+#
+# WHY THIS IS THE MOST DANGEROUS FILE TO GET WRONG
+#
+#   Every other element here governs timing or completeness. This one governs
+#   whether a recovery was lawful. A wrong row does not degrade a metric; it
+#   authorises something nobody was entitled to authorise. **Nothing in this
+#   file may be inferred, generalised from a neighbouring state, or filled in
+#   by a model.** A row without a statute citation is not a row.
+#
+# WHAT BELONGS TO THE SEED AND WHAT DOES NOT
+#
+#   This table lives in the seed and NOT in a site patch. The variation is
+#   statutory rather than operational, and **a site does not get to author who
+#   may authorize donation.** An OPO may tell you its practice; practice is not
+#   law here.
+
+schema_version: 0.1
+layer: L0
+status: KNOWN-INCOMPLETE
+generated: 2026-08-26
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE KEY — verified, and not what most people assume
+# ─────────────────────────────────────────────────────────────────────────────
+keyed_on: donor_state_of_residence
+
+key_provenance:
+  authority: 42 CFR 486 Subpart G
+  locator: 42 CFR 486.342(b)
+  accessed: 2026-08-26
+  quote_verified: true
+  establishes: >
+    "…a potential donor consented to donation before his or her death in a
+    manner that satisfied applicable State law requirements in the potential
+    donor's State of residence"
+  note: >
+    **The governing law is the donor's state of RESIDENCE** — not the state
+    where death occurred, not the state where the hospital sits, not the OPO's
+    own state. Those differ routinely: donation service areas span state lines,
+    and patients are transferred across them.
+
+    A system that keyed this table on the hospital's state would be wrong in
+    exactly the cases where it matters most, and would be wrong silently.
+
+surrogate_provenance:
+  authority: OPTN Policies (effective as of 2025-08-01; retrieved 2026-08-26)
+  locator: OPTN Policy 2.14.E (p.36)
+  accessed: 2026-08-26
+  quote_verified: true
+  establishes: >
+    "…whether that be the donor or a surrogate donation decision-maker
+    consistent with applicable state law"
+  note: >
+    Both the federal rule and OPTN policy DEFER on who may act as surrogate.
+    Neither supplies the answer. That deference is precisely why this table
+    must exist and why nothing above it can substitute for it.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE ROW CONTRACT — what a filled row must carry
+# ─────────────────────────────────────────────────────────────────────────────
+row_schema:
+  state:              two-letter postal code
+  act:                which uniform act is in force (e.g. RUAGA 2006, UAGA 1987, UAGA 1968, or a non-uniform act)
+  citation:           the state code citation, precise enough to check in under a minute
+  accessed:           YYYY-MM-DD
+  quote:              verbatim statutory text establishing the order of priority
+  quote_verified:     true only after tools/cite.py confirms it byte-exact against a pinned source
+  first_person:       whether first-person authorization is binding and not revocable by family
+  surrogate_priority: the ordered class list, verbatim from the statute
+  notes:              local amendments departing from the uniform text
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE TABLE
+# ─────────────────────────────────────────────────────────────────────────────
+jurisdictions: []      # EMPTY. Deliberately. See the header.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HOW TO FILL IT — the honest procedure
+# ─────────────────────────────────────────────────────────────────────────────
+procedure:
+  - step: >
+      Pin a source per state. The state code itself, not a summary of it, not a
+      law-firm client alert, not a secondary table. PROVENANCE.md §3: a summary
+      of a rule is not the rule.
+  - step: >
+      Quote the statutory text verbatim and run tools/cite.py. A row whose quote
+      does not byte-match its pinned source does not enter this file, no matter
+      how confident anyone is that it is right.
+  - step: >
+      Record which act vintage is in force. States adopted different versions of
+      the UAGA and amended them; assuming a uniform act is uniform is the
+      characteristic error here.
+  - step: >
+      Have counsel review before any row load-bears. **This is the one part of
+      the seed where a byte-exact citation is necessary and not sufficient** —
+      a correctly quoted statute can still be misread, and the consequence of
+      misreading it is not a bad metric.
+
+scope_note: >
+  Fifty-odd jurisdictions, each needing a pinned source and a verified quote,
+  is a different order of work from the batches that established the rest of
+  this spine — those drew on three documents. Nothing about it is blocked;
+  it is simply large, and it is left visibly undone rather than approximated.
+
+  **An empty table is honest. A plausible one would be the single most
+  dangerous artifact this project could ship.**

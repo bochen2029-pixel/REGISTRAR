@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -220,6 +221,82 @@ def check_citations() -> None:
            if bad else f"{len(cites)} citations verbatim in pinned sources")
 
 
+# ── 6c · the clinical layer and the jurisdiction table ──────────────────────
+def check_clinical() -> None:
+    try:
+        import yaml
+    except ImportError:
+        record(UNVERIFIED, "clinical · L1 present", "pyyaml unavailable — not checked")
+        return
+
+    dt = os.path.join(ROOT, "clinical", "donor_testing.yml")
+    if not os.path.exists(dt):
+        record(FAILED, "clinical · L1 present", "clinical/donor_testing.yml missing")
+        return
+    with open(dt, encoding="utf-8") as fh:
+        doc = yaml.safe_load(fh)
+
+    # every provenance block in L1 must carry a verified quote
+    def walk(node):
+        if isinstance(node, dict):
+            if "provenance" in node and isinstance(node["provenance"], dict):
+                yield node["provenance"]
+            for v in node.values():
+                yield from walk(v)
+        elif isinstance(node, list):
+            for v in node:
+                yield from walk(v)
+
+    provs = list(walk(doc))
+    unver = [p for p in provs if p.get("quote_verified") is not True]
+    record(FAILED if unver else GREEN, "clinical · L1 provenance",
+           f"{len(unver)} of {len(provs)} blocks unverified" if unver
+           else f"{len(provs)} provenance blocks, every one quote-verified")
+
+    # L1 must declare what it does NOT contain
+    inc = doc.get("incomplete") or []
+    record(GREEN if inc else UNVERIFIED, "clinical · declares its gaps",
+           f"{len(inc)} known gaps named in the file" if inc
+           else "no `incomplete` section — a complete-looking L1 is a claim")
+
+    # temporal bounds must be reachable by the closure
+    raw = open(dt, encoding="utf-8").read()
+    n_bounds = len(re.findall(r"feeds_closure:\s*true", raw))
+    record(GREEN if n_bounds else UNVERIFIED, "clinical · feeds the closure",
+           f"{n_bounds} L1 temporal bounds marked for floor/closure.py")
+
+
+def check_jurisdiction() -> None:
+    try:
+        import yaml
+    except ImportError:
+        record(UNVERIFIED, "authorization · jurisdiction table", "pyyaml unavailable")
+        return
+    p = os.path.join(ROOT, "core", "authorization", "jurisdiction.yml")
+    if not os.path.exists(p):
+        record(FAILED, "authorization · jurisdiction table", "missing")
+        return
+    with open(p, encoding="utf-8") as fh:
+        doc = yaml.safe_load(fh)
+
+    rows = doc.get("jurisdictions") or []
+    bad = [r for r in rows if r.get("quote_verified") is not True or not r.get("citation")]
+    if bad:
+        record(FAILED, "authorization · jurisdiction table",
+               f"{len(bad)} row(s) without a verified statute citation — "
+               f"a row without one is not a row")
+    elif rows:
+        record(GREEN, "authorization · jurisdiction table", f"{len(rows)} states, each with a verified citation")
+    else:
+        record(UNVERIFIED, "authorization · jurisdiction table",
+               "0 of ~50 states — empty on purpose; an empty table is honest, "
+               "a plausible one would be dangerous")
+
+    record(GREEN if doc.get("keyed_on") == "donor_state_of_residence" else FAILED,
+           "authorization · keyed on residence",
+           "keyed on the donor's state of residence, not the state of death")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -254,6 +331,8 @@ def main() -> int:
         ("the gates", check_gates),
         ("the floor", check_floor),
         ("provenance", check_citations),
+        ("the clinical layer (L1)", check_clinical),
+        ("authorization jurisdiction", check_jurisdiction),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")
