@@ -190,6 +190,31 @@ def check_floor() -> None:
     record(GREEN if r.returncode == 0 else FAILED, "floor · closure battery", last)
 
 
+# ── 6b · citations are not fabricated ───────────────────────────────────────
+def check_citations() -> None:
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import cite
+
+    m = cite.load_manifest()
+    srcs = m.get("sources", {})
+    if not srcs:
+        record(UNVERIFIED, "provenance · corpus pinned",
+               "no sources pinned yet — every locator still reads TODO-VERIFY")
+        return
+    record(GREEN, "provenance · corpus pinned", f"{len(srcs)} sources with sha256")
+
+    if not os.path.exists(cite.CITATIONS):
+        record(UNVERIFIED, "provenance · citations verify", "no citations.json yet")
+        return
+    with open(cite.CITATIONS, encoding="utf-8") as fh:
+        cites = json.load(fh).get("citations", [])
+    cache: dict = {}
+    bad = [c for c in cites if cite.verify(c, cache, m)[0] != cite.OK]
+    record(FAILED if bad else GREEN, "provenance · citations verify",
+           f"{len(bad)} of {len(cites)} do not byte-match their source"
+           if bad else f"{len(cites)} citations verbatim in pinned sources")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -223,6 +248,7 @@ def main() -> int:
         ("case replay", check_replay),
         ("the gates", check_gates),
         ("the floor", check_floor),
+        ("provenance", check_citations),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

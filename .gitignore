@@ -23,6 +23,16 @@ internal/
 # checked by conformance/run.py to declare themselves synthetic.
 !fixtures/tapes/*.jsonl
 
+# ── the corpus ────────────────────────────────────────────────────────────
+# Pinned public sources are fetched, not redistributed: OPTN policy, the CFR
+# text and CMS material belong to their publishers. The MANIFEST (hashes, URLs,
+# accessed dates) and the citations ARE committed — they are what make every
+# claim reproducible without this repository shipping somebody else's document.
+corpus/*
+!corpus/README.md
+!corpus/MANIFEST.json
+!corpus/citations.json
+
 # ── ordinary ──────────────────────────────────────────────────────────────
 node_modules/
 __pycache__/
