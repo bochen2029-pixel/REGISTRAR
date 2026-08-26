@@ -229,12 +229,116 @@ unsupported claim. **The exclusion that made gate 13 correct is what makes it bl
 **Do not delete this file, and do not make it pass by weakening anything.** It is retained so the exposure
 stays visible instead of becoming a story — the same reason the expired regime is kept in `citations.json`.
 
-## The shape of the remaining exposure
+## The sweep — 44 silent passes out of 49 candidates
 
-Completeness cannot be checked from a file. **Nothing in a patch says what a full value for a target looks
-like** — the seed declares *that* `recovery.or_availability` is a variation point, not *what shape* an answer
-must have.
+**`2026-08-26`.** Having witnessed the gates individually, the obvious next question was what gets past all
+of them together. An adversarial sweep produced **forty-nine candidate rows, of which forty-four passed every
+gate.** Each headline was re-verified by hand before anything was written down; the sweep was treated as a
+source of candidates, not of conclusions.
 
-Closing it properly means the seed declaring a schema per target, so a partial answer is a type error rather
-than a silent one. **That is a change to the seed, not to the battery**, and it is out of this fork's
-partition — recorded here as the next thing anyone hunting this should read.
+Seven are retained as fixtures. They are named `*-UNCAUGHT.json`, conformance counts them as **known
+exposures**, and two tests keep them honest in both directions — *if a fixture starts being caught the
+exposure closed and it must be promoted to a witness; if a file disappears, someone deleted an exposure
+instead of fixing one.*
+
+### `15` · Credentials — the largest blast radius found
+
+`allocation.credentials` **is** a declared L3 target, so blast radius is satisfied. The row repoints the
+national allocation system at an arbitrary host, ships a live-looking API key into the site's version
+control, and sets `verify_tls: False`. **Thirteen gates report content.**
+
+**The seed declares WHERE a value may go and never WHAT SHAPE it must have.** `targets.json` carries `layer`,
+`state` and `note` — and no type.
+
+> **A near-miss worth recording.** An earlier draft used the key `sk-live-8f2b1`, and divergence **did**
+> refuse it — on the digit `8`, as an unaccounted quantity. Removing the digit removes the refusal. That was
+> tokenisation noise, not a security check, **and mistaking one for the other is how a battery gets trusted
+> for something it never did.**
+
+### `16` · Expired on arrival — the gate has no clock
+
+`gates/` and `core/` contain no `date.today`, no `.now(`, no `utcnow`. The expiry gate parses the string and
+compares it to nothing. **A row that expired in 2019 mounts today.** And `9999-12-31` is permanent by
+arithmetic while satisfying a field whose entire purpose is that *nothing is permanent by default*.
+
+### `17` · The author is not a person
+
+`"system"`, `"AI assistant (automated patch generation)"` and `"-"` all report **GREEN** on a gate that says
+*"every row carries a named human."* It carries a non-empty string.
+
+**`AGENTS.md` has a machine leave `author` EMPTY** precisely so the middle state can mean *not yet signed*.
+So a machine that writes anything at all in that field **converts PASS-UNVERIFIED into GREEN and signs on a
+human's behalf.** The gate that makes the signature the output commit is defeated by a hyphen.
+
+### `18` · Two rows, one target, contradictory
+
+Each independently well-evidenced. **Local invertibility is GREEN because the inverse chain is correct** —
+the algebra is perfectly satisfied while the patch asserts two incompatible facts about one building, and the
+second silently wins.
+
+**Nothing requires a `supersedes` field.** The worked example uses one by convention, so *the convention is
+doing work the schema does not.* **Every gate reads a row at a time; no gate reads the patch.**
+
+### `19` · Two ways past the totality gate
+
+`__partial__: False` is a **bypass** — the gate tests truthiness, so *annotating* the partiality defeats the
+check. And the marker nested one level down is invisible.
+
+With `14`, this says the gate does not detect partiality at all. **It detects a self-report, and a
+self-report can be wrong in either direction.**
+
+### `20` · The replay says the row is wrong, and it mounts
+
+A row whose own shadow run reports **3 matched, 131 missed of 134** passes every gate. The shadow-run gate
+asks whether a denominator *exists*, never what it *says*.
+
+And making `cases` a **string** disables divergence checks 2 and 5 wholesale via `isinstance(cases, int)`:
+900 matched plus 900 missed against `"134"` closes to nothing and nobody notices. **A number's type is doing
+load-bearing work that nothing checks.**
+
+---
+
+## One gate was fixed rather than recorded
+
+**The `conservative` branch of divergence was laundering sample sizes into durations**, and unlike the rest
+this was not a missing check — it was a check doing the wrong thing, added earlier in the same week to stop
+the gate punishing the house rule.
+
+It accepted any value within +25% of **any** number in the evidence prose. For
+
+> *"across 402 resulted panels in 2025 the observed p75 was 6h04m"*
+
+the anchors were `{6, 360, 364, 402, 2025}` — **a sample size and a year beside the measurement.** Since
+evidence prose almost always carries an `n`, most arbitrary durations could be licensed by the sample size of
+the study that fails to support them, and a year licensed anything up to **2531**. The gate then reported
+*"value, evidence and replay tell the same story."*
+
+**Now a duration may only be licensed by a duration.** Verified in both directions: 500 minutes against a
+cited p75 of 60 fails where `n=402` once licensed it, and 120-from-118 and 180-from-174 still pass, so the
+house rule is not punished.
+
+**What is still wrong, and belongs to the seed:** the heuristic assumes *bigger is safer*, and for
+`lapse.threshold` that is **inverted** — a longer threshold surfaces *fewer* stalled referrals. Telling those
+apart needs the seed to declare a direction-of-safety per target. Recorded rather than guessed at.
+
+---
+
+## The shape of all of it
+
+Three sentences cover almost every exposure above.
+
+**The seed declares where a value may go, never what shape it must have.** No types, no ranges, no required
+keys, no direction of safety. `15`, `19`, `20` and the unfixable half of the conservative heuristic are all
+this one gap. Closing it means a schema per target — **a change to the seed, not the battery.**
+
+**Every gate reads a row; no gate reads the patch.** `18` is this alone, and it is why a `supersedes`
+convention exists in the worked example without anything enforcing it.
+
+**Several gates check that a field is present rather than what it says.** `16` parses a date and never
+compares it. `17` tests a string for non-emptiness and calls it a human. `20` tests a denominator for
+existence and never reads the verdict. **Presence is cheap to check and it is not what anyone wanted
+checked.**
+
+**None of this is the fixtures' fault, and none of it is fixed by writing more fixtures.** The fixtures make
+the holes visible. Closing them is seed work, and it is out of this fork's partition — recorded here as the
+next thing anyone hunting this should read.
