@@ -201,10 +201,23 @@ than no gate.
 value rounded up read as divergence, and *"four hours"* unread because the scanner only saw digits. Each is
 now a test. `[NULL]` — human review, which reads three fields as one story because they are formatted as one.
 
-**The `holds` block.** What a completing harness considered and declined, per target, with the reason.
-**Today a harness that smooths over a contradiction and one that never saw it produce identical output.** And
-`sources contradict, unresolved` is the single highest-value line a completion can emit: it is a finding
-*about the organisation*.
+**The `holds` block — DONE `2026-08-26`, and it became gate 15.** What a completing harness considered and
+declined, per target, with the reason. **Found by measurement, not inspection:** F-PATCH-DELTA's arm-②
+candidate accounted for 20 of 20 targets unprompted, and checking the **worked example** against the same
+standard showed **8 rows and 12 silences.** *The file everyone is told to copy was demonstrating the defect.*
+
+`accountability` now refuses a patch silent on any declared target — **a target with no row and no hold is
+indistinguishable from one nobody looked at.** Twelve holds added to the worked example, two of them
+`sources_contradict`, which is *a finding about the organisation rather than a gap in the work.*
+
+**And the field shape was adopted from the run rather than invented here** — the candidate had independently
+produced `target/tier/reason/searched/detail`, separating the verdict from the explanation and adding the
+authority tier. Better than what this repository first proposed.
+
+**The kit was corrected to match.** `AGENTS.md` §7b and `elicit/method.md` now ask for what the gate
+requires — and a section of `method.md` that said **"leave it out"** was in direct contradiction. Its
+correction is kept visible rather than edited away, because *the sentence beneath it was right*: **the
+questions you cannot answer are themselves a finding — and "leave it out" threw that finding away.**
 
 ---
 

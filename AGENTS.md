@@ -247,10 +247,53 @@ the gate.** All four are detectable, all four are refused, and all four are wors
 
 ---
 
+## §7b · ACCOUNT FOR EVERY DECLARED TARGET — a row, or a hold. Never silence.
+
+The seed enumerates its own mutable surface: **twenty declared variation points**, in
+`core/lifecycle/targets.json`. Your output must say something about **every one of them.**
+
+**A target you cannot ground is a target you DECLINE**, in the `holds` array, naming what you searched and
+why it came back empty:
+
+```yaml
+holds:
+  - target:   intake.timely_referral_definition
+    tier:     1                      # which authority tier a resolution needs
+    reason:   THE AGREEMENTS ARE NOT IN THE CORPUS.
+    searched: contracts/ (lab and transport only), ops/SOP-03 §3.5, interfaces/
+    detail:   SOP-03 §3.5 defers to the hospital agreements and none are present.
+              There is no federal figure to fall back on. This is the first
+              deadline on every case.
+    class:    no_evidence           # or sources_contradict, requires_tier_1_5_change,
+                                    #    phi_adjacent_declined, ambiguous_needs_human
+```
+
+**Why this is required rather than encouraged.** A target with no row and no hold is indistinguishable from
+three different situations: you looked and found nothing, you never looked, or the site genuinely has no
+local variation there. **A reviewer cannot tell which — and the absences are where the risk is.** The
+`accountability` gate refuses a patch that is silent on any declared target.
+
+**The declines are not the leftovers. They are half the product**, and often the better half:
+
+- **`sources_contradict` is the highest-value line a completion can emit.** It is a finding *about the
+  organisation* — the binder and the behaviour disagree and nobody has reconciled them. **Without a hold, a
+  harness that smooths that over and one that never noticed produce identical output.**
+- A `tier` of 1 or 2 tells a reviewer this needs the medical director or counsel, not an afternoon.
+- **`requires_tier_1_5_change` is how you say "this is not mine to answer."**
+
+**Filing a plausible row instead of a hold is the worst available outcome.** A gap is visible; a confident
+wrong answer is not — which is why the completion falsifier scores a fabrication **below** a blank.
+
+---
+
 ## §8 · STOP conditions — hand to a human
 
 Stop, state plainly what you found, and wait. These are not failures on your part; **surfacing them is the
 job.**
+
+**A hold is not a STOP.** A hold is *"I looked, it is not there, here is what I searched"* — you record it
+and carry on. A STOP is *"I cannot proceed without a human decision."* Recording nine holds and finishing is
+correct work; stopping nine times is not.
 
 1. Completing a row would require touching `core/`, `clinical/`, the gates, the schema, or the tape.
 2. You cannot determine a true `inverse`.
