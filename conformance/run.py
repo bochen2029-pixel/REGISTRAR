@@ -173,8 +173,14 @@ def check_gates() -> None:
     #   FAILED           the draft is wrong
     #   PASS-UNVERIFIED  the draft is INCOMPLETE, not wrong — an unsigned row is a
     #                    legal draft, because a machine leaves `author` empty
-    #   *UNCAUGHT*       a fixture NOTHING catches, retained ON PURPOSE so the
-    #                    exposure stays visible instead of becoming a story
+    #   *UNCAUGHT*       a fixture no SEMANTIC gate catches, retained ON PURPOSE
+    #                    so the exposure stays visible instead of becoming a
+    #                    story. It may still trip a FLOOR gate — schema
+    #                    conformance, accountability — because these fixtures
+    #                    are deliberately minimal and a floor fires on any
+    #                    fragment. A floor refusal says nothing about the hole
+    #                    the fixture records, and reading it as closure would be
+    #                    the mistake this whole corpus exists to prevent.
     from validate_patch import GREEN as GG
     rejected = sorted(f for f in os.listdir(os.path.join(worked, "rejected"))
                       if f.endswith((".json", ".yml", ".yaml")))
@@ -192,9 +198,25 @@ def check_gates() -> None:
            else f"{len(must_refuse)}/{len(must_refuse)} adversarial drafts refused")
 
     if uncaught:
+        # "NOTHING catches" was true when written and is not any more. Gates 14
+        # and 15 are FLOORS: they fire on any deliberately-minimal fragment, so
+        # they fire on every fixture here for being short rather than for being
+        # wrong. Saying NOTHING catches them would now be false, and a reader
+        # who ran one and saw a refusal could conclude the hole had closed.
+        sys.path.insert(0, os.path.join(ROOT, "gates"))
+        from witness import FLOOR
+        from validate_patch import GREEN as _G
+        ambient = {"shadow-run fidelity", "totality on provision"}
+        floored = 0
+        for f in uncaught:
+            rr = validate(load_patch(os.path.join(worked, "rejected", f)), load_targets())
+            if any(st != _G and g in FLOOR for st, g, _ in rr.rows):
+                floored += 1
         record(UNVERIFIED, "gates · known exposures",
-               f"{len(uncaught)} fixture(s) NOTHING catches, retained deliberately: "
-               f"{', '.join(uncaught)}")
+               f"{len(uncaught)} hole(s) no SEMANTIC gate catches, retained deliberately"
+               + (f" ({floored} also trip a floor gate for being minimal — that is "
+                  f"not closure)" if floored else "")
+               + f": {', '.join(uncaught)}")
 
     record(UNVERIFIED, "gates · undecidable from a file",
            "local invertibility, shadow-run fidelity, totality — need a runtime and the site's tape")
