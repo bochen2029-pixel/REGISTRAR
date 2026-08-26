@@ -1,0 +1,63 @@
+{
+  "$comment": "GENERATED from the repository by conformance/claims.py. Do not edit by hand — a hand-edited claims file is the drift it exists to prevent, wearing the costume of the fix.",
+  "generated_by": "conformance/claims.py",
+  "claims": {
+    "gates": {
+      "value": 16,
+      "pattern": "(\\w+) gates",
+      "exclude": [
+        "\\w+ gates report",
+        "\\w+ gates are ",
+        "\\w+ gates that "
+      ],
+      "note": "every gate the battery reports on the worked example"
+    },
+    "gates_unverified": {
+      "value": 3,
+      "pattern": "(\\w+) gates report",
+      "note": "the subset that cannot be decided from a file — and PASS-UNVERIFIED IS NOT A PASS"
+    },
+    "citations": {
+      "value": 44,
+      "pattern": "(\\d+) citations",
+      "note": "byte-exact against pinned sources"
+    },
+    "pinned_sources": {
+      "value": 5,
+      "pattern": "(\\d+) pinned sources"
+    },
+    "states_verified": {
+      "value": 13,
+      "of": 15,
+      "pattern": "(\\d+) ?/ ?15",
+      "note": "the remaining two are open for NON-EQUIVALENT reasons and a surface that says '2 unverified' without them misreports"
+    },
+    "battery_configuration": {
+      "value": "default — no REGISTRAR_SURFACE set"
+    },
+    "battery_green": {
+      "value": 50,
+      "pattern": "(\\d+) G ·"
+    },
+    "battery_unverified": {
+      "value": 9,
+      "pattern": "· (\\d+) PU"
+    },
+    "battery_failed": {
+      "value": 0,
+      "pattern": "· (\\d+) F\\b"
+    },
+    "adversarial_fixtures": {
+      "value": 22,
+      "pattern": "(\\d+) adversarial fixtures"
+    }
+  },
+  "not_derivable_here": {
+    "$note": "Claims a surface may carry that this file cannot check, listed so their absence is not read as coverage.",
+    "items": [
+      "the F-PATCH-DELTA result — it lives in internal/, gitignored, and a clone does not receive it",
+      "every substrate row — measured in another domain, on another bench",
+      "anything about a real OPO, because nothing has run inside one"
+    ]
+  }
+}

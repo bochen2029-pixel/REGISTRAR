@@ -35,6 +35,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "core"))
 sys.path.insert(0, os.path.join(ROOT, "gates"))
 sys.path.insert(0, os.path.join(ROOT, "floor"))
+sys.path.insert(0, os.path.join(ROOT, "conformance"))
 
 GREEN, UNVERIFIED, FAILED = "GREEN", "PASS-UNVERIFIED", "FAILED"
 VERBOSE = "--verbose" in sys.argv
@@ -693,6 +694,75 @@ def check_schema() -> None:
            last[-1] if last else "no output")
 
 
+# ── 6l · the claims this repository makes in public ─────────────────────────
+def check_claims() -> None:
+    """
+    THREE DRIFTS IN ONE DAY, none caught by a check — the hardware line, the
+    corpus gitignore, and a public page four gates and a whole experiment behind
+    the battery. This repository gated everything except its own claims.
+    """
+    # COMPARE IN MEMORY, NEVER BY SUBPROCESS.
+    #
+    # `claims.py --check` derives the battery totals by RUNNING the battery. The
+    # first version of this function shelled out to it — from inside the battery
+    # — and the run never terminated. A check that calls the thing it is part of
+    # is not slow, it is non-halting, and it timed out rather than failing.
+    #
+    # The battery already holds its own totals; comparing them here needs no
+    # subprocess and cannot recurse.
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    try:
+        with open(os.path.join(ROOT, "conformance", "CLAIMS.json"), encoding="utf-8") as fh:
+            filed = json.load(fh)["claims"]
+    except Exception:
+        record(FAILED, "claims · file is current", "no CLAIMS.json — run claims.py --emit")
+        filed = None
+
+    if filed is not None:
+        # A CHECK CANNOT COUNT ITSELF. The battery totals in CLAIMS.json include
+        # these very lines, so comparing them from inside needs a fudge for
+        # records not yet made — and the first attempt used +1, which was wrong
+        # the moment one of the two lines was not GREEN. A guessed correction
+        # producing a confident number is the failure this file exists to catch.
+        #
+        # So the battery totals are NOT compared here. They are compared by
+        # `claims.py --check`, which runs the battery from outside and has no
+        # such problem. What IS compared here is every claim that does not
+        # depend on this run: gates, citations, sources, states, fixtures.
+        stable = {k: v["value"] for k, v in filed.items()
+                  if not k.startswith("battery_")}
+        from claims import derive as _derive          # noqa: E402
+        live = {k: v["value"] for k, v in _derive(with_battery=False)["claims"].items()
+                if not k.startswith("battery_")}
+        drift = [(k, stable.get(k), v) for k, v in live.items() if stable.get(k) != v]
+        record(FAILED if drift else GREEN, "claims · file is current",
+               "; ".join(f"{k}: filed {a}, live {b}" for k, a, b in drift)[:130] if drift
+               else f"{len(stable)} run-independent claim(s) agree — battery totals are "
+                    f"checked by claims.py --check, from outside")
+
+    # A surface is checked only if one is configured. REGISTRAR knows about no
+    # website, and a check that reached into one would fail for every stranger
+    # who clones this — so an absent surface is PASS-UNVERIFIED, which is the
+    # honest state rather than a degraded one.
+    surface = os.environ.get("REGISTRAR_SURFACE")
+    if not surface:
+        record(UNVERIFIED, "claims · public surface",
+               "no REGISTRAR_SURFACE set — nothing to compare (set it to a rendered page)")
+        return
+    s = subprocess.run([sys.executable, os.path.join(ROOT, "conformance", "claims.py"),
+                        "--surface", surface],
+                       capture_output=True, text=True, encoding="utf-8", env=env)
+    stale = [ln.strip() for ln in (s.stdout or "").splitlines() if "STALE" in ln]
+    if s.returncode == 0:
+        tail = [ln for ln in s.stdout.splitlines() if ln.startswith("GREEN")]
+        record(GREEN, "claims · public surface", tail[-1][:110] if tail else "agrees")
+    elif s.returncode == 2:
+        record(UNVERIFIED, "claims · public surface", "surface absent or makes none of these claims")
+    else:
+        record(FAILED, "claims · public surface",
+               f"{len(stale)} stale: " + "; ".join(stale)[:120])
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     # ASK GIT, NOT THE FILESYSTEM. The check is named "committed" and walked the
@@ -747,6 +817,7 @@ def main() -> int:
         ("the forge plugins", check_forge_plugins),
         ("redistribution", check_no_redistribution),
         ("the schema", check_schema),
+        ("the claims", check_claims),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")
