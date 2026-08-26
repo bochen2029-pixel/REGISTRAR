@@ -91,10 +91,23 @@ here. `internal` §14 item 1. **Unpinned third-party code must not become load-b
 
 ## 3 · Two cheap gates with real teeth
 
-**The divergence gate.** Every row exists three times — what it **says** (`value`), what it **cites**
-(`evidence`), what **happened** (`shadow_run`) — and **the gates check each separately while nothing checks
-that they agree.** A row whose value says 90, whose evidence says 240, and whose replay tested a third thing
-passes today. **The catches live in the disagreements, and formatting is what hides them.**
+**The divergence gate — DONE `2026-08-26`, gate 13.** Every row exists three times — what it **says**
+(`value`), what it **cites** (`evidence`), what **happened** (`shadow_run`) — and the twelve existing gates
+checked each separately while nothing checked that they agree. **The catches live in the disagreements, and
+formatting is what hides them.**
+
+It refuses: a value its evidence contradicts · **a value rounded DOWN from its evidence** (optimism computes
+deadlines wrong in the direction that loses organs) · a shadow run whose arithmetic does not close · a
+numerator above its denominator · a replay over zero cases · a `derived_from` that names no method. It flags:
+an evidence `n` that disagrees with the replay's.
+
+**And it accepts conservative rounding**, because this repository's own rule is to round up — *p75 or higher,
+p90 where the figure feeds a latest safe start.* A gate that punished the rule being followed would be worse
+than no gate.
+
+**Three of its first four findings were the GATE being wrong, not the rows** — identifiers read as claims, a
+value rounded up read as divergence, and *"four hours"* unread because the scanner only saw digits. Each is
+now a test. `[NULL]` — human review, which reads three fields as one story because they are formatted as one.
 
 **The `holds` block.** What a completing harness considered and declined, per target, with the reason.
 **Today a harness that smooths over a contradiction and one that never saw it produce identical output.** And

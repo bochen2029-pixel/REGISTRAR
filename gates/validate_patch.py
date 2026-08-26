@@ -36,6 +36,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, "core"))
+sys.path.insert(0, HERE)
 TARGETS = os.path.join(ROOT, "core", "lifecycle", "targets.json")
 
 GREEN, UNVERIFIED, FAILED = "GREEN", "PASS-UNVERIFIED", "FAILED"
@@ -202,6 +203,22 @@ def validate(patch: dict, targets: dict) -> Result:
     else:
         r.add(UNVERIFIED, "totality on provision",
               "structural check passed; whether application installs every declared key needs a runtime")
+
+    # 11b · divergence — do the three layers of a row agree?
+    #
+    # Every row exists three times: what it SAYS (value), what it CITES
+    # (evidence), what HAPPENED (shadow_run). Gates 7 and 8 check each
+    # separately. Nothing checked that they agree — and the three fields are
+    # formatted as one story, so a reviewer reads them as one. The catches live
+    # in the disagreements.
+    try:
+        from divergence import validate as _div
+        dstate, dmsgs = _div(patch)
+        r.add(dstate, "divergence",
+              "; ".join(dmsgs)[:200] if dmsgs
+              else "value, evidence and replay tell the same story")
+    except ImportError:
+        r.add(UNVERIFIED, "divergence", "gates/divergence.py not importable")
 
     # 12 · signature — the output commit
     unsigned = [row.get("target") for row in rows if not str(row.get("author") or "").strip()]
