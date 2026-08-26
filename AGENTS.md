@@ -13,21 +13,40 @@ here is a slight. The containment is the product.
 
 ## §0 · What state this repository is in, today
 
-**Rev 0. This repository currently contains a specification and nothing else.** `SPEC.md`, `README.md`,
-`LICENSE`, `PROVENANCE.md` and this file. The directories referenced throughout — `core/`, `clinical/`,
-`gates/`, `floor/`, `elicit/`, `fixtures/`, `schema/`, `adapters/` — **do not exist yet.**
+**Rev 0.** Run this first, before you believe anything in this file:
+
+```bash
+python conformance/run.py
+```
+
+It reports what is actually here and what is not. As of this writing it ends **PASS-UNVERIFIED**, and the
+reason matters to you specifically.
+
+**What exists and works:** `core/lifecycle/` (the spine, 15 states), `core/tape.py` (L4, append-only and
+hash-chained), `core/case.py` (replay against the lifecycle), `schema/`, `gates/` (12 gates), `floor/` (the
+temporal closure), `elicit/` (the question set), `examples/worked/` (a patch, and four that were refused),
+`fixtures/`, `conformance/`. 98 assertions, stdlib only.
+
+**What does not exist:** `clinical/` (L1) and `adapters/` (L3 shells).
+
+**What exists but is not established — read this twice.** **14 of the lifecycle's 15 states carry provenance
+locators reading `TODO-VERIFY`.** The authority is named; the citation has not been checked against live text.
+Per `PROVENANCE.md` §2 **those elements are not implemented — they are TODOs**, and `core/case.py` will
+report a guard on one of them as `PENDING` rather than enforcing it. **Do not treat an unverified element as
+policy, and do not write a validator that enforces one.** If your job is to fill those locators, that is the
+single most valuable work available in this repository.
 
 That determines which of two jobs you are here to do:
 
 | If your operator asked you to… | Go to |
 |---|---|
-| **complete the fit** for a specific organ procurement organisation | §1–§9. **But the seed does not exist yet**, so today this job is not yet runnable. Say so and stop. |
-| **build the seed itself** — implement a rung of the ladder | §10 |
+| **complete the fit** for a specific OPO | §1–§9. The kit is present and the gates run — but the spine is unverified, so any fit built on it inherits that. Say so before you start. |
+| **build the seed itself** — fill locators, add `clinical/`, extend the battery | §10 |
 
-**Do not simulate the first job against a repository that cannot support it.** Producing a plausible
-`<site>.patch.yml` against a seed that does not exist would be the exact failure this repository is built to
-prevent: confident, well-formed, ungrounded output. If asked, state plainly that Rev 0 is a specification and
-that the completion path opens at rung R5 of `SPEC.md` §11.
+**Do not produce a `<site>.patch.yml` you cannot ground.** A plausible, well-formed, unevidenced patch is the
+exact failure this repository is built to prevent, and the gates will refuse it — see
+`examples/worked/REJECTED.md`, draft 02, which is what that failure looks like when a competent harness
+produces it.
 
 ---
 

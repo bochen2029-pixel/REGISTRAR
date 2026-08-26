@@ -19,6 +19,9 @@ internal/
 !examples/worked/*.patch.yml
 *.tape/
 *.jsonl
+# ...except the synthetic teaching tapes, which carry no real data and are
+# checked by conformance/run.py to declare themselves synthetic.
+!fixtures/tapes/*.jsonl
 
 # ── ordinary ──────────────────────────────────────────────────────────────
 node_modules/

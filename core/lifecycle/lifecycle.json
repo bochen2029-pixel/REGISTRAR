@@ -1,0 +1,239 @@
+{
+  "$comment": "GENERATED from lifecycle.yml by gen_targets.py. Do not edit by hand. `verified: false` means the element's provenance locator is still TODO-VERIFY — per PROVENANCE.md §2 that element is not implemented, and no validator may enforce it.",
+  "schema_version": 0.1,
+  "generated_from": "lifecycle.yml",
+  "states": {
+    "referral_received": {
+      "name": "Referral received",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "referral_triaged": {
+      "name": "Referral triaged",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "evaluation": {
+      "name": "Donor evaluation",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [
+        "death_determination",
+        "authorization",
+        "donor_management"
+      ],
+      "requires_elements": [],
+      "verified": false
+    },
+    "death_determination": {
+      "name": "Death determination",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "authorization": {
+      "name": "Authorization",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "donor_management": {
+      "name": "Donor management",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [
+        "evaluation",
+        "allocation"
+      ],
+      "requires_elements": [],
+      "verified": false
+    },
+    "allocation": {
+      "name": "Allocation",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [
+        "serology_complete",
+        "typing_complete",
+        "authorization_valid"
+      ],
+      "verified": false
+    },
+    "recovery": {
+      "name": "Surgical recovery",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "packaging_transport": {
+      "name": "Packaging and transport",
+      "terminal": false,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "disposition": {
+      "name": "Disposition",
+      "terminal": false,
+      "grain": "per_organ",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "reporting_closed": {
+      "name": "Reporting closed",
+      "terminal": true,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "ruled_out_medical": {
+      "name": "Ruled out — medically unsuitable",
+      "terminal": true,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "authorization_declined": {
+      "name": "Authorization declined",
+      "terminal": true,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "no_organs_recovered": {
+      "name": "No organs recovered",
+      "terminal": true,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": false
+    },
+    "referral_lapsed": {
+      "name": "Referral lapsed",
+      "terminal": true,
+      "grain": "case",
+      "concurrent_with": [],
+      "requires_elements": [],
+      "verified": true
+    }
+  },
+  "transitions": [
+    {
+      "from": "referral_received",
+      "to": "referral_triaged",
+      "guard": []
+    },
+    {
+      "from": "referral_received",
+      "to": "referral_lapsed",
+      "guard": []
+    },
+    {
+      "from": "referral_triaged",
+      "to": "evaluation",
+      "guard": []
+    },
+    {
+      "from": "referral_triaged",
+      "to": "ruled_out_medical",
+      "guard": [
+        "ruleout_reason"
+      ]
+    },
+    {
+      "from": "evaluation",
+      "to": "death_determination",
+      "guard": []
+    },
+    {
+      "from": "death_determination",
+      "to": "authorization",
+      "guard": [
+        "death_recorded"
+      ]
+    },
+    {
+      "from": "authorization",
+      "to": "donor_management",
+      "guard": [
+        "authorization_valid"
+      ]
+    },
+    {
+      "from": "authorization",
+      "to": "authorization_declined",
+      "guard": [
+        "authorization_outcome"
+      ]
+    },
+    {
+      "from": "donor_management",
+      "to": "allocation",
+      "guard": [
+        "serology_complete",
+        "typing_complete",
+        "authorization_valid"
+      ]
+    },
+    {
+      "from": "allocation",
+      "to": "recovery",
+      "guard": [
+        "primary_acceptance"
+      ]
+    },
+    {
+      "from": "allocation",
+      "to": "no_organs_recovered",
+      "guard": [
+        "disposition_reason"
+      ]
+    },
+    {
+      "from": "recovery",
+      "to": "packaging_transport",
+      "guard": [
+        "recovery_documented"
+      ]
+    },
+    {
+      "from": "recovery",
+      "to": "no_organs_recovered",
+      "guard": [
+        "disposition_reason"
+      ]
+    },
+    {
+      "from": "packaging_transport",
+      "to": "disposition",
+      "guard": [
+        "custody_continuous"
+      ]
+    },
+    {
+      "from": "disposition",
+      "to": "reporting_closed",
+      "guard": [
+        "disposition_complete"
+      ]
+    }
+  ]
+}

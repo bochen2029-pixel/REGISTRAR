@@ -155,6 +155,9 @@ in this design cares which harness you point at it.**
 ```
 core/lifecycle/lifecycle.yml   the mandated case lifecycle, as cited data — L0's spine
 core/lifecycle/targets.json    the declared mutable surface: 19 legal patch targets (generated)
+core/tape.py                   L4. append-only, hash-chained. no delete, no update — by type.
+core/case.py                   replay a case against the lifecycle; refuse what was illegal
+conformance/run.py             one command: is this instance sound?
 schema/patch.schema.json       the seven-field patch contract
 gates/validate_patch.py        the first gates. names every defect in words.
 elicit/questions.yml           one question per variation point — usable with no software at all
@@ -166,10 +169,13 @@ SPEC.md  AGENTS.md  PROVENANCE.md  README.md  LICENSE
 ```
 
 ```bash
-python floor/closure.py fixtures/cases/morning-or-window.json
+python conformance/run.py                                       # is this instance sound?
+python floor/closure.py fixtures/cases/morning-or-window.json   # the implied deadline
+python core/case.py fixtures/tapes/violating-case.jsonl         # replay refuses an illegal case
 python gates/validate_patch.py examples/worked/northlake.patch.json
-python floor/test_closure.py && python gates/test_gates.py     # 59 assertions
 ```
+
+98 assertions across `core/`, `floor/` and `gates/`. No test framework, no dependencies.
 
 **Try that first.** It derives, from six ordinary constraints, that a serology had to be drawn at 22:15 the
 previous evening — and prints the chain of constraints that makes it so. It is 23:40 in the fixture. No timer
