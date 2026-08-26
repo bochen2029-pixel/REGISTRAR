@@ -12,7 +12,7 @@ wins, the funeral prints and that rung dies. A roadmap that cannot lose is a bro
 
 ---
 
-## Where it stands · `2026-08-26` · 40 GREEN · 6 PASS-UNVERIFIED · 0 FAILED
+## Where it stands · `2026-08-26` · 40 GREEN · 7 PASS-UNVERIFIED · 0 FAILED · 197 assertions
 
 | Built | State |
 |---|---|
@@ -21,7 +21,7 @@ wins, the funeral prints and that rung dies. A roadmap that cannot lose is a bro
 | replay | refuses illegal transitions; guards enforced where provenance allows |
 | the algebra | `mount`/`retire`/T3 computed — the invertibility gate **decides** |
 | the floor | the temporal closure; the argmin path *is* the citation |
-| gates | twelve, three states, defects named in words |
+| gates | **thirteen**, three states, defects named in words |
 | the kit | `elicit/` 20 questions · a worked patch · **four refused drafts** |
 | profiles | `edr` ⊂ `forge`, checked not trusted |
 | percepts + switch | six ported laws · `off` is inert · fails toward inert |
@@ -29,18 +29,19 @@ wins, the funeral prints and that rung dies. A roadmap that cannot lose is a bro
 
 | Not built | Why it matters |
 |---|---|
-| **`adapters/`** | **empty — and it is the largest share of the six years** |
+| ~~`adapters/`~~ | **the SHAPE now exists** — contract, `lab/` worked, battery. Bindings `null`. |
 | `clinical/` gaps | the 2.9 panel remainder, 2.11 per-organ, 2.5 hemodilution |
 | `t_cold_ischemia` | clinical literature, not policy |
 | ~50 jurisdiction rows | **theirs, not ours** — contributed upstream |
 | the resident | gated on F-PATCH-DELTA |
 | the harness, composed | present, uninstalled, unpinned, unwired |
+| adapter **bindings** | `null` — a real integration needs specs an OPO holds |
 
 ---
 
 # I · THE CENTRE — exact, because it is next
 
-## 1 · `adapters/` — the shape for the layer that eats the years `[NEXT]`
+## 1 · `adapters/` — the shape for the layer that eats the years `[DONE 2026-08-26]`
 
 **The thesis says L2/L3 is the six years. L3 is most of it** — *which donor hospitals run which EHR and at
 what version, reference-lab interfaces and result formats, imaging, e-signature, transport.* An OPO with
@@ -74,6 +75,15 @@ bindings ship `null`, the same pattern and the same reason as `forge/plugins.yml
 must be true of an adapter; the site binds the one it actually has.**
 
 `[NULL]` — a coordinator retyping from a screen. **Every adapter must name what it replaces and beat it.**
+
+**SHIPPED.** `CONTRACT.md` (five refusable declarations) · `lab/adapter.yml` (the worked one) ·
+`conformance.py` (10 GREEN · 3 PASS-UNVERIFIED · 0 FAILED, and PASS-UNVERIFIED is the honest state for an
+unbound shell). **And the battery caught a trap on its first run, on the first adapter:** a bare `null:` key
+is a YAML reserved word that parses as the **None key**, so the field vanished and the adapter read as having
+declared no null at all. Renamed to `beats:`, and **the checker now refuses the trap** rather than tolerating
+it, so no future adapter can lose a field the same way.
+
+**What is next here, and it is not more shells:** an adapter that has a real binding. That waits on a site.
 
 ## 2 · Two afternoons, in parallel, neither blocking the other
 
