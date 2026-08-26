@@ -1,0 +1,32 @@
+{
+  "$comment": "REJECTED DRAFT 22 — FICTIONAL. WITNESS FOR: schema shape, ISOLATED — and it is the ONLY omission that isolates it. Every other required field has a gate of its own, so dropping it fires two: omit `evidence` and evidence binding fires too, omit `expiry` and expiry fires, omit `inverse` and inverse declared fires. Only `value` has no dedicated gate, so a row missing the thing it exists to state trips nothing but the shape check. That is worth reading twice. The one field with no gate behind it is the field the whole row is FOR — a row that names a target, cites a source, replays against the tape, expires on a date and carries a signature, and says nothing about what the value should be. Everything downstream of `value` is checked; `value` itself is checked only for being present, and only here, only because its absence breaks the shape.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — teaching example, no real data)"
+  },
+  "rows": [
+    {
+      "id": "nl-022",
+      "target": "intake.after_hours_owner",
+      "layer": "L2",
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "ticket",
+          "source": "servicedesk/query 'referral owner' 2025-07-01..2025-12-31, n=134",
+          "says": "128 of 134 after-hours referrals were in fact claimed and worked by the house coordinator"
+        }
+      ],
+      "shadow_run": {
+        "cases": 134,
+        "would_have_matched": 128,
+        "would_have_missed": 6,
+        "window": "2025-07-01/2025-12-31"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "Everything a row needs except the answer. A harness that assembles the scaffolding correctly and never fills the middle produces exactly this, and the only thing standing between it and a mount is a field-presence check."
+    }
+  ]
+}

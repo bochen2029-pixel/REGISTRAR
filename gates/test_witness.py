@@ -73,6 +73,8 @@ def test_isolated_witnesses():
     witnesses("11-undeclared-target.json", "blast radius", "does not declare")
     witnesses("12-divergence.json", "divergence", "")
     witnesses("06-unsigned.json", "signature", "unsigned", state=UNVERIFIED)
+    witnesses("21-partial-isolated.json", "totality on provision", "partial")
+    witnesses("22-no-value.json", "schema shape", "value")
 
 
 def test_isolated_means_isolated():
@@ -85,7 +87,7 @@ def test_isolated_means_isolated():
     _, per_fixture = matrix()
     for f in ("07-generality.json", "08-no-denominator.json", "09-permanent.json",
               "10-no-way-back.json", "11-undeclared-target.json", "12-divergence.json",
-              "06-unsigned.json"):
+              "06-unsigned.json", "21-partial-isolated.json", "22-no-value.json"):
         check(f"{f} fires exactly one", len(per_fixture.get(f, [])), 1)
 
 
@@ -220,7 +222,7 @@ def test_coverage_is_reported_not_asserted():
     per_gate, _ = matrix()
     states = [i["state"] for i in per_gate.values()]
     check("thirteen gates", len(per_gate), 13)
-    check("at least seven cleanly witnessed", states.count("WITNESSED") >= 7, True)
+    check("at least nine cleanly witnessed", states.count("WITNESSED") >= 9, True)
     real_gaps = [g for g, i in per_gate.items()
                  if i["state"] == "UNWITNESSED" and g not in ENTANGLED]
     check("no unwitnessed gate lacks an explanation", real_gaps, [])

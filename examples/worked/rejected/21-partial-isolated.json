@@ -1,0 +1,39 @@
+{
+  "$comment": "REJECTED DRAFT 21 — FICTIONAL. WITNESS FOR: totality on provision, ISOLATED. 04-partial demonstrates the same defect but is unsigned, so `signature` fires alongside it and the evidence is ambiguous about which gate did the work. This row is signed, grounded, replayed and correctly invertible, and declares a partial application. READ 14 AND 19 BESIDE THIS ONE: the gate does not detect partiality, it detects a SELF-REPORT of partiality. This fixture is caught because it volunteers the marker. A row that simply omits a key (14) is not caught, and a row that annotates its omission as false (19) is not caught either. The witness proves the gate fires; it does not prove the gate protects.",
+  "schema_version": "0.1",
+  "site": {
+    "id": "northlake",
+    "name": "Northlake Donor Services (FICTIONAL — no real data)"
+  },
+  "rows": [
+    {
+      "id": "nl-021",
+      "target": "recovery.or_availability",
+      "layer": "L2",
+      "value": {
+        "hospital": "1147",
+        "cross_clamp_window": {
+          "opens": "06:00"
+        },
+        "__partial__": true
+      },
+      "inverse": null,
+      "evidence": [
+        {
+          "kind": "observation",
+          "source": "OR scheduling correspondence with hospital 1147, 2025-09..2026-02",
+          "says": "recovery cases are accommodated in the 06:00-10:00 block"
+        }
+      ],
+      "shadow_run": {
+        "cases": 41,
+        "would_have_matched": 39,
+        "would_have_missed": 2,
+        "window": "2025-09-01/2026-02-28"
+      },
+      "expiry": "2027-02-01",
+      "author": "M. Okonkwo — Quality Director",
+      "$note": "Signed, so nothing else fires. The row declares half a window and says so."
+    }
+  ]
+}

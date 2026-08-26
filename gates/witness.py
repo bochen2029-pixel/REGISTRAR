@@ -74,6 +74,12 @@ ENTANGLED = {
         "syntax gate earns its place by TEACHING rather than catching — 'your "
         "target has capital letters' is actionable where 'that target does not "
         "exist' is not."),
+    "inverse declared": (
+        "schema shape always fires alongside: the gate fires only when the "
+        "`inverse` KEY IS ABSENT, and an absent required field trips schema "
+        "shape first. Verified, not assumed. `10-no-way-back` witnesses the "
+        "adjacent and isolable defect — an inverse that is PRESENT and wrong — "
+        "which is the failure a harness is far likelier to produce."),
     "L0/L1/L4 immutability": (
         "UNREACHABLE from any patch file. It fires only when a target is DECLARED "
         "and its layer is not L2/L3 — but every entry in targets.json is lifted "
