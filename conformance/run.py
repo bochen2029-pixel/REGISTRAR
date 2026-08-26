@@ -593,6 +593,38 @@ def check_adapters() -> None:
         record(GREEN, "adapters · declarations", detail)
 
 
+# ── 6j · no redistributed source text ───────────────────────────────────────
+def check_no_redistribution() -> None:
+    """
+    corpus/ is gitignored because OPTN policy, CFR text and state statutes
+    belong to their publishers. **A chunk of a pinned source is still that
+    source**, and a .gitignore line covering corpus/ does not cover derivatives
+    that land somewhere else.
+
+    Learned 2026-08-26: a `git add -A` swept 55 smoke-test chunks of verbatim
+    OPTN policy into a public commit. Nothing caught it — the leak detector
+    watched corpus/ and this text was in forge/.
+    """
+    r = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=ROOT)
+    tracked = [f for f in r.stdout.splitlines() if f.strip()]
+
+    # tell-tales of a derived extract, wherever it lives
+    suspect = [f for f in tracked
+               if any(m in f for m in ("_smoke/", ".chunks/", "chunks_out/"))
+               or re.search(r"chunk-\d{3}\.(md|txt)$", f)]
+    record(FAILED if suspect else GREEN, "hygiene · no derived source text",
+           f"{len(suspect)} tracked file(s) look like a chunked source: "
+           f"{', '.join(suspect[:3])}" if suspect
+           else "no chunk output, smoke output or derived extract is tracked")
+
+    # and the pinned sources themselves must never be tracked
+    leaked = [f for f in tracked if f.startswith("corpus/")
+              and not f.endswith((".json", ".md"))]
+    record(FAILED if leaked else GREEN, "hygiene · corpus not redistributed",
+           ", ".join(leaked) if leaked
+           else "only the manifest and the citations are committed")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -636,6 +668,7 @@ def main() -> int:
         ("percepts and the switch", check_percepts),
         ("the nested chassis", check_chassis),
         ("the L3 adapters", check_adapters),
+        ("redistribution", check_no_redistribution),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

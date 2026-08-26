@@ -33,6 +33,21 @@ corpus/*
 !corpus/MANIFEST.json
 !corpus/citations.json
 
+# ── derived corpus output ─────────────────────────────────────────────────
+# A chunker's output IS the source document, cut up. corpus/ is gitignored
+# because OPTN policy, CFR text and state statutes belong to their publishers
+# and this repository does not redistribute them — and a chunk of a pinned
+# source is still that source. Smoke output, chunk directories, any derived
+# extract: none of it is committed, wherever it lands.
+#
+# Learned on 2026-08-26: a `git add -A` swept 55 smoke-test chunks containing
+# verbatim OPTN policy into a public commit. The gitignore covered corpus/ and
+# nothing covered the DERIVATIVES.
+**/_smoke/
+**/_smoke2/
+**/.chunks/
+**/chunks_out/
+
 # ── the percept stream ────────────────────────────────────────────────────
 # Generated as the repository is used, and it records what a completion hit —
 # gate refusals, expiries, derived deadlines. On a real site that is a trace of
