@@ -1,0 +1,162 @@
+# REGISTRAR · profile · forge
+# ─────────────────────────────────────────────────────────────────────────────
+# THE UNPACKING PROCESS. What a site's IT team runs to grow the seed into their
+# shape — once, for a week, and then never again.
+#
+# The forge is a SUPERSET of `edr`. It mounts everything the record mounts,
+# because the completion has to read the thing it is completing, plus the
+# machinery for doing so.
+#
+# WHY THE FORGE IS IN THIS REPOSITORY AT ALL
+#
+#   Because the seed, the map, the blueprint and the unpacking process are one
+#   artifact. A site that clones this gets the record AND the means to fit it.
+#   Splitting them would mean finding and trusting two things, and the whole
+#   adoption argument is that there is one `git clone`.
+#
+# WHY ITS TOOLS ARE MOUNTED RATHER THAN VENDORED
+#
+#   The forge declares WHAT IT NEEDS DONE. It does not dictate what does it.
+#   A site with its own document pipeline mounts that instead. This is the
+#   completability argument applied to the tooling — the same reason the seed
+#   does not dictate the fit — and it is why forge/plugins.yml is a list of
+#   CAPABILITIES rather than a list of files.
+#
+# THE RECURSION, WHICH IS THE POINT
+#
+#   The forge is a plugin host, so when it hits a wall — a lab format nothing
+#   parses, an SOP structure it cannot read — it can author the plugin,
+#   shadow-run it against the site's own material, and propose it. One yes
+#   mounts it hash-pinned; drift demotes; retirement unwinds through the
+#   disposer. That is FUSOR's third verb (INSTRUMENT) and Cordis's disposer,
+#   doing the thing the directive asked for: the seed growing itself into its
+#   environment.
+#
+#   And it is SAFE HERE in a way it is not one layer down. A forge plugin that
+#   is wrong wastes an afternoon. An EDR plugin that is wrong touches a case.
+#   **The forge is where recursive self-improvement is affordable.**
+
+profile: forge
+extends: edr          # strict superset — checked by core/profile.py --check
+description: The machinery that completes the seed into one site's shape.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MOUNTED — everything in edr, plus
+# ─────────────────────────────────────────────────────────────────────────────
+mounts:
+
+  - id: elicit
+    path: elicit/
+    what: >
+      One question per declared variation point, and the method. The harness
+      interviews the material, not the coordinators.
+
+  - id: examples.worked
+    path: examples/worked/
+    what: >
+      A complete patch and four that were REFUSED, with real gate output. The
+      rejected drafts are the higher-signal half.
+
+  - id: tools.cite
+    path: tools/cite.py
+    what: >
+      The citation gate. A quote is admissible only if it byte-matches a
+      sha256-pinned source.
+    note: >
+      Fabrication is not hypothetical here. A comparable fence measured 28.5%
+      of a model's "quotes" as paraphrase-presented-as-quotation. That number
+      is why this gate exists. [M inherited — another corpus; the mechanism
+      transfers, the rate is not claimed for this one.]
+
+  - id: corpus
+    path: corpus/
+    what: >
+      Pinned public sources — MANIFEST and citations only; the documents
+      themselves are fetched, never redistributed.
+
+  - id: authorization.procedure
+    path: [core/authorization/PROCEDURE.md, core/authorization/fetch_states.py]
+    what: How a site contributes its own jurisdiction row upstream.
+
+  - id: forge.plugins
+    path: forge/
+    what: The capability declarations and the mount contract.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CAPABILITIES — declared by need, bound by plugin
+# ─────────────────────────────────────────────────────────────────────────────
+# Each of these is a JOB the forge needs done. What does it is a mount, and a
+# site may substitute its own. See forge/plugins.yml for the contracts and
+# forge/PLUGINS.md for how to bind one.
+capabilities:
+
+  - id: chunk
+    need: >
+      Split a document too large to read in one pass, at semantic boundaries,
+      with orientation metadata so a reader never loses its place.
+    why: >
+      The binding constraint of the whole completion. elicit/method.md requires
+      that PHI-bearing site material be read ONLY by a local open-weight model —
+      i.e. a small context facing a 400-page SOP binder. And the pinned OPTN
+      corpus alone is 784 KB.
+    required: true
+    phi_rule: >
+      MUST write chunks to a caller-specified path. A plugin that writes beside
+      its source would silently create a second, uncontrolled copy of PHI.
+
+  - id: phi_scan
+    need: Flag PHI before it can reach a frontier route, a log, or a commit.
+    why: >
+      AGENTS.md §3 is currently prose. A rule enforced only by asking an agent
+      to follow it is not enforced — this repository's own law 9.
+    required: true
+    honest_bound: >
+      A HIGH-RECALL FLOOR, never a guarantee. It must be specified, tested, and
+      described as a floor; a scanner presented as a guarantee is worse than
+      none, because it retires the caution that was doing the actual work.
+
+  - id: search
+    need: Find which passage of a large corpus establishes a claim.
+    why: Filling a locator means locating text, not remembering it.
+    required: false
+    note: A site's existing search is a legitimate binding.
+
+  - id: fetch
+    need: Retrieve a public source, with resume, retry and hash verification.
+    why: Pinning requires the bytes.
+    required: false
+    hard_rule: >
+      VALIDATE CONTENT, NEVER STATUS CODES. Learned expensively: a statute site
+      returned HTTP 200 and an identical 250,874-byte application shell for
+      every path including nonsense ones. See core/authorization/PROCEDURE.md.
+
+  - id: render
+    need: Retrieve a source from a site that requires a browser.
+    why: Some primary sources are single-page applications; curl cannot see them.
+    required: false
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REFUSED CAPABILITIES — a plugin may not do these, whatever it is
+# ─────────────────────────────────────────────────────────────────────────────
+refused:
+
+  - id: live_audio_video
+    what: Any plugin taking a live audio or video lane at a deployed site.
+    why: >
+      A room at an OPO is a room where family authorization conversations
+      happen — the most protected exchange in the domain, and the one thing
+      SPEC.md §8 prohibition 3 forbids this system from participating in,
+      scripting, or observing. **This is a rule, not a judgment call, so that
+      it does not have to be re-litigated per plugin.**
+
+  - id: egress_site_material
+    what: Any plugin transmitting site material off the box.
+    why: >
+      The local leg of the two-model split is the entire compliance posture.
+      A plugin that phones home breaks it silently.
+
+  - id: write_outside_fit
+    what: Any plugin writing to core/, clinical/, gates/, or a tape.
+    why: >
+      The forge authors ONE file — the site's patch — and proposes everything
+      else. A plugin inherits that bound; it does not widen it.

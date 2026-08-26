@@ -112,6 +112,23 @@ config value. Coefficients on the tape; **never a percept.** `[SPEC]`
 
 **Only commits kill.** Forming evidence may pause a judgment; only a commit ends one.
 
+### Two laws the plane structure implies, and one that had to be learned
+
+**Silence is world, not absence.** Elapsed time enters as a percept — a scalar tick — rather than as a
+question waiting to be answered. **In this domain that is not a refinement, it is the main case**: the
+failure is almost always the interval, and an interval produces no event to react to. A system that only
+perceives events is structurally blind to the thing that most often goes wrong.
+
+**Ingest is unconditional; only judgment cadence is modulated.** Pacing may delay the system's next
+utterance. **It must never delay a percept.** And where a queue can overflow, the loss is *counted loudly* —
+a silently dropped percept is the turn reborn inside the loop, and it is worse than a turn because nobody
+can see it. `[D — from the reference implementation's own doctrine, 2026-08-12]`
+
+**Events and suppressions are added, never conflated.** A surfacing that was considered and withheld is
+recorded as such, and a total is `surfaced + suppressed` **by addition**. The reference implementation
+carries this note against a bug it already found: the two were once double-logged, and the count lied in the
+flattering direction until somebody added them separately.
+
 ### The loop
 
 The world enters token by token, unconditionally. **Nothing is re-read, because nothing is ever put down** —

@@ -1,0 +1,178 @@
+# REGISTRAR · forge · the mount contract
+# ─────────────────────────────────────────────────────────────────────────────
+# CAPABILITIES, NOT FILES.
+#
+# Each entry below is a JOB the forge needs done while completing the seed into
+# one site's shape. What DOES the job is a mount, and a site may bind its own.
+#
+# This repository vendors none of them, for three reasons and the third is the
+# one that matters:
+#
+#   1. A vendored copy is a fork. It drifts, it inherits its source's
+#      environment coupling, and it makes this repository responsible for
+#      maintaining a document splitter forever.
+#   2. Licence. A plugin mounted at completion time is not redistributed here.
+#      Only the interface ships.
+#   3. **Your tools are as good as ours.** A site with its own document
+#      pipeline should mount that. The forge declares what it needs done; it
+#      does not dictate what does it — the same reason the seed does not
+#      dictate the fit.
+#
+# THE RECURSION
+#
+#   Because the forge is a plugin host, a wall it hits is not a dead end. It
+#   can author the plugin, shadow-run it against the site's own material, and
+#   PROPOSE it — one yes mounts it hash-pinned, drift demotes, retirement
+#   unwinds through the disposer. Same contract as a patch row, applied to
+#   capability instead of configuration.
+#
+#   And it is affordable HERE in a way it is not one layer down: a forge plugin
+#   that is wrong wastes an afternoon; an EDR plugin that is wrong touches a
+#   case. **The forge is where recursive self-improvement is cheap enough to
+#   be honest about.**
+
+schema_version: 0.1
+profile: forge
+status: SPEC          # the contract is written; no binding has been mounted here
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE CONTRACT — what any binding must satisfy
+# ─────────────────────────────────────────────────────────────────────────────
+contract:
+  declares:
+    id:           the capability it binds
+    version:      its own, pinned
+    source:       where it came from — a path, a repo, a package
+    pin:          sha256 of what was mounted. A binding without a pin is not mounted.
+    entry:        the callable or command
+    licence:      SPDX. **A binding with no licence cannot be mounted into an MIT tree.**
+
+  must:
+    - Take every path it reads and writes as an ARGUMENT. A binding that knows
+      where things live on one machine is a binding that only works there.
+    - Write only where the caller says. See the PHI rule on `chunk`.
+    - Be inert when not called. No daemons, no watchers, no background work.
+    - Fail loud and specific. A binding that returns empty on error will be
+      believed.
+
+  must_not:
+    - Reach the network unless its capability is `fetch` or `render`, and then
+      only to a caller-supplied URL.
+    - Write to core/, clinical/, gates/, schema/, or any tape.
+    - Persist anything derived from site material outside the caller's path.
+    - Take a live audio or video lane. See `forge.yml` refused capabilities —
+      this is a rule, not a per-plugin judgment.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE CAPABILITIES
+# ─────────────────────────────────────────────────────────────────────────────
+capabilities:
+
+  - id: chunk
+    required: true
+    need: >
+      Split a document too large to read in one pass into context-sized pieces
+      at clean semantic boundaries, with orientation metadata so a reader never
+      loses its place. Reading the pieces in order must equal reading the whole.
+    why_it_is_first: >
+      This is the binding constraint of the entire completion. `elicit/method.md`
+      requires PHI-bearing site material to be read ONLY by a local open-weight
+      model — a small context facing a 400-page SOP binder. And the seed's own
+      pinned OPTN corpus is 784 KB: the single file a harness cannot read in one
+      pass while filling a locator.
+    interface:
+      in:  [source_path, budget_tokens, out_dir]
+      out: [manifest_path, chunk_paths]
+    rules:
+      - id: caller_specified_output
+        rule: >
+          MUST write to `out_dir`. A binding that writes a `.chunks/` directory
+          beside its source would silently create a second, uncontrolled copy
+          of PHI-bearing material in a location nobody chose and nobody audits.
+        severity: refuses_the_mount
+      - id: order_is_the_document
+        rule: Reading chunks in order must reconstruct the source. A lossy chunker is a different capability.
+    binding: null       # unbound. See PLUGINS.md.
+
+  - id: phi_scan
+    required: true
+    need: >
+      Flag protected health information before it can reach a frontier route, a
+      log line, a commit message, or an evidence field.
+    why: >
+      `AGENTS.md` §3 is currently prose, and this repository's own law 9 says a
+      rule enforced only by asking people to follow it is not enforced. This is
+      the gap between the two.
+    interface:
+      in:  [text_or_path]
+      out: [findings]        # each with span, class, and confidence
+    rules:
+      - id: floor_not_guarantee
+        rule: >
+          **A HIGH-RECALL FLOOR, NEVER A GUARANTEE.** It must be specified,
+          tested and described as a floor. A scanner presented as a guarantee is
+          worse than no scanner, because it retires the human caution that was
+          doing the actual work.
+        severity: refuses_the_mount
+      - id: dates_and_combinations
+        rule: >
+          PHI is more than names. Dates and times bound to a specific case,
+          medical record numbers, donor identifiers, a hospital name bound to an
+          event, and any combination that re-identifies. A single unusual case
+          is re-identifiable from timing alone.
+    binding: null
+
+  - id: search
+    required: false
+    need: Find which passage of a large pinned corpus establishes a claim.
+    why: Filling a locator means locating text, not recalling it.
+    interface:
+      in:  [pattern, corpus_paths]
+      out: [hits]            # path, offset, span
+    note: >
+      A site's existing search is a legitimate binding. So is grep. This is
+      optional because a slow search is an inconvenience, not a failure.
+    binding: null
+
+  - id: fetch
+    required: false
+    need: Retrieve a public source with resume, retry, and hash verification.
+    why: Pinning requires the bytes, and the bytes must be the right ones.
+    interface:
+      in:  [url, out_path]
+      out: [path, sha256, bytes]
+    rules:
+      - id: validate_content
+        rule: >
+          **VALIDATE CONTENT, NEVER STATUS CODES.** Learned expensively: a state
+          statute site returned HTTP 200 and an identical 250,874-byte
+          application shell for every path tried, including nonsense ones. A
+          fetch succeeded when the bytes contain what you came for.
+        severity: refuses_the_mount
+        see: core/authorization/PROCEDURE.md
+    binding: null
+
+  - id: render
+    required: false
+    need: Retrieve a source from a site that will not serve it without a browser.
+    why: >
+      Some primary sources are single-page applications. curl cannot see them,
+      and the failure looks exactly like success.
+    interface:
+      in:  [url]
+      out: [text]
+    rules:
+      - id: no_credentials
+        rule: >
+          A render binding carries no keys and no session. It reads public
+          documents. Anything requiring authentication is a human's job.
+        severity: refuses_the_mount
+    binding: null
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PROPOSED — capabilities the forge itself asked for
+# ─────────────────────────────────────────────────────────────────────────────
+# INSTRUMENT, in FUSOR's vocabulary: where surprise persists. When the forge
+# hits a wall it cannot pass, the request lands here, shadow-run and awaiting a
+# signature — the same path as a patch row, because it is the same contract.
+proposed: []

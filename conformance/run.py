@@ -396,6 +396,30 @@ def check_authority() -> None:
            ", ".join(map(str, unver)) if unver else f"{len(q)} statutory quotes, all verified")
 
 
+# ── 6f · the profiles ───────────────────────────────────────────────────────
+def check_profiles() -> None:
+    """
+    One clone, two artifacts. `edr` must remain a strict subset of `forge`, or
+    a site deploying a record system inherits completion machinery it never
+    asked for and cannot audit.
+    """
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "core", "profile.py"), "--check"],
+                       capture_output=True, text=True)
+    if r.returncode == 0:
+        record(GREEN, "profile · edr ⊆ forge", "the record carries no completion machinery")
+    elif "pyyaml" in (r.stdout + r.stderr):
+        record(UNVERIFIED, "profile · edr ⊆ forge", "pyyaml unavailable — subset not checked")
+    else:
+        bad = [ln.strip() for ln in r.stdout.splitlines() if "FAIL" in ln]
+        record(FAILED, "profile · edr ⊆ forge", bad[0] if bad else "subset violated")
+
+    # the switch must fail toward inert
+    sys.path.insert(0, os.path.join(ROOT, "core"))
+    import profile as prof
+    record(GREEN if prof.state() in prof.STATES else FAILED, "profile · switch reads safe",
+           f"state = {prof.state()} (absent or malformed reads as `off`, never `live`)")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -434,6 +458,7 @@ def main() -> int:
         ("authorization jurisdiction", check_jurisdiction),
         ("the authority chain", check_authority),
         ("the algebra", check_algebra),
+        ("the profiles", check_profiles),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

@@ -1,0 +1,155 @@
+# REGISTRAR · profile · edr
+# ─────────────────────────────────────────────────────────────────────────────
+# THE DEFAULT. What an organ procurement organisation actually deploys.
+#
+# This profile is a STRICT SUBSET of `forge`. That is not a convention — it is
+# checked (`python core/profile.py --check`) and it is the property that lets a
+# site deploy a record system without inheriting completion machinery it never
+# asked for and cannot audit.
+#
+# Everything here runs at `registrar.state = off` with nothing installed but a
+# Python interpreter. That combination — edr + off — is a complete and useful
+# product, and it is what `git clone` gives you before any decision is made.
+
+profile: edr
+default: true
+description: The deployed donor record. Coordinators, at three in the morning.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MOUNTED — the record itself
+# ─────────────────────────────────────────────────────────────────────────────
+mounts:
+
+  - id: core.lifecycle
+    path: core/lifecycle/
+    what: The mandated case lifecycle. L0 — 15 states, cited.
+    layer: L0
+
+  - id: core.tape
+    path: core/tape.py
+    what: L4. Append-only, hash-chained. The committed plane.
+    layer: L4
+    plane: committed
+
+  - id: core.case
+    path: core/case.py
+    what: Replay a case against the lifecycle; refuse what was illegal.
+
+  - id: core.algebra
+    path: core/algebra.py
+    what: mount / retire / observational equivalence. The seam at radius 2.
+
+  - id: core.authority
+    path: core/authority/
+    what: The six tiers of authority, each naming its clock.
+
+  - id: core.authorization
+    path: core/authorization/jurisdiction.yml
+    what: Who may authorize donation, per jurisdiction.
+    note: >
+      The TABLE mounts here; PROCEDURE.md and fetch_states.py do not. A running
+      instance needs to know the law. Only a contributor needs the machinery
+      for finding it.
+
+  - id: clinical
+    path: clinical/
+    what: L1 — blood typing, risk assessment, infectious disease testing.
+    layer: L1
+
+  - id: floor
+    path: floor/
+    what: >
+      The deterministic floor — the temporal closure. THE NULL, and the
+      simplest possible resident: it perceives a case, computes what no human
+      computed, and surfaces it unprompted.
+    null_for: [resident]
+
+  - id: gates
+    path: gates/
+    what: The gate battery. Twelve gates; three states, never two.
+    immutable_to_agent: true
+
+  - id: schema
+    path: schema/
+    what: The patch contract a mounted fit must satisfy.
+
+  - id: fixtures
+    path: fixtures/
+    what: Synthetic cases and tapes. Zero PHI, forever.
+
+  - id: conformance
+    path: conformance/run.py
+    what: One command — is this instance sound?
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NOT MOUNTED — and each exclusion has a reason
+# ─────────────────────────────────────────────────────────────────────────────
+excluded:
+
+  - id: forge
+    path: forge/
+    why: >
+      Completion machinery. A coordinator never chunks a document, scans a
+      corpus for PHI, or verifies a citation byte-exact. Those are things done
+      ONCE, while building the fit, by an IT team — and then never again.
+
+  - id: elicit
+    path: elicit/
+    why: >
+      The question set is for authoring a fit, not for running one. A deployed
+      instance has already been answered.
+
+  - id: tools.cite
+    path: tools/cite.py
+    why: >
+      Provenance verification is a build-time act. The RESULTS of it —
+      quote_verified flags in the lifecycle — mount; the verifier does not.
+
+  - id: corpus
+    path: corpus/
+    why: >
+      Pinned public sources. Needed to establish the seed, not to run it, and
+      the documents are not redistributed in any case.
+
+  - id: examples.worked
+    path: examples/worked/
+    why: Teaching material for a completion. Nothing runs it.
+
+  - id: authorization.procedure
+    path: [core/authorization/PROCEDURE.md, core/authorization/fetch_states.py]
+    why: >
+      How to CONTRIBUTE a jurisdiction row. A deployed instance consumes the
+      table; it does not gather it.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE INTERVAL SURFACES — mounted, and inert at `off`
+# ─────────────────────────────────────────────────────────────────────────────
+# These belong to the edr profile because SPEC.md §2b binds: no surface may
+# exist that only makes sense at `live`. Each degrades to something useful.
+interval:
+
+  - id: percepts
+    path: percepts/
+    what: The deltas this repository already computes, on one append-only stream.
+    at_off: >
+      A completion log. Gate refusals, expiries, replay violations and implied
+      deadlines, in one place, in order — useful with nobody home.
+    status: SPEC
+
+  - id: switch
+    path: registrar.state
+    what: off | shadow | live. A file only the operator writes.
+    at_off: >
+      Inert mid-flight. Not "paused", not "disabled" — no writes. Today's
+      repository exactly.
+    status: SPEC
+
+  - id: resident
+    path: core/resident/
+    what: The trained judge at radius 1 — surfaces, never acts.
+    at_off: Absent. The floor is the judge.
+    null: floor
+    status: SPEC
+    note: >
+      Mounted in the edr profile because attending a case IS the product. The
+      fence is on ACTION, never on perception — SPEC.md §8.
