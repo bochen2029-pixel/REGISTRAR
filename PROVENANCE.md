@@ -435,6 +435,47 @@ jurisdiction row inverts that: worth little to its author alone, valuable to the
 **because service areas span state lines you will need rows you did not write.** It is the first artifact
 here with a real reason to contribute back.
 
+### Batch 7 — NOTA, and the authority chain made explicit
+
+**41 citations byte-exact, five pinned sources.** The National Organ Transplant Act pinned from the official
+GPO text (`USCODE-2024-title42-chap6A-subchapII-partH`, 42 U.S.C. §§ 273–274g). The 2024 edition was taken
+after checking that 2023 and 2024 carry the same substance — an edition choice recorded rather than defaulted.
+
+- **42 U.S.C. 274(a)** — the statutory basis for the OPTN. The top of the chain.
+- **42 U.S.C. 274e(a)–(b)** — the organ-sale prohibition is **statutory and criminal**, not a policy
+  restatement. OPTN Policy mirrors it; the offence lives here, with penalties of up to $50,000 or five years.
+
+That last one bears on design and is worth stating: it is **the one place where a record system's contents
+could become evidence in a prosecution.** That is an argument for the tape being tamper-evident and
+exportable rather than merely durable — a property arrived at for other reasons and now with a second one.
+
+### core/authority/chain.yml — on whose authority does this system refuse things?
+
+Six tiers, statute to site fit, each naming **how it changes and on what clock**:
+
+| | Tier | Changes by | Clock |
+|---|---|---|---|
+| 1 | NOTA (42 U.S.C. 273–274g) | Act of Congress | years to decades |
+| 2 | OPTN Final Rule (42 CFR 121) | HHS rulemaking | years |
+| 3 | Conditions for Coverage (42 CFR 486 G) | CMS rulemaking | **years — a revision is in flight now** |
+| 4 | OPTN Policy | board action, Secretarial review | **months — the fastest above the site** |
+| 5 | State law | fifty-odd legislatures, independently | unpredictable, unsynchronised |
+| 6 | The site's fit | the site, under signature | as often as the operation changes |
+
+Three things this buys that the layer stack alone did not:
+
+- **Any refusal should be traceable to a tier.** If it is not, it is this project's opinion wearing a gate's
+  clothing, and it should be removed or marked a design choice.
+- **It tells you what goes stale first.** Tiers 4 and 5 move fastest, so a re-verification schedule should
+  follow that ordering rather than treating every citation as equally durable.
+- **It bounds a completion.** A harness authoring a site fit works at tier 6 only. A proposed row that would
+  require changing tiers 1–5 is not a fit — it is a request to change the law, and the correct response is to
+  say so.
+
+Tier 5 is the only one federal authority does not determine, and the only one keyed on a fact about the
+**donor** rather than the OPO. Conformance checks that every tier names its clock: **a tier that cannot say
+how it changes is not an authority, it is an assertion.**
+
 ---
 
 ### Design choices, marked as such

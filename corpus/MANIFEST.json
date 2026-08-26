@@ -32,6 +32,13 @@
       "bytes": 49043,
       "url": "https://statutes.capitol.texas.gov/Docs/HS/htm/HS.692A.htm",
       "accessed": "2026-08-26"
+    },
+    "usc-42-partH": {
+      "file": "usc-42-partH.txt",
+      "sha256": "49fd8443b7750501165b12c3f1035e87336956e539e19912798c1d9679923a6a",
+      "bytes": 70796,
+      "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap6A-subchapII-partH.htm",
+      "accessed": "2026-08-26"
     }
   }
 }

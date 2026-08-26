@@ -329,6 +329,38 @@ def check_jurisdiction() -> None:
            "keyed on the donor's state of residence, not the state of death")
 
 
+# ── 6d · the authority chain ────────────────────────────────────────────────
+def check_authority() -> None:
+    try:
+        import yaml
+    except ImportError:
+        record(UNVERIFIED, "authority · chain", "pyyaml unavailable")
+        return
+    p = os.path.join(ROOT, "core", "authority", "chain.yml")
+    if not os.path.exists(p):
+        record(FAILED, "authority · chain", "core/authority/chain.yml missing")
+        return
+    with open(p, encoding="utf-8") as fh:
+        doc = yaml.safe_load(fh)
+    chain = doc.get("chain") or []
+
+    tiers = [c.get("tier") for c in chain]
+    record(GREEN if tiers == sorted(tiers) and len(tiers) == len(set(tiers)) else FAILED,
+           "authority · chain ordered", f"{len(chain)} tiers, statute to site fit")
+
+    # every tier must say how it changes and on what clock — a tier that cannot
+    # answer that is not an authority, it is an assertion
+    mute = [c.get("name") for c in chain if not c.get("changes_by") or not c.get("clock")]
+    record(FAILED if mute else GREEN, "authority · each tier names its clock",
+           ", ".join(mute) if mute else "every tier states how it changes and how fast")
+
+    # the statute tier's quotes must be verified like everything else
+    q = [e for c in chain for e in (c.get("establishes") or [])]
+    unver = [e.get("id") for e in q if e.get("quote_verified") is not True]
+    record(FAILED if unver else GREEN, "authority · statute quotes verified",
+           ", ".join(map(str, unver)) if unver else f"{len(q)} statutory quotes, all verified")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -365,6 +397,7 @@ def main() -> int:
         ("provenance", check_citations),
         ("the clinical layer (L1)", check_clinical),
         ("authorization jurisdiction", check_jurisdiction),
+        ("the authority chain", check_authority),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

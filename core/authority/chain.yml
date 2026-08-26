@@ -1,0 +1,151 @@
+# REGISTRAR · the authority chain
+# ─────────────────────────────────────────────────────────────────────────────
+# WHERE EVERY RULE IN THIS SYSTEM COMES FROM, AND WHO CAN CHANGE IT.
+#
+# The layer stack (L0/L1/L2/L3/L4) is an engineering construct. This file is
+# the thing that makes it defensible: every layer names the authority it
+# descends from, and each authority has a different mechanism and clock for
+# changing. A reader who wants to know "why does the system refuse this?"
+# should be able to walk from the refusal to a statute in four steps.
+#
+# It also answers the question a security reviewer or counsel asks first:
+# **on whose authority does this software refuse things?**
+
+schema_version: 0.1
+generated: 2026-08-26
+
+chain:
+
+  - tier: 1
+    name: Statute
+    what: The National Organ Transplant Act of 1984 (NOTA)
+    locator: 42 U.S.C. §§ 273-274g (Public Health Service Act, Part H)
+    source_id: usc-42-partH
+    accessed: 2026-08-26
+    changes_by: an Act of Congress
+    clock: years to decades
+    establishes:
+      - id: optn_basis
+        locator: 42 U.S.C. 274(a)
+        quote_verified: true
+        quote: >
+          "The Secretary shall provide for the continued operation of an Organ
+          Procurement and Transplantation Network which meets the requirements
+          of subsection (b)."
+      - id: organ_sale_prohibition
+        locator: 42 U.S.C. 274e(a)
+        quote_verified: true
+        quote: >
+          "It shall be unlawful for any person to knowingly acquire, receive, or
+          otherwise transfer any human organ for valuable consideration for use
+          in human transplantation if the transfer affects interstate commerce."
+        note: >
+          The organ-sale prohibition is **statutory and criminal**, not a policy
+          restatement. OPTN Policy mirrors it; the offence lives here, with
+          penalties at 274e(b) of up to $50,000 or five years.
+
+          Worth stating plainly because it bears on this system's design: it is
+          the one place where a record system's contents could become evidence
+          in a prosecution. That is an argument for the tape being
+          **tamper-evident and exportable**, not merely durable.
+
+  - tier: 2
+    name: The OPTN Final Rule
+    what: The regulation promulgated under NOTA governing the network itself
+    locator: 42 CFR Part 121
+    source_id: ecfr-42-121
+    accessed: 2026-08-26
+    changes_by: notice-and-comment rulemaking by HHS
+    clock: years
+    descends_from: 42 U.S.C. 274
+    establishes_here:
+      - "core/lifecycle/states/allocation — 121.7(a)(1), 121.7(b)(3)"
+      - "core/lifecycle/states/packaging_transport — 121.7(c)"
+      - "core/lifecycle L4 record retention — 121.11(a)(2)(i)"
+
+  - tier: 3
+    name: Conditions for Coverage
+    what: What an OPO must do to be certified and paid by Medicare
+    locator: 42 CFR Part 486, Subpart G
+    source_id: ecfr-42-486-subpartG
+    accessed: 2026-08-26
+    changes_by: notice-and-comment rulemaking by CMS
+    clock: years — a revision is in flight now, final rule expected late 2026
+    establishes_here:
+      - "core/lifecycle/states/referral_received — 486.322(a)"
+      - "core/lifecycle/states/death_determination — 486.344(b)(1)"
+      - "core/lifecycle/states/evaluation — 486.344(c)(3)-(4)"
+      - "core/lifecycle/states/reporting_closed — 486.328(d)"
+      - "core/lifecycle/measures — 486.318(d)-(e)"
+      - "core/authorization/jurisdiction keying — 486.342(b)"
+    note: >
+      **This is the tier that is moving.** The graded regime at 486.318(d)-(e)
+      replaced an earlier three-measure regime whose text is still printed at
+      486.318(a)-(c) and expired 2022-07-31. Anything citing this Part should
+      be re-checked against live text before it load-bears.
+
+  - tier: 4
+    name: OPTN Policy
+    what: The network's own operating policy, binding on members
+    locator: OPTN Policies (effective as of 2025-08-01)
+    source_id: optn-policies
+    accessed: 2026-08-26
+    changes_by: OPTN board action, subject to Secretarial review under 42 CFR 121.4
+    clock: months — the fastest-moving tier above the site
+    establishes_here:
+      - "core/lifecycle/states/referral_triaged — Policy 2.3"
+      - "core/lifecycle/states/donor_management — Policy 2.13"
+      - "core/lifecycle/states/authorization — Policy 2.14.E"
+      - "core/lifecycle/states/recovery — Policy 2.14.B"
+      - "core/lifecycle/states/no_organs_recovered — Policy 2.14.E"
+      - "core/lifecycle/states/disposition — Policy 2.12"
+      - "core/lifecycle/pathways/DCD — Policy 2.15"
+      - "clinical/donor_testing.yml — Policies 2.6, 2.8, 2.9"
+    note: >
+      Because this tier moves in months rather than years, **it is the one most
+      likely to make a pinned citation stale.** The effective date in the
+      manifest is not decoration.
+
+  - tier: 5
+    name: State law
+    what: Who may authorize donation
+    locator: state anatomical gift acts — see core/authorization/jurisdiction.yml
+    changes_by: fifty-odd state legislatures, independently
+    clock: unpredictable, and unsynchronised
+    descends_from: >
+      Nothing above it supplies this. 42 CFR 486.342(b) and OPTN Policy 2.14.E
+      both DEFER to state law, which is why the jurisdiction table exists.
+    status: 1 of ~51 filled (TX)
+    note: >
+      **The only tier in this chain that federal authority does not determine**,
+      and the only one keyed on a fact about the donor rather than the OPO —
+      the donor's state of *residence*.
+
+  - tier: 6
+    name: The site's fit
+    what: How one organisation actually operates, within all of the above
+    locator: "<site>.patch.yml, in the site's own version control"
+    changes_by: the site, under signature, through the gates
+    clock: as often as the operation changes
+    note: >
+      **The only tier a machine may author**, and only as a candidate that a
+      human signs. Everything above it is read-only to this system by
+      construction — see SPEC.md §3, T6: the arrow does not exist.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WHAT THE CHAIN IS FOR
+# ─────────────────────────────────────────────────────────────────────────────
+use:
+  - >
+    **Answering "on whose authority?"** Any refusal this system makes should be
+    traceable to a tier. If it is not, it is this project's opinion wearing a
+    gate's clothing, and it should be removed or marked a design choice.
+  - >
+    **Knowing what goes stale first.** Tiers 4 and 5 move fastest. A
+    re-verification schedule should follow this ordering rather than treating
+    every citation as equally durable.
+  - >
+    **Bounding a completion.** A harness authoring a site fit works at tier 6
+    only. If a proposed row would require changing anything at tiers 1-5, it is
+    not a fit — it is a request to change the law, and the correct response is
+    to say so.

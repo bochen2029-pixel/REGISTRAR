@@ -275,6 +275,27 @@
       "quote": "If an objection is known, the gift may be made only by a majority of the members of the class who are reasonably available.",
       "establishes": "Within a class, a known objection escalates to MAJORITY of reasonably available members - not unanimity, and not first-to-answer.",
       "counsel_reviewed": false
+    },
+    {
+      "element": "core/authority/optn_basis",
+      "source": "usc-42-partH",
+      "locator": "42 U.S.C. 274(a) (NOTA)",
+      "quote": "The Secretary shall provide for the continued operation of an Organ Procurement and Transplantation Network which meets the requirements of subsection (b).",
+      "establishes": "The statutory basis for the OPTN. This is the top of the authority chain: NOTA -> 42 CFR 121 (the OPTN Final Rule) -> OPTN Policy. Everything cited in this repository descends from here."
+    },
+    {
+      "element": "core/authority/organ_sale_prohibition",
+      "source": "usc-42-partH",
+      "locator": "42 U.S.C. 274e(a) (NOTA §301)",
+      "quote": "It shall be unlawful for any person to knowingly acquire, receive, or otherwise transfer any human organ for valuable consideration for use in human transplantation if the transfer affects interstate commerce.",
+      "establishes": "The organ-sale prohibition is STATUTORY and criminal, not a policy restatement. OPTN Policy mirrors it; the offence lives here."
+    },
+    {
+      "element": "core/authority/organ_sale_penalty",
+      "source": "usc-42-partH",
+      "locator": "42 U.S.C. 274e(b)",
+      "quote": "Any person who violates subsection (a) shall be fined not more than $50,000 or imprisoned not more than five years, or both.",
+      "establishes": "Criminal penalties. Relevant because it is the one place where a record system's contents could bear on a prosecution - which is an argument for the tape being tamper-evident and exportable, not merely durable."
     }
   ]
 }
