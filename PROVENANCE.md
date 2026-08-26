@@ -261,6 +261,31 @@ locator is filled. What follows is what has actually been verified.
 
   And the correction clause is worth noting for its own sake: **the regulation is itself append-with-correction.** An error is *reported*, not erased. The tape's design was arrived at independently and then found already written into the rule.
 
+### Batch 3 — **what was drafted as "OPTN Policy" was mostly in the CFR**
+
+Four elements were drafted pointing at OPTN Policy, whose own site returns 403 to automated retrieval. **Three
+of them are established by the CFR instead** — which is fetchable, and which nobody had checked.
+
+### core/lifecycle/states/evaluation
+- **locator** 42 CFR 486.344(c)(3)-(4) · **accessed** 2026-08-25 · verified byte-exact
+- **establishes** *"Ensure that the potential donor's blood is typed using two separate blood samples."* and *"Document potential donor's record with all test results, including blood type, before organ recovery."*
+- **notes** Typing requires **two separate samples** — a duplication requirement, not a single test. And results must be in the record **before recovery**, which makes completeness a **transition guard** rather than a reporting obligation. The lifecycle now enforces it as one.
+
+### core/lifecycle/states/allocation
+- **locator** 42 CFR 121.7(a)(1) and 121.7(b)(3) · **accessed** 2026-08-25 · verified byte-exact
+- **establishes** *"An OPTN member procuring an organ shall operate the OPTN computer match program … to identify and rank potential recipients."* and *"An organ offer is made when all information necessary to determine whether to transplant the organ into the potential recipient has been given to the transplant hospital."*
+- **notes** Ranking is performed by the **OPTN match program**; the OPO *operates* it and does not rank. This system's prohibition 6 — *it does not rank donors, recipients or families* — now rests on the rule rather than on our own restraint. And an offer is defined by **completeness of information transferred**, not by a message being sent: exactly the class of condition the gates check.
+
+### core/lifecycle/states/packaging_transport
+- **locator** 42 CFR 121.7(c) · **accessed** 2026-08-25 · verified byte-exact
+- **establishes** *"…accompanied by written documentation of activities conducted to determine the suitability of the organ donor and shall maintain this document for one year."*
+- **notes** Documentation travels **with the organ** and is retained a year. The record is a conserved artifact rather than a database row — which is why chain-of-custody continuity is a gate.
+
+### core/lifecycle/L4 — the statutory basis for the tape
+- **locator** 42 CFR 121.11(a)(2)(i) · **accessed** 2026-08-25 · verified byte-exact
+- **establishes** *"All OPOs and transplant programs shall maintain such records pertaining to **each potential donor identified**, each organ retrieved, each recipient transplanted…"*
+- **notes** Note the scope: **each potential donor *identified*** — not only converted cases. The non-conversion terminals (`ruled_out_medical`, `authorization_declined`, `no_organs_recovered`, `referral_lapsed`) are therefore **mandated record-keeping**, not a design choice this project made for tidiness. `referral_lapsed` remains marked a design choice because the *state* is ours; the *obligation to keep the record* is not.
+
 ---
 
 ### Design choices, marked as such

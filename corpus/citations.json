@@ -83,6 +83,48 @@
       "quote": "The outcome measures described in § 486.318(a)(1) through (3) are effective until July 31, 2022.",
       "establishes": "RECORDED AS A NEAR-MISS. 486.318(a)-(c) describes an expired three-measure regime and is still in the codified text. A search hit on 'outcome measures' lands there first. The byte-match gate would PASS a citation to it, because the passage is real - it is merely no longer in force. This is the limit of the mechanical gate, demonstrated rather than asserted.",
       "currency_confirmed": "NOT in force — retained deliberately as the recorded near-miss. This is the expired regime, kept so the failure mode stays visible."
+    },
+    {
+      "element": "core/lifecycle/states/evaluation",
+      "source": "ecfr-42-486-subpartG",
+      "locator": "42 CFR 486.344(c)(3)-(4)",
+      "quote": "Ensure that the potential donor's blood is typed using two separate blood samples.",
+      "establishes": "Donor typing must use TWO separate samples - a duplication requirement, not a single test."
+    },
+    {
+      "element": "core/lifecycle/transitions/evaluation-guard",
+      "source": "ecfr-42-486-subpartG",
+      "locator": "42 CFR 486.344(c)(4)",
+      "quote": "Document potential donor's record with all test results, including blood type, before organ recovery.",
+      "establishes": "Testing completeness is a GUARD on recovery: results must be in the record BEFORE recovery, which is exactly a transition guard."
+    },
+    {
+      "element": "core/lifecycle/states/allocation",
+      "source": "ecfr-42-121",
+      "locator": "42 CFR 121.7(a)(1)",
+      "quote": "An OPTN member procuring an organ shall operate the OPTN computer match program within such time as the OPTN may prescribe to identify and rank potential recipients for each cadaveric organ procured.",
+      "establishes": "Ranking is performed by the OPTN computer match program. The OPO operates it; it does not rank."
+    },
+    {
+      "element": "core/lifecycle/states/allocation/offer",
+      "source": "ecfr-42-121",
+      "locator": "42 CFR 121.7(b)(3)",
+      "quote": "An organ offer is made when all information necessary to determine whether to transplant the organ into the potential recipient has been given to the transplant hospital.",
+      "establishes": "An offer is DEFINED BY COMPLETENESS of information transferred - not by a message being sent. A completeness condition, precisely the class the gates check."
+    },
+    {
+      "element": "core/lifecycle/states/packaging_transport",
+      "source": "ecfr-42-121",
+      "locator": "42 CFR 121.7(c)",
+      "quote": "The OPTN member that is transporting an organ shall assure that it is accompanied by written documentation of activities conducted to determine the suitability of the organ donor and shall maintain this document for one year.",
+      "establishes": "Documentation travels WITH the organ, and is retained one year. The record is a conserved artifact, not a database row."
+    },
+    {
+      "element": "core/lifecycle/L4/record_retention",
+      "source": "ecfr-42-121",
+      "locator": "42 CFR 121.11(a)(2)(i)",
+      "quote": "All OPOs and transplant programs shall maintain such records pertaining to each potential donor identified, each organ retrieved, each recipient transplanted and such other transplantation-related matters as the Secretary deems necessary to carry out her/his responsibilities under the Act.",
+      "establishes": "Records are required for EACH POTENTIAL DONOR IDENTIFIED - not only converted cases. The non-conversion terminals in the lifecycle are therefore mandated record-keeping, not a design nicety."
     }
   ]
 }

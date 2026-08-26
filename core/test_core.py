@@ -145,16 +145,42 @@ def test_unverified_guards_are_pending_not_passing():
     established policy. If this ever flips to enforcement without the locator
     being filled, the validator has started enforcing its author's recollection.
     """
-    print("\nunverified guards are PENDING, not passing")
-    t = Tape.load(os.path.join(TAPES, "violating-case.jsonl"))
-    f = replay(t)
-    pending = [x for x in f if x.status == PENDING]
-    check("guards on unverified elements are PENDING", len(pending) > 0, True)
-    check("and they say why", all("TODO-VERIFY" in x.detail for x in pending), True)
-
+    print("\nguard enforcement follows provenance, not opinion")
     m = load_machine()
+    verified = [s for s, v in m["states"].items() if v.get("verified")]
     unverified = [s for s, v in m["states"].items() if not v.get("verified")]
-    check("the machine form carries the verified flag", len(unverified) > 0, True)
+    check("the machine form carries the verified flag", bool(verified), True)
+
+    # Build one tape that trips a guard into a VERIFIED destination and another
+    # into an UNVERIFIED one, so this asserts the RULE rather than today's counts.
+    # (An earlier version of this test asserted "some guard is PENDING" and broke
+    #  the moment a locator was filled — which was the machinery working, not a
+    #  regression. Test the mechanism.)
+    def guard_status(dst: str) -> str | None:
+        edge = next((t for t in m["transitions"]
+                     if t["to"] == dst and t.get("guard")), None)
+        if edge is None:
+            return None
+        tape = Tape("probe")
+        tape.append("transition", 0, {"from": edge["from"], "to": dst})  # guard unmet
+        hits = [f for f in replay(tape, m) if f.rule == "guard not satisfied"]
+        return hits[0].status if hits else None
+
+    v_dst = next((s for s in verified if guard_status(s)), None)
+    u_dst = next((s for s in unverified if guard_status(s)), None)
+
+    if v_dst:
+        check(f"guard into a VERIFIED state ({v_dst}) is ENFORCED", guard_status(v_dst), ENFORCED)
+    if u_dst:
+        check(f"guard into an UNVERIFIED state ({u_dst}) is PENDING", guard_status(u_dst), PENDING)
+        # and it must say why, so nobody mistakes PENDING for a pass
+        tape = Tape("probe")
+        edge = next(t for t in m["transitions"] if t["to"] == u_dst and t.get("guard"))
+        tape.append("transition", 0, {"from": edge["from"], "to": u_dst})
+        pend = [f for f in replay(tape, m) if f.status == PENDING]
+        check("PENDING says why", all("TODO-VERIFY" in f.detail for f in pend), True)
+    else:
+        print("  note  every guarded state is now verified — nothing left to hold PENDING")
 
 
 def test_machine_matches_source():

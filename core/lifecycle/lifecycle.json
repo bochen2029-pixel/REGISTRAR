@@ -29,7 +29,7 @@
         "donor_management"
       ],
       "requires_elements": [],
-      "verified": false
+      "verified": true
     },
     "death_determination": {
       "name": "Death determination",
@@ -68,7 +68,7 @@
         "typing_complete",
         "authorization_valid"
       ],
-      "verified": false
+      "verified": true
     },
     "recovery": {
       "name": "Surgical recovery",
@@ -84,7 +84,7 @@
       "grain": "case",
       "concurrent_with": [],
       "requires_elements": [],
-      "verified": false
+      "verified": true
     },
     "disposition": {
       "name": "Disposition",

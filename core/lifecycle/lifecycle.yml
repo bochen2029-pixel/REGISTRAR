@@ -102,10 +102,20 @@ states:
     terminal: false
     concurrent_with: [ death_determination, authorization, donor_management ]
     provenance:
-      - authority: OPTN Policy
-        establishes: required donor testing and documentation
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: 42 CFR 486 Subpart G
+        establishes: >
+          "Ensure that the potential donor's blood is typed using two separate
+          blood samples." And: "Document potential donor's record with all test
+          results, including blood type, before organ recovery."
+        locator: 42 CFR 486.344(c)(3)-(4)
+        accessed: 2026-08-25
+        quote_verified: true
+        note: >
+          Two findings. Typing requires TWO separate samples — a duplication
+          requirement, not a single test. And test results must be in the record
+          BEFORE recovery, which makes completeness a transition guard rather
+          than a reporting obligation. Found in the CFR, not OPTN Policy, which
+          is where this element was drafted to point.
     local_variation:
       - id: evaluation.reference_lab
         note: which laboratory, which assay panel, and its actual turnaround
@@ -203,10 +213,22 @@ states:
       It records readiness, offers, and responses.
     terminal: false
     provenance:
-      - authority: OPTN Policy
-        establishes: allocation sequence and offer procedure
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: 42 CFR Part 121 (the OPTN Final Rule)
+        establishes: >
+          "An OPTN member procuring an organ shall operate the OPTN computer
+          match program … to identify and rank potential recipients." And:
+          "An organ offer is made when all information necessary to determine
+          whether to transplant the organ into the potential recipient has been
+          given to the transplant hospital."
+        locator: 42 CFR 121.7(a)(1) and 121.7(b)(3)
+        accessed: 2026-08-25
+        quote_verified: true
+        note: >
+          Ranking is done by the OPTN match program; the OPO OPERATES it and
+          does not rank — which is this system's prohibition 6, now resting on
+          the rule rather than on our own restraint. And an offer is defined by
+          COMPLETENESS of information transferred, not by a message being sent:
+          precisely the class of condition the gates check.
     constitutional_note: >
       Allocation belongs to OPTN and executes in their systems. See SPEC.md §8,
       prohibitions 1 and 6.
@@ -247,10 +269,19 @@ states:
       Chain of custody is conserved and must be continuous.
     terminal: false
     provenance:
-      - authority: OPTN Policy
-        establishes: packaging, labelling and chain-of-custody requirements
-        locator: TODO-VERIFY
-        accessed: null
+      - authority: 42 CFR Part 121 (the OPTN Final Rule)
+        establishes: >
+          "The OPTN member that is transporting an organ shall assure that it is
+          accompanied by written documentation of activities conducted to
+          determine the suitability of the organ donor and shall maintain this
+          document for one year."
+        locator: 42 CFR 121.7(c)
+        accessed: 2026-08-25
+        quote_verified: true
+        note: >
+          Documentation travels WITH the organ and is retained a year. The
+          record is a conserved artifact rather than a database row, which is
+          why chain-of-custody continuity is a gate.
     local_variation:
       - id: transport.providers
         note: carriers, modes, and observed door-to-door times by destination
@@ -272,6 +303,15 @@ states:
         locator: TODO-VERIFY
         accessed: null
     local_variation: []
+
+  # L4's statutory basis. Note the scope: records are required for EACH
+  # POTENTIAL DONOR IDENTIFIED, not only for converted cases — which makes the
+  # non-conversion terminals below mandated record-keeping rather than a design
+  # choice this project made for tidiness.
+  #   42 CFR 121.11(a)(2)(i), accessed 2026-08-25, quote verified:
+  #   "All OPOs and transplant programs shall maintain such records pertaining
+  #    to each potential donor identified, each organ retrieved, each recipient
+  #    transplanted…"
 
   - id: reporting_closed
     name: Reporting closed

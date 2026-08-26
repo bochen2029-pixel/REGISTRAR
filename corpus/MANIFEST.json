@@ -6,6 +6,13 @@
       "bytes": 76253,
       "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-24/title-42.xml?chapter=IV&subchapter=G&part=486&subpart=G",
       "accessed": "2026-08-25"
+    },
+    "ecfr-42-121": {
+      "file": "ecfr-42-121.txt",
+      "sha256": "5bda10732755110e3d2c23b3945c5cba85509041e21637e5d519b41dc3e2a6b2",
+      "bytes": 47236,
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-08-24/title-42.xml?chapter=I&subchapter=K&part=121",
+      "accessed": "2026-08-25"
     }
   }
 }
