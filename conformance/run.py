@@ -420,6 +420,62 @@ def check_profiles() -> None:
            f"state = {prof.state()} (absent or malformed reads as `off`, never `live`)")
 
 
+# ── 6g · percepts and the switch ────────────────────────────────────────────
+def check_percepts() -> None:
+    sys.path.insert(0, os.path.join(ROOT, "percepts"))
+    import stream as st
+    import switch as sw
+
+    # the direction of failure is the design
+    record(GREEN if sw.read() in sw.STATES else FAILED, "switch · reads a legal state",
+           f"{sw.read()} — {sw.MEANING[sw.read()]}")
+
+    src = open(os.path.join(ROOT, "percepts", "switch.py"), encoding="utf-8").read()
+    writes = 'open(STATE_FILE, "w"' in src
+    record(FAILED if writes else GREEN, "switch · operator-only",
+           "this module writes the switch file" if writes
+           else "nothing here writes it — a file only the operator writes")
+
+    status, detail = sw.heartbeat()
+    record(FAILED if status == "STALLED" else GREEN, "switch · heartbeat honest",
+           f"{status} — {detail}")
+
+    # the laws the stream must carry
+    # the catalogue must actually be closed, not just documented as closed
+    probe = st.Stream(os.path.join(ROOT, "percepts", ".probe.tmp"))
+    try:
+        probe.emit("not-a-kind", "conformance", {}, at=0)
+        closed = False
+    except ValueError:
+        closed = True
+    finally:
+        if os.path.exists(probe.path):
+            os.remove(probe.path)
+    record(GREEN if closed else FAILED, "percepts · catalogue closed",
+           f"{len(st.KINDS)} kinds, {len(st.REASONS)} reasons — an unknown kind raises"
+           if closed else "an unknown percept kind was accepted")
+
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "percepts", "test_percepts.py")],
+                       capture_output=True, text=True)
+    last = (r.stdout.strip().splitlines() or ["no output"])[-1]
+    record(GREEN if r.returncode == 0 else FAILED, "percepts · law battery", last)
+
+    # if a stream exists, its counts must not lie
+    hdr, ps, foot = st.load()
+    if ps:
+        ok = foot.get("total") == foot.get("surfaced", 0) + foot.get("suppressed", 0)
+        record(GREEN if ok else FAILED, "percepts · total is a sum",
+               f"{foot.get('surfaced',0)} surfaced + {foot.get('suppressed',0)} suppressed "
+               f"= {foot.get('total',0)}")
+        dropped = foot.get("dropped", 0)
+        record(FAILED if dropped else GREEN, "percepts · nothing dropped",
+               f"{dropped} percept(s) lost — a defect, not a statistic" if dropped
+               else f"{len(ps)} percepts, none dropped")
+    else:
+        record(UNVERIFIED, "percepts · stream",
+               "no stream yet — it fills as the repository is used (useful at `off`)")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     offenders = []
@@ -459,6 +515,7 @@ def main() -> int:
         ("the authority chain", check_authority),
         ("the algebra", check_algebra),
         ("the profiles", check_profiles),
+        ("percepts and the switch", check_percepts),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

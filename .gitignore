@@ -33,6 +33,14 @@ corpus/*
 !corpus/MANIFEST.json
 !corpus/citations.json
 
+# ── the percept stream ────────────────────────────────────────────────────
+# Generated as the repository is used, and it records what a completion hit —
+# gate refusals, expiries, derived deadlines. On a real site that is a trace of
+# work against PHI-bearing material. The CODE is committed; the STREAM is not.
+percepts/*.jsonl
+registrar.state
+registrar.heartbeat.json
+
 # ── ordinary ──────────────────────────────────────────────────────────────
 node_modules/
 __pycache__/
