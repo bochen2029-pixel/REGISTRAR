@@ -56,11 +56,11 @@
       "pattern": "· (\\d+) F\\b"
     },
     "adversarial_fixtures": {
-      "value": 22,
+      "value": 28,
       "pattern": "(\\d+) adversarial fixtures"
     },
     "mutation_score_pct": {
-      "value": 74.8,
+      "value": 81.9,
       "pattern": "mutation score[^0-9]{0,24}(\\d+\\.\\d)\\s*%"
     },
     "mutation_denominator": {
@@ -68,7 +68,7 @@
       "pattern": "\\*\\*(\\d+)\\*\\* mutants"
     },
     "mutation_survivors": {
-      "value": 32,
+      "value": 23,
       "pattern": "\\*\\*(\\d+) — defects"
     }
   },

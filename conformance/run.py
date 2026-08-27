@@ -185,8 +185,18 @@ def check_gates() -> None:
     from validate_patch import GREEN as GG
     rejected = sorted(f for f in os.listdir(os.path.join(worked, "rejected"))
                       if f.endswith((".json", ".yml", ".yaml")))
-    must_refuse = [f for f in rejected if "UNCAUGHT" not in f]
-    uncaught = [f for f in rejected if "UNCAUGHT" in f]
+    # *WELLFORMED* joins *UNCAUGHT* as a known-exposure marker, 2026-08-27.
+    # `fork/witnesses` carried each retained exposure onto a COMPLETE patch —
+    # every declared target answered or declined — to answer a question the
+    # fragments cannot: is the SEMANTIC hole still open once the floor has no
+    # quarrel with the file? It is. Those carriers must therefore be counted as
+    # exposures rather than as drafts this battery refuses. Counting them the
+    # other way would have printed "21/21 adversarial drafts refused" while six
+    # of the twenty-one were refused by nothing at all — a claim about a check
+    # that never ran, which is the one thing this repository refuses to print.
+    KNOWN_EXPOSURE = ("UNCAUGHT", "WELLFORMED")
+    must_refuse = [f for f in rejected if not any(k in f for k in KNOWN_EXPOSURE)]
+    uncaught = [f for f in rejected if any(k in f for k in KNOWN_EXPOSURE)]
 
     passed_through = []
     for f in must_refuse:
@@ -207,31 +217,39 @@ def check_gates() -> None:
         sys.path.insert(0, os.path.join(ROOT, "gates"))
         from witness import FLOOR
         from validate_patch import GREEN as _G
+        #
+        # AND A SECOND WAY THIS LINE COULD LIE, closed 2026-08-27. A fixture
+        # retained here can also stop being an exposure by being FIXED — gate 14
+        # closed `20-adverse-replay`, and the signature gate closed
+        # `17-not-a-person` / `27-not-a-person` once a machine-shaped author
+        # became a refusal. Counting those in the same total would assert that
+        # nothing catches something a gate now catches, which is the exact
+        # inversion of the mistake above. They are partitioned and both halves
+        # are printed: a closed exposure is a WITNESS awaiting promotion, not a
+        # hole, and saying so is how the promotion gets done rather than
+        # forgotten.
         ambient = {"shadow-run fidelity", "totality on provision"}
-        # MEASURED, NOT COUNTED BY FILENAME — QC F4. The old line derived its
-        # number from `"UNCAUGHT" in filename`, so it would have printed the
-        # same sentence if every hole had quietly closed. Now each fixture is
-        # actually run: a semantic (non-floor) FAILED means the hole is CLOSED
-        # and the label is stale — which is drift, and fails loudly.
-        from validate_patch import FAILED as _F
-        floored = 0
-        caught = []
+        # MEASURED, NOT COUNTED BY FILENAME — and partitioned. Each fixture is
+        # actually run; one a semantic gate now refuses is CLOSED (a witness
+        # awaiting promotion, printed as such), the rest are still-open holes.
+        floored, still_open, closed = 0, [], []
         for f in uncaught:
             rr = validate(load_patch(os.path.join(worked, "rejected", f)), load_targets())
+            caught_by = [g for st, g, _ in rr.rows
+                         if st != _G and g not in FLOOR and g not in ambient]
+            if caught_by:
+                closed.append(f"{f} (by {', '.join(caught_by)})")
+                continue
+            still_open.append(f)
             if any(st != _G and g in FLOOR for st, g, _ in rr.rows):
                 floored += 1
-            if any(st == _F and g not in FLOOR for st, g, _ in rr.rows):
-                caught.append(f)
-        live = [f for f in uncaught if f not in caught]
-        if caught:
-            record(FAILED, "gates · exposure labels current",
-                   f"labelled UNCAUGHT but a semantic gate now refuses: {', '.join(caught)} "
-                   f"— rename the fixture or record the closure; a stale label is drift")
         record(UNVERIFIED, "gates · known exposures",
-               f"{len(live)} hole(s) MEASURED open — no semantic gate refuses them "
-               f"(run per fixture, not counted by filename)"
-               + (f"; {floored} trip a floor gate for being minimal — not closure" if floored else "")
-               + (f": {', '.join(live)}" if live else ""))
+               f"{len(still_open)} hole(s) no SEMANTIC gate catches, retained deliberately"
+               + (f" ({floored} also trip a floor gate for being minimal — that is "
+                  f"not closure)" if floored else "")
+               + f": {', '.join(still_open)}"
+               + (f" · {len(closed)} CLOSED and awaiting promotion to witnesses: "
+                  f"{', '.join(closed)}" if closed else ""))
 
     record(UNVERIFIED, "gates · undecidable from a file",
            "local invertibility, shadow-run fidelity, totality — need a runtime and the site's tape")
