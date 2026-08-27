@@ -381,3 +381,22 @@ is a bet in every case and is listed as one.
 *Nothing here has run inside an OPO. No patient data has touched any part of it. There are no clinical
 performance numbers because there are none — when that changes, the plate changes first and the prose
 follows.*
+
+
+---
+
+# FALSIFIER CLOSED · `2026-08-27` — the synthetic programme is complete
+
+Full arc in `experiments/F-PATCH-DELTA/RESULTS.md`: v1 verdict VOID-BY-AMBIGUITY → rubric v2/v3 FAILS
+(instrument-resolved) → corpus v4 rebuilt so honesty could score (design frozen first, builder asserts its
+own invariants) → **run A `0.70` · run B `0.62` · headline `S = 0.66 ± 0.04 (n=2), floor 0.47 cleared both,
+zero fabrications ever, band boundary unresolved.`**
+
+**Established, and now closed as questions:** the kit transfers to a corpus built to be completable; honest
+candidates never fabricate (three fresh sessions, one deliberately unanswerable trap, zero inventions); the
+gates and the scorer are complementary instruments and the falsifier is the pair.
+
+**What the centre of the disk is now:** ① **F-BOOT** — the chassis is pinned and never installed; an OPO IT
+director who clones this today has no harness, and that is the binding constraint on adoption. ② **A real
+site** — the only row left that changes anything. Everything else (resident, adapters bindings, read/reach)
+remains gated behind those two.

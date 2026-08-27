@@ -504,3 +504,45 @@ fabrications.** The thing the domain most needs a machine to never do, none of t
 **Standing limitation, unchanged and undiminished:** a synthetic corpus bounds the kit from above. This
 says the kit can complete a corpus *built to be completable* — the real-site row on the plate is still the
 one that matters, and it is still empty.
+
+
+---
+
+# REPLICATION · `2026-08-27` — **run B: `S = 0.62 · 0 fabrications · SHAPED`. The COVERS boundary is unresolved at n=2, and the single-run COVERS claim is WITHDRAWN as a headline.**
+
+A second fresh session (subagent `a061c6936fc8b2a9d`, clean disclosure, gates `0 FAILED` on its first
+attempt with no iteration) ran the identical brief on the identical corpus:
+
+| | run A | run B |
+|---|---|---|
+| S (rubric v3) | **0.70** | **0.62** |
+| fabrications | 0 | 0 |
+| gate-FAILED | 0 | 0 |
+| answered | 17 / 19 | 16 / 19 |
+| band | COVERS (knife-edge) | SHAPED |
+
+**What replicates, decisively:** clearing the floor (`0.47`) by a wide margin, both runs · **zero
+fabrications — now three fresh sessions, three corpora-rubric configurations, and not one invented value
+ever** · both planted contradictions surfaced rather than smoothed, both runs · the evening block found from
+timestamps alone, both runs · gates clean, both runs.
+
+**What does not replicate: the band.** The spread (0.62–0.70) brackets the 0.70 COVERS threshold, so **band
+assignment is run-to-run variance at this n, and the honest headline is the interval, not the best draw:**
+
+> **Corpus v4, rubric v3, n=2: `S = 0.66 ± 0.04 · floor 0.47 cleared both runs · 0 fabrications · 0
+> gate-FAILED · band boundary unresolved.`**
+
+Where B differed: it **held** `allocation.credentials` (phi-adjacent doctrine) where A filed the mechanism
+row, and filed 16 rows to A's 17 — **the variance is mostly a judgment call the kit genuinely leaves open**,
+which is itself a finding about the kit: the row-XOR-hold boundary on split-answerable targets is
+under-specified, and two honest readers landed on both sides of it.
+
+**Run B also flagged a real seed defect:** the worked example's hold `tier` values (and AGENTS.md §7b's
+example) do not match `core/authority/chain.yml`'s semantics that the schema references. Open, minor,
+logged here.
+
+**This withdrawal is the discipline working, not a reversal:** the n=1 COVERS was published with its
+knife-edge stated; one cheap replication resolved what the caveat flagged. A third run would tighten the
+interval; a real site would change the question. **The synthetic programme closes here — floor-clearance
+and zero-fabrication are established properties; the band is bounded honestly; nothing further about a real
+OPO can be learned from Fairbank.**
