@@ -22,6 +22,11 @@
 > 9. A7 §12(b) — the weak-battery bullet gains its measurement; doctrine-drift-under-maintenance added as the risk the build period actually demonstrated.
 > 10. A8 footer — 'nothing has been built' retired with the date it stopped being true.
 >
+> **Correction to this proposal, same day, before adoption:** the first draft of amendment A6 claimed
+> "R1–R3 built" — but `core/measures/` does not exist as a module, which the replay board's construction
+> surfaced within the hour. The claim is corrected above to R2-PARTIAL with the receipt named. A proposal
+> that over-claims a rung is the exact drift it exists to cure, and this note stays visible.
+>
 > **Deliberately NOT changed:** §3 (the algebra — no receipt contradicts it) · §8 (the fence) ·
 > §10 (the clean-room constraint) · §2b (the loop; its `[BET]` tags remain honest) · §6 · §7 ·
 > the batteries-included doctrine (PROPOSED elsewhere, adopted nowhere — a proposal must not
@@ -738,8 +743,10 @@ Each rung is shippable, names its null, and is earned by the rung below it.
 | **R6** | First site completion, under signature | time from clone to first signed patch; rows accepted versus rejected | — |
 
 **R5 is the cheapest decisive experiment in the entire plan — and it has been run to closure.** Rung
-status, with receipts: **R1–R3 built** (the cited spine, the measures as folds, the closure with bit-identity
-discipline) · **R4 built and measured** (sixteen gates; witness matrix; mutation-tested;
+status, with receipts: **R1 and R3 built** (the cited spine; the closure with bit-identity discipline) ·
+**R2 PARTIAL, stated precisely: `core/measures/` as a module is UNBUILT** — the graded-ratio folds are
+demonstrated in `demo/replay.py` (denominator-first, with one measure honestly reported NOT DERIVABLE where
+the tape lacks the column), and the module remains open work · **R4 built and measured** (sixteen gates; witness matrix; mutation-tested;
 23-fixture adversarial corpus, refusals naming defects in words) · **R5 run five times** — the full arc,
 including one voided verdict and two honest FAILS, ends at `S = 0.66 ± 0.04 (n = 2)` over a floor of 0.47,
 zero fabrications in any run (§5) · **R6 open — the only rung left, and it is not an engineering rung.**

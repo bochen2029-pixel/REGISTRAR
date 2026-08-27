@@ -409,8 +409,10 @@ site** — the only row left that changes anything.
 Captured in full in [`plans/HORIZONS_2026-08-27.md`](plans/HORIZONS_2026-08-27.md); one line each here so no
 future session mistakes silence for absence:
 
-- **The replay board** — `demo/replay.py`: a `site_v4` case played through the percept stream, the floor
-  surfacing unprompted on screen; the first pulse the nervous system will ever carry, and the pilot pitch.
+- **The replay board — BUILT `2026-08-27`**: `demo/replay.py` — a `site_v4` case through the percept
+  stream (its first ever), the floor deriving the window margin with its full chain, a contract breach
+  surfaced against the site's own p90, margin narrowing AND returning ("slack can come back; an alarm
+  cannot say so"), one measure honestly NOT DERIVABLE, and byte-identical replays gated in the battery.
 - **F-RESIDENT-VS-FLOOR** — the fourth falsifier: trained judge vs deterministic floor, catches at a matched
   interruption budget; converts the alert-fatigue claim from `[M inherited]` to `[M]`.
 - **The batteries-included revision** `[DOCTRINE CHANGE, PROPOSED]` — reference bindings on the chassis

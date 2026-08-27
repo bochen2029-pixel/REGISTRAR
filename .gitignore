@@ -70,3 +70,4 @@ build/
 Thumbs.db
 .idea/
 .vscode/
+demo/_out/

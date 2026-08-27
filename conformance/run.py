@@ -593,6 +593,15 @@ def check_chassis() -> None:
         record(UNVERIFIED, "chassis · present", "not on disk — nothing to pin or exclude")
         return
 
+    # F-BOOT: the pin question and the STANDING question are different, and the
+    # battery reports both. Installed/built are artifact probes; whether the
+    # harness ANSWERS is forge/boot.py's job and needs a launch, so here it is
+    # three-state: artifacts present -> the boot is one command away.
+    nm = os.path.isdir(os.path.join(ROOT, "deepseek-harness-master", "node_modules"))
+    record(GREEN if nm else UNVERIFIED, "chassis · installed",
+           "node_modules present — sources untouched, the pin re-proves it" if nm
+           else "never installed — python forge/boot.py (forge profile only)")
+
     # PINNED 2026-08-26. internal §14 item 1, closed.
     r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "pin_chassis.py"), "--check"],
                        capture_output=True, text=True, encoding="utf-8",
@@ -829,6 +838,23 @@ def check_yaml_nulls() -> None:
            if hits else "no tracked YAML carries a None key")
 
 
+# ── 6n · the replay board replays deterministically ─────────────────────────
+def check_replay_determinism() -> None:
+    """
+    SPEC §7: two independent replays of one tape must be byte-identical. The
+    board's selftest replays the demo case twice and compares transcripts —
+    and its own FIRST run failed on its own footer (the stream filename
+    differed between runs), which is the check working on its author.
+    """
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "demo", "replay.py"),
+                        "--selftest"],
+                       capture_output=True, text=True, encoding="utf-8",
+                       env=dict(os.environ, PYTHONIOENCODING="utf-8"))
+    last = [ln for ln in (r.stdout or "").splitlines() if ln.strip()]
+    record(GREEN if r.returncode == 0 else FAILED, "board · replay determinism",
+           last[-1][:110] if last else "no output")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     # ASK GIT, NOT THE FILESYSTEM. The check is named "committed" and walked the
@@ -885,6 +911,7 @@ def main() -> int:
         ("the schema", check_schema),
         ("the claims", check_claims),
         ("yaml hygiene", check_yaml_nulls),
+        ("the board", check_replay_determinism),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")
