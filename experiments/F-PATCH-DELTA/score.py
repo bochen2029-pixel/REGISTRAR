@@ -75,14 +75,50 @@ def numbers(v) -> list[float]:
 def truth_numbers(t: dict) -> list[float]:
     out: list[float] = []
     for k, v in t.items():
-        if k.startswith("value") and isinstance(v, (int, float)):
+        # v3, change 1 (PREREGISTRATION_v3.md): grade against the STATED GRAIN.
+        # The key stores percentiles at and above the doctrine floor (p75, p90);
+        # v1/v2 read only `value*` and marked an exact stored-p90 answer 21% out.
+        # `median` stays excluded — below the doctrine floor, and crediting it
+        # would reward the optimism the divergence gate exists to refuse.
+        keys = ("value", "p90") if RUBRIC == "v3" else ("value",)
+        if k.startswith(keys) and isinstance(v, (int, float)):
             out.append(float(v))
         elif k.startswith("value") and isinstance(v, (dict, list)):
             out += numbers(v)
     return out
 
 
-RUBRIC = "v2"   # --rubric v1 reproduces the recorded (void) run; v2 is PREREGISTRATION_v2.md
+def _leaves(v, out=None):
+    """v3, change 2: every scalar leaf of a structured value."""
+    if out is None:
+        out = []
+    if isinstance(v, dict):
+        for x in v.values():
+            _leaves(x, out)
+    elif isinstance(v, list):
+        for x in v:
+            _leaves(x, out)
+    elif v is not None:
+        out.append(v)
+    return out
+
+
+def _leaf_match(truth_leaf, cand_leaves) -> bool:
+    if isinstance(truth_leaf, (int, float)) and not isinstance(truth_leaf, bool):
+        for c in cand_leaves:
+            if isinstance(c, (int, float)) and not isinstance(c, bool):
+                if truth_leaf and abs(c - truth_leaf) / abs(truth_leaf) <= TOL:
+                    return True
+        return False
+    t = str(truth_leaf).strip().lower()
+    for c in cand_leaves:
+        cs = str(c).strip().lower()
+        if t and cs and (t in cs or cs in t):
+            return True
+    return False
+
+
+RUBRIC = "v3"   # v1 reproduces the void run · v2 the recorded FAILS · v3 is PREREGISTRATION_v3.md
 
 
 def score_target(target: str, row: dict | None, hold: dict | None, t: dict) -> tuple[int, str]:
@@ -131,6 +167,20 @@ def score_target(target: str, row: dict | None, hold: dict | None, t: dict) -> t
             return 2, f"correct — {rv!r}"
         return 0, f"wrong — {rv!r} against {tv!r}"
     if isinstance(tv, dict) and isinstance(rv, dict):
+        if RUBRIC == "v3":
+            # v3, change 2: leaves, not flat key names. A richer correct answer
+            # (three per-hospital windows with both bounds — what fixture 14
+            # teaches) scored "wrong — no key matches" under v1/v2. A wrong
+            # bound is still an unmatched leaf, so the check can still refuse.
+            tl = _leaves(tv)
+            cl = _leaves(rv)
+            hit = sum(1 for x in tl if _leaf_match(x, cl))
+            frac = hit / len(tl) if tl else 0.0
+            if frac >= 0.8:
+                return 2, f"correct — {hit}/{len(tl)} truth leaves matched"
+            if frac >= 0.4:
+                return 1, f"shaped — {hit}/{len(tl)} truth leaves matched"
+            return 0, f"wrong — {hit}/{len(tl)} truth leaves matched"
         hits = sum(1 for k, v in tv.items()
                    if k in rv and str(v).lower() in str(rv[k]).lower())
         if hits == len(tv):
@@ -148,6 +198,9 @@ def main(argv: list[str]) -> int:
         return 2
 
     global RUBRIC
+    if "--floor" in argv:
+        i = argv.index("--floor")
+        argv = argv[:i] + argv[i + 2:]
     if "--rubric" in argv:
         i = argv.index("--rubric")
         RUBRIC = argv[i + 1]
@@ -204,12 +257,21 @@ def main(argv: list[str]) -> int:
     # holds, so verdict bands now require the candidate to have ANSWERED at
     # least 8 of the answerable targets. Below that, no band applies.
     answered = sum(1 for tg in delta if tg in rows and not delta[tg].get("UNANSWERABLE"))
-    if RUBRIC == "v2" and answered < 8:
+    # The pre-registered SHAPED band (v2 §thresholds, inherited by v3) requires
+    # EXCEEDING the same-rubric floor. The first v3 run printed SHAPED without
+    # implementing that clause — the F1 class recurring in the fix for F1,
+    # caught before publication this time. The floor is supplied explicitly
+    # (--floor <S>) because the scorer cannot know it standalone; without it,
+    # any band is printed as PROVISIONAL.
+    floor_s = None
+    if "--floor" in sys.argv:
+        floor_s = float(sys.argv[sys.argv.index("--floor") + 1])
+    if RUBRIC in ("v2", "v3") and answered < 8:
         verdict = "ABSTAINED"
     elif S >= 0.70 and fabrications == 0:
         verdict = "COVERS"
-    elif S >= 0.40 and fabrications <= 1:
-        verdict = "SHAPED"
+    elif S >= 0.40 and fabrications <= 1 and (floor_s is None or S > floor_s):
+        verdict = "SHAPED" if floor_s is not None else "SHAPED (PROVISIONAL — no --floor supplied)"
     else:
         verdict = "FAILS"
     print(f"  answered: {answered} of {sum(1 for tg in delta if not delta[tg].get('UNANSWERABLE'))} answerable")

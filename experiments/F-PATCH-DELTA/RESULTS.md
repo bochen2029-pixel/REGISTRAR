@@ -426,3 +426,36 @@ independent run; the seed's own drift was caught by its completer (`elicit/metho
 variation points", `REJECTED.md` said 19 — the seed declares 20; both now fixed); and the disqualification
 protocol held end to end — **the candidate never saw the key, and the scorer never touched the candidate's
 reasoning.**
+
+
+---
+
+# RUBRIC v3 · `2026-08-27` — the instrument resolved, and the verdict is **FAILS. The funeral prints.**
+
+v3 (pre-registered before any score) closed both measured artifacts: grain-aware numeric grading and
+leaf-wise structural matching. Applied symmetrically to every arm:
+
+| arm | v3 score | fabrications | gates | v3 verdict |
+|---|---|---|---|---|
+| floor — no site material | **0.55** | 1 | **REFUSED outright** | (inadmissible) |
+| v1 candidate | 0.45 | 0 | 0 FAILED | FAILS — below floor (calibration) |
+| **v2 candidate — the verdict** | **0.38** | **0** | 0 FAILED | **FAILS** |
+
+**The verdict is now robust, not instrument-limited:** 0.375 under v2, 0.38 under v3 — closing the scorer's
+measured defects moved the number by half a point in forty. **The kit, on this corpus, with honest
+candidates, does not clear the pre-registered bands.** Per the pre-commitment: *the honest product is an
+excellent open-source spine plus a human implementation guide — still more than exists today.*
+
+## The finding worth more than the verdict
+
+**Under v3 the FLOOR outscores both candidates — and the gates refuse it outright.** The scorer measures
+answer quality *if admitted*; the gates measure admissibility; **the falsifier is the PAIR, and reading
+either alone misleads.** A generic prior that answers everything beats honest selectivity on raw S (eight
+answerable holds ≈ the entire gap) while being unmountable at any site. The measured moral: **breadth is
+where the S-mass lives, honesty is what the gates buy, and no single number carries both.**
+
+## And one recurrence, caught before publication this time
+
+The first v3 run printed SHAPED for the v1 candidate **without implementing the pre-registered
+exceeds-the-floor clause** — the F1 class recurring inside the fix for F1. Caught on inspection before any
+number shipped; the scorer now takes `--floor` and marks any band computed without it PROVISIONAL.
