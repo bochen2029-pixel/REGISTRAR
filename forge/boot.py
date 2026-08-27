@@ -118,16 +118,14 @@ def installed() -> bool:
     return os.path.isdir(os.path.join(CHASSIS, "node_modules"))
 
 
-def built() -> bool:
-    # upstream's build emits per-package dist/ trees; the web frontend's is the
-    # one the launch needs, and its absence is the honest "not built" signal
-    # real layout, mapped after install: the web host is packages/host/webserver
-    # and the static frontend packages/host/frontend-static
-    for probe in ("packages/host/webserver/dist", "packages/host/frontend-static/dist",
-                  "packages/host/webserver/lib"):
-        if os.path.isdir(os.path.join(CHASSIS, probe)):
-            return True
-    return False
+def runs_from_source() -> bool:
+    # Corrected twice by measurement, and the second correction is the truth:
+    # NOTHING PREBUILT EXISTS OR IS NEEDED. `pnpm dsh web` executes
+    # `node --import tsx/esm apps/cli/src/bin.ts` — the TypeScript sources run
+    # directly, which is why a pin-clean, never-built tree answers on loopback.
+    # (Draft 1 probed dist/ paths that never exist; draft 2 probed a lib/ that
+    # turned out to be MY OWN build's contamination, deleted with it.)
+    return os.path.isfile(os.path.join(CHASSIS, "apps", "cli", "src", "bin.ts"))
 
 
 def step_install() -> bool:
@@ -144,10 +142,10 @@ def step_install() -> bool:
 
 def step_no_build() -> bool:
     """The absence of a build step, asserted rather than implied."""
-    ok = built()
-    say(GREEN if ok else FAILED, "prebuilt by upstream",
-        "lib/ trees ship in the pinned tarball; the launch runs from source via tsx"
-        if ok else "expected prebuilt lib/ missing — the pin should have caught this first")
+    ok = runs_from_source()
+    say(GREEN if ok else FAILED, "runs from source",
+        "apps/cli/src/bin.ts present — tsx executes the sources; no artifact is needed"
+        if ok else "apps/cli/src/bin.ts missing — verify the pin")
     say(GREEN, "build forbidden",
         "`pnpm run build` regenerates pinned artifacts (measured: +6,463 files) — never run it here")
     return ok
@@ -192,9 +190,9 @@ def status() -> int:
     tc = step_toolchain()
     say(GREEN if installed() else UNVERIFIED, "installed",
         "node_modules present" if installed() else "not yet — run forge/boot.py")
-    say(GREEN if built() else FAILED, "prebuilt by upstream",
-        "lib/ ships in the pin; build is forbidden and unnecessary" if built()
-        else "prebuilt lib/ missing — verify the pin")
+    say(GREEN if runs_from_source() else FAILED, "runs from source",
+        "tsx executes the sources; build is forbidden and unnecessary" if runs_from_source()
+        else "apps/cli/src/bin.ts missing — verify the pin")
     say(UNVERIFIED, "plugins mounted (level 2)",
         "chunk and phi_scan are bound as subprocess capabilities; in-harness "
         "tool registration is declared, not done")
