@@ -44,11 +44,11 @@
       "value": "default — no REGISTRAR_SURFACE set"
     },
     "battery_green": {
-      "value": 46,
+      "value": 50,
       "pattern": "(\\d+) G ·"
     },
     "battery_unverified": {
-      "value": 11,
+      "value": 9,
       "pattern": "· (\\d+) PU"
     },
     "battery_failed": {
