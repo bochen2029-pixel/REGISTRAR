@@ -23,7 +23,13 @@ THE ORDER IS THE ARGUMENT
              digests, so it stays GREEN; the READ-ONLY rule protects SOURCES —
              no tracked upstream file is touched, and `pin_chassis --check`
              re-proves that after every step here.
-  3  BUILD   upstream's own `pnpm run build`.
+  3  BUILD   — DOES NOT EXIST, and that is a finding, not an omission.
+             Upstream ships prebuilt lib/ trees and `pnpm dsh web` runs FROM
+             SOURCE via tsx. Running `pnpm run build` was measured to add
+             6,463 files to the pinned tree — the pin caught it (0 files
+             differed; the contamination was purely additive and was removed
+             byte-verified). **Install is composition. Build is a fork. The
+             boot needs no build, so the hazard is simply never reached.**
   4  LAUNCH  `pnpm dsh web --no-open` — upstream's documented entry — then
              probe http://127.0.0.1:3080 until it answers. **Loopback only**,
              per the chassis's own trust-boundary doctrine: the web host serves
@@ -51,6 +57,7 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -135,15 +142,14 @@ def step_install() -> bool:
     return ok
 
 
-def step_build() -> bool:
-    if built():
-        say(GREEN, "build", "artifacts present")
-        return True
-    print("  building — upstream's own `pnpm run build` …")
-    r = run([tool("pnpm"), "run", "build"], cwd=CHASSIS, timeout=1800)
-    ok = r.returncode == 0
-    tail = (r.stdout or r.stderr).strip().splitlines()[-1:] or [""]
-    say(GREEN if ok else FAILED, "build", tail[0][:90])
+def step_no_build() -> bool:
+    """The absence of a build step, asserted rather than implied."""
+    ok = built()
+    say(GREEN if ok else FAILED, "prebuilt by upstream",
+        "lib/ trees ship in the pinned tarball; the launch runs from source via tsx"
+        if ok else "expected prebuilt lib/ missing — the pin should have caught this first")
+    say(GREEN, "build forbidden",
+        "`pnpm run build` regenerates pinned artifacts (measured: +6,463 files) — never run it here")
     return ok
 
 
@@ -159,6 +165,12 @@ def step_launch() -> bool:
             with urllib.request.urlopen(url, timeout=3) as resp:
                 up = resp.status < 500
                 break
+        except urllib.error.HTTPError:
+            # a 404 from a LISTENING server is an answer — the measured first
+            # response of a fresh dsh web host on `/` is exactly that, and the
+            # first draft of this probe counted it as down
+            up = True
+            break
         except Exception:
             if proc.poll() is not None:
                 break
@@ -180,8 +192,9 @@ def status() -> int:
     tc = step_toolchain()
     say(GREEN if installed() else UNVERIFIED, "installed",
         "node_modules present" if installed() else "not yet — run forge/boot.py")
-    say(GREEN if built() else UNVERIFIED, "built",
-        "artifacts present" if built() else "not yet")
+    say(GREEN if built() else FAILED, "prebuilt by upstream",
+        "lib/ ships in the pin; build is forbidden and unnecessary" if built()
+        else "prebuilt lib/ missing — verify the pin")
     say(UNVERIFIED, "plugins mounted (level 2)",
         "chunk and phi_scan are bound as subprocess capabilities; in-harness "
         "tool registration is declared, not done")
@@ -198,7 +211,7 @@ def main(argv: list[str]) -> int:
     require_forge("forge/boot.py")
 
     print("F-BOOT · clone → standing harness\n")
-    for step in (step_pin, step_toolchain, step_install, step_build):
+    for step in (step_pin, step_toolchain, step_install, step_no_build):
         if not step():
             print("\nstopped at the first refusal — nothing later ran. Fix and re-run;")
             print("every step is idempotent.")
