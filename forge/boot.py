@@ -157,7 +157,10 @@ def step_launch() -> bool:
     proc = subprocess.Popen([tool("pnpm"), "dsh", "web", "--no-open"],
                             cwd=CHASSIS, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     up = False
-    for _ in range(60):
+    # Cold start MEASURED at ~140 s: tsx compiles the whole workspace on first
+    # request. Three impatient probes in a row called a working server dead
+    # before this number was measured instead of assumed.
+    for _ in range(120):
         time.sleep(2)
         try:
             with urllib.request.urlopen(url, timeout=3) as resp:
@@ -174,7 +177,7 @@ def step_launch() -> bool:
                 break
     say(GREEN if up else FAILED, "harness answers",
         f"{url} — loopback only, per the chassis's own trust-boundary doctrine"
-        if up else "no answer on 127.0.0.1:3080 within 120 s")
+        if up else "no answer on 127.0.0.1:3080 within 240 s (measured cold start: ~140 s)")
     proc.terminate()
     try:
         proc.wait(timeout=15)
