@@ -886,8 +886,14 @@ def check_no_site_data() -> None:
     # those are different questions — the same location-versus-content error as
     # the corpus leak earlier the same day.
     r = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=ROOT)
+    # experiments/F-PATCH-DELTA/candidates/ is EVIDENCE, tracked on purpose
+    # (QC-2 G1): a published S nobody can recompute from a clone is prose, not
+    # a measurement. The rule this check enforces is about SITE fits — a real
+    # organisation's patch never ships from this tree — and these are
+    # synthetic-corpus candidates whose corpus ships beside them.
     offenders = [f for f in r.stdout.splitlines()
-                 if f.endswith(".patch.yml") and "worked" not in f]
+                 if f.endswith(".patch.yml") and "worked" not in f
+                 and not f.startswith("experiments/F-PATCH-DELTA/candidates/")]
     record(FAILED if offenders else GREEN, "hygiene · no site patch committed",
            ", ".join(offenders) if offenders
            else "no <site>.patch.yml tracked outside the worked example")
