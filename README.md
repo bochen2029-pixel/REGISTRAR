@@ -262,6 +262,28 @@ material, and no writes outside the fit.
 
 ---
 
+## The recursion — three loops, three seams
+
+The same shape runs at three radii, and the reason it is not vertigo is that **every loop closes through a
+seam that is not the machine.**
+
+- **The completion** — a harness reads the kit and authors the fit; the seam is **the gates plus a human
+  signature**. Built, and measured: the falsifier has run five times.
+- **The forge** — a missing capability is not a dead end: the forge can **author the plugin, shadow-run it,
+  and PROPOSE it** — mounted only hash-pinned, on a human yes, reversible through the disposer. The system
+  has already used this shape on itself: its own agents discovered two capabilities (`read`, `reach`) the
+  authors never declared, now in `forge/plugins.yml` with `binding: null`. **The enumeration tax, paid down
+  by the machine, under contract.**
+- **The record** — the running EDR is the same loop pointed at a case; and a variation point the seed never
+  imagined **goes UP as a proposal to the seed, never sideways as a patch** — the blast-radius gate refuses
+  the shortcut, which is what keeps self-improvement inside T4's bound: *the reachable set is independent of
+  the agent.*
+
+The recursion sits where being wrong is cheap: **a wrong forge plugin wastes an afternoon; the case radius
+never mounts unproven work.** And the honest status tag: the standing harness a clone should deliver is
+still `[SPEC]` — the intent is that a clone gets the whole toolbench; today it gets the seed, the gates, the
+floor and the contract, and says so.
+
 ## The runtime, named
 
 REGISTRAR ships no plugin system of its own. **It is a distribution** — a pinned runtime, packages beside it,
@@ -366,7 +388,7 @@ re-derive them rather than trusting this file.**
 |---|---|---|
 | Tracked files | **133** | `git ls-files \| wc -l` |
 | Assertions | **396** across 11 test modules | run each `test_*.py` |
-| Conformance | **50 GREEN · 9 PASS-UNVERIFIED · 0 FAILED** — *exits non-zero, deliberately* | `python conformance/run.py` |
+| Conformance | **51 GREEN · 9 PASS-UNVERIFIED · 0 FAILED** — *exits non-zero, deliberately* | `python conformance/run.py` |
 | Gates | **16**, each naming its defect in words | `python gates/validate_patch.py …` |
 | Citations byte-exact | **44 / 44** | `python tools/cite.py --check` |
 | Public sources pinned by sha256 | **5** | `corpus/MANIFEST.json` |
@@ -410,21 +432,27 @@ AGENTS.md  SPEC.md  PROVENANCE.md  ROADMAP.md  FORKS.md  CHASSIS.pin.json  LICEN
 
 ### What has been falsified, and what has not
 
-**The completion falsifier has run once, against a synthetic site with a known delta**, rubric and thresholds
-pre-registered before the corpus existed and the gate battery pinned by SHA. Two arms. Arm ① — generic OPO
-defaults with no site material — **scored 0.47 and the gates refused it outright**, so the archetypal
-ungrounded patch is stopped without any answer key. Arm ② — a session that did not build the corpus — scored
-**0.57, SHAPED, with zero fabrications**, resolved all three planted binder/tape contradictions to the tape,
-declined the one target nothing supported, and accounted for all 20 declared targets in 11 rows and 9 holds.
-**It also found two defects nobody planted, to the exact count, and surfaced rather than smoothed them.**
-`[M — `experiments/F-PATCH-DELTA/RESULTS.md`, including everything the run got wrong.]`
+**The completion falsifier has run five times against synthetic sites with known deltas** — rubric and
+thresholds pre-registered before each corpus existed, gate battery pinned by SHA, every runner a fresh
+session with a clean disclosure. The ledger, in order: **run 1 VOIDED** (its own rubric admitted two
+readings — 0.57 ∥ 0.375 — and adopting either after the fact would have been post-hoc); **run 2 FAILS at
+0.28** (instrument-limited); **run 3 FAILS at 0.38, robust**, on a corpus whose honest ceiling was later
+shown to be 0.575 — the top band unreachable without fabricating; then **corpus v4** (ceiling 0.975, traps
+moved so no prior knowledge transfers): **run A scored 0.70 — COVERS on the knife-edge — and replication
+run B scored 0.62, SHAPED.** The spread brackets the 0.70 threshold, so **band assignment is run-to-run
+variance at this n, and the honest headline is the interval, not the best draw: 0.62–0.70, clearing the
+no-material floor in both runs.** **Zero fabrications in every honest candidate, across all five runs** —
+the one number that never moved. The floor arm outscores capped honesty on raw S **and the gates refuse it
+outright**: the falsifier is the scorer and the gates as a pair.
+`[M — `experiments/F-PATCH-DELTA/RESULTS.md`, including everything every run got wrong.]`
 
 **What that does not show, stated as loudly:** a synthetic corpus written by someone who knew the answers
-**bounds the kit from above** — a pass is necessary and not sufficient; a failure would have been decisive.
-And the grader has known blind spots, recorded as fixtures in `examples/worked/rejected/` whose filenames end
-in `UNCAUGHT`: **exposures this battery does not catch, committed as tests that pass, so the holes stay
-visible.** Both bounds compose. **The remaining falsifier is the real-site one** — a second OPO's *public*
-material only, pre-registered, one weekend, no PHI, nobody's permission.
+**bounds the kit from above** — floor-clearance is established; band assignment is not, and nothing here
+says whether a *real* OPO is legible. The grader's known blind spots are committed as fixtures in
+`examples/worked/rejected/` whose filenames end in `UNCAUGHT`: **exposures this battery does not catch,
+committed as tests that pass, so the holes stay visible.** Both bounds compose. **The synthetic programme
+closes here. The remaining falsifier is the real site** — a pilot OPO, its own material, its own harness,
+under signature.
 
 ---
 

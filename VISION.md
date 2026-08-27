@@ -90,6 +90,28 @@ rather than wrapped around: **63.4% → 6.7%** per decision boundary, catches ke
 
 ---
 
+## The recursion — three loops, three seams
+
+The three radii are not just a table: **the system uses its own loop to build itself, and the reason that is
+sane rather than vertiginous is that every loop closes through a seam that is not the machine.**
+
+| loop | what recurses | the seam |
+|---|---|---|
+| **the completion** | a harness authors the fit from the kit | the gates, **plus a signature** |
+| **the forge** | a missing capability is authored, shadow-run, and *proposed* | hash-pin · a human yes · the disposer |
+| **the record** | the running EDR notices what the seed never declared | **upstream, as a proposal — never a patch** |
+
+This is the seed-unpacking claim made precise: the receiving intelligence is the ribosome already in the
+cell, **and the ribosome may improve its own toolbench while translating — under the same gates.** It has
+happened once already in miniature: the system's own agents discovered `read` and `reach`, two capabilities
+the authors never thought to declare, and they entered the contract as declarations rather than as code.
+
+Why it cannot eat itself: an induced variation point is a **proposal to the seed, never a patch row** — the
+blast-radius gate refuses the shortcut — so T4's bound survives every improvement: *the reachable set is
+independent of the agent.* And the recursion is placed where error is cheap: **a wrong forge plugin wastes
+an afternoon; the case radius never mounts unproven work.** The standing-harness clone is still `[SPEC]` —
+the intent, stated as intent.
+
 ## What is deliberately not built
 
 **`core/resident/` does not exist.** It is `[SPEC]`, gated in `ROADMAP.md` §8, and **unblocked now that the
