@@ -396,7 +396,29 @@ zero fabrications ever, band boundary unresolved.`**
 candidates never fabricate (three fresh sessions, one deliberately unanswerable trap, zero inventions); the
 gates and the scorer are complementary instruments and the falsifier is the pair.
 
-**What the centre of the disk is now:** ① **F-BOOT** — the chassis is pinned and never installed; an OPO IT
-director who clones this today has no harness, and that is the binding constraint on adoption. ② **A real
-site** — the only row left that changes anything. Everything else (resident, adapters bindings, read/reach)
-remains gated behind those two.
+**What the centre of the disk is now:** ① ~~F-BOOT~~ — **DONE `2026-08-27`**: `forge/boot.py`, clone to
+standing harness in one command, HTTP 200 on loopback from a pin-verified never-built tree; doctrine
+measured, not argued (*install is composition — the pin re-verifies after it; build is a fork — +6,463 files
+caught and removed byte-verified; the harness runs from source via tsx, cold start ~140 s*). ② **A real
+site** — the only row left that changes anything.
+
+---
+
+# ON THE RADAR · `2026-08-27` — proposed, not adopted
+
+Captured in full in [`plans/HORIZONS_2026-08-27.md`](plans/HORIZONS_2026-08-27.md); one line each here so no
+future session mistakes silence for absence:
+
+- **The replay board** — `demo/replay.py`: a `site_v4` case played through the percept stream, the floor
+  surfacing unprompted on screen; the first pulse the nervous system will ever carry, and the pilot pitch.
+- **F-RESIDENT-VS-FLOOR** — the fourth falsifier: trained judge vs deterministic floor, catches at a matched
+  interruption budget; converts the alert-fatigue claim from `[M inherited]` to `[M]`.
+- **The batteries-included revision** `[DOCTRINE CHANGE, PROPOSED]` — reference bindings on the chassis
+  pattern (*pin, don't vendor*): `scriptorium → read`, `cortex → reach`; the forge as customs office, not
+  monopoly. First wedge: **public law** — the ~50 jurisdiction statutes, zero PHI.
+- **F-SCALE** — the fifth falsifier: corpus v5 at 10⁷⁺ tokens; `chunk`-only arm vs mounted-`read`/`reach`
+  arm; measures whether batteries-included is load-bearing instead of arguing it.
+- **The paper** — the falsifier arc as generalisable method: *pre-registered completion falsifiers* for
+  agent-completable safety-critical software.
+- **The pilot protocol** — drafted before it is needed; and the first-site counsel/disclosure question,
+  named as a human decision.
