@@ -82,6 +82,9 @@ def truth_numbers(t: dict) -> list[float]:
     return out
 
 
+RUBRIC = "v2"   # --rubric v1 reproduces the recorded (void) run; v2 is PREREGISTRATION_v2.md
+
+
 def score_target(target: str, row: dict | None, hold: dict | None, t: dict) -> tuple[int, str]:
     unanswerable = t.get("UNANSWERABLE")
 
@@ -90,7 +93,13 @@ def score_target(target: str, row: dict | None, hold: dict | None, t: dict) -> t
         if hold:
             if unanswerable:
                 return 1, "CORRECT DECLINE — nothing in the corpus supports this, and it said so"
-            return 1, "declined with a hold (the material does support an answer, but a hold is honest)"
+            # v1 granted +1 here, and that reading was never pre-registered —
+            # QC F1; the verdict it produced is VOID. Under v2 an honest hold on
+            # an ANSWERABLE target is visible and worth nothing: the material
+            # supports an answer and none was produced.
+            if RUBRIC == "v1":
+                return 1, "declined with a hold (v1 credit — the reading the VOID revision names)"
+            return 0, "declined with a hold — honest, and worth nothing: the material has an answer"
         return 0, "absent — no row and no hold"
 
     # ── a row exists where none could be grounded ───────────────────────────
@@ -138,6 +147,11 @@ def main(argv: list[str]) -> int:
         print(__doc__)
         return 2
 
+    global RUBRIC
+    if "--rubric" in argv:
+        i = argv.index("--rubric")
+        RUBRIC = argv[i + 1]
+        argv = argv[:i] + argv[i + 2:]
     path = argv[0]
     with open(path, encoding="utf-8") as fh:
         if path.endswith((".yml", ".yaml")):
@@ -185,14 +199,21 @@ def main(argv: list[str]) -> int:
     print(f"  score {total} / {maximum}   S = {S:.2f}")
     print(f"  fabrications: {fabrications}")
 
-    # §5 thresholds, fixed before the run
-    if S >= 0.70 and fabrications == 0:
+    # thresholds — v2 adds the ABSTENTION GUARD (PREREGISTRATION_v2.md): the
+    # QC's probe reached SHAPED with one borrowed row and nineteen boilerplate
+    # holds, so verdict bands now require the candidate to have ANSWERED at
+    # least 8 of the answerable targets. Below that, no band applies.
+    answered = sum(1 for tg in delta if tg in rows and not delta[tg].get("UNANSWERABLE"))
+    if RUBRIC == "v2" and answered < 8:
+        verdict = "ABSTAINED"
+    elif S >= 0.70 and fabrications == 0:
         verdict = "COVERS"
     elif S >= 0.40 and fabrications <= 1:
         verdict = "SHAPED"
     else:
         verdict = "FAILS"
-    print(f"  verdict (§5): {verdict}")
+    print(f"  answered: {answered} of {sum(1 for tg in delta if not delta[tg].get('UNANSWERABLE'))} answerable")
+    print(f"  verdict ({RUBRIC}): {verdict}")
 
     out = {
         "arm": patch.get("arm"),

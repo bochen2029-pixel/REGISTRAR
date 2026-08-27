@@ -1,0 +1,52 @@
+# REGISTRAR · CI — the battery on every push
+#
+# WHY THIS EXISTS: four documented drifts in one day, each true when written,
+# each stale while nobody looked, NONE caught by a check. Every one was caught
+# by a person noticing. This converts the class from "caught by a person" to
+# "blocks the merge".
+#
+# WHAT IT ASSERTS — and deliberately not more:
+#   · the battery exits 0 or 2, never 1.  Exit 2 is PASS-UNVERIFIED-present,
+#     which is DELIBERATE on a cold clone: the corpus documents are gitignored
+#     by design (this repository does not redistribute OPTN or statute text),
+#     so citation byte-matching is honestly unverifiable here.
+#   · the summary line ends "· 0 FAILED" — the invariant that holds in EVERY
+#     configuration. The GREEN count is a property of a configuration (corpus
+#     present, surface set, chassis fetched) and is recorded by CLAIMS.json for
+#     the reference configuration — so CI does NOT assert it, and does not run
+#     `claims.py --check`, which derives totals for a configuration CI is not.
+#   · all 11 test suites pass, and the schema's own examples validate.
+
+name: battery
+on:
+  push:
+  pull_request:
+
+jobs:
+  battery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: pyyaml (the one optional dependency, named as such)
+        run: pip install pyyaml
+      - name: the battery — exit 1 is the only failure
+        run: |
+          set +e
+          python conformance/run.py | tee battery.out
+          rc=${PIPESTATUS[0]}
+          set -e
+          if [ "$rc" -eq 1 ]; then echo "battery FAILED"; exit 1; fi
+          grep -E "· 0 FAILED$" battery.out || { echo "battery reported failures"; exit 1; }
+      - name: the 11 suites
+        run: |
+          for t in core/test_core.py core/test_algebra.py floor/test_closure.py \
+                   gates/test_gates.py gates/test_divergence.py gates/test_witness.py \
+                   tools/test_cite.py percepts/test_percepts.py forge/test_conformance.py \
+                   forge/plugins/chunk/test_chunk.py forge/plugins/phi_scan/test_phi_scan.py; do
+            python "$t" > /dev/null || { echo "FAIL $t"; exit 1; }
+          done
+      - name: the schema's own examples
+        run: python schema/validate.py --self
