@@ -69,6 +69,7 @@ PARTITION = {
              "schema/", "corpus/", "tools/", "percepts/", "profiles/", "adapters/"],
     "fork/plugins": ["forge/"],
     "fork/witnesses": ["examples/worked/rejected/", "gates/"],
+    "fork/battery": ["experiments/F-BATTERY-STRENGTH/"],
 }
 
 
