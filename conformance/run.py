@@ -325,10 +325,25 @@ def check_citations() -> None:
     with open(cite.CITATIONS, encoding="utf-8") as fh:
         cites = json.load(fh).get("citations", [])
     cache: dict = {}
-    bad = [c for c in cites if cite.verify(c, cache, m)[0] != cite.OK]
-    record(FAILED if bad else GREEN, "provenance · citations verify",
-           f"{len(bad)} of {len(cites)} do not byte-match their source"
-           if bad else f"{len(cites)} citations verbatim in pinned sources")
+    results = [cite.verify(c, cache, m)[0] for c in cites]
+    mismatched = [r for r in results if r == cite.MISMATCH]
+    unavailable = [r for r in results if r in (cite.MISSING, cite.UNPINNED, "SOURCE-CHANGED")]
+    # THREE STATES, NEVER TWO — found by a fresh clone. The corpus documents are
+    # gitignored BY DESIGN (this repository does not redistribute OPTN or statute
+    # text), so a stranger's first run has pins and citations but no bytes to
+    # match them against. That is UNVERIFIED — "could not check" — and the old
+    # code reported it as FAILED: "44 of 44 do not byte-match", a false accusation
+    # against 44 correct citations, on the very first command a stranger runs.
+    if mismatched:
+        record(FAILED, "provenance · citations verify",
+               f"{len(mismatched)} of {len(cites)} do not byte-match their source")
+    elif unavailable:
+        record(UNVERIFIED, "provenance · citations verify",
+               f"{len(unavailable)} of {len(cites)} unverifiable — corpus documents absent "
+               f"(not redistributed; fetch per corpus/MANIFEST.json to verify)")
+    else:
+        record(GREEN, "provenance · citations verify",
+               f"{len(cites)} citations verbatim in pinned sources")
 
 
 # ── 6c · the clinical layer and the jurisdiction table ──────────────────────
