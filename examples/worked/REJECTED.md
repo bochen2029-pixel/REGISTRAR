@@ -32,7 +32,7 @@ law**, one that can drift out of date locally while the real one moves.
 **The test that catches it before the gate does:** *would this row be true at all fifty-five organisations?*
 If yes, it is not L2. It is not a fit; it is a fact, and the fact already shipped.
 
-**Why the gate can be this blunt.** The seed declares its own mutable surface — 19 `local_variation` entries
+**Why the gate can be this blunt.** The seed declares its own mutable surface — 20 `local_variation` entries
 in `core/lifecycle/lifecycle.yml`, lifted into `targets.json`. A target that is not in that list **does not
 exist**. There is no argument to have and no configuration to widen.
 

@@ -4,7 +4,7 @@
 
 The goal is one file: `<your-slug>.patch.yml`, describing how your organisation differs from the mandated
 spine, with every row cited to something in your own building. Twenty questions, in
-[`questions.yml`](questions.yml), keyed to the nineteen variation points the seed declares.
+[`questions.yml`](questions.yml), keyed to the twenty variation points the seed declares.
 
 **You can do this entirely by hand.** The questions are the artifact; the software only makes it faster and
 checkable. If you read nothing else here, read the `trap` field on each question — that is where the answers

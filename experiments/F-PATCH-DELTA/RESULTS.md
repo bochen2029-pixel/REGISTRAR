@@ -378,3 +378,51 @@ plus nineteen boilerplate holds scores 0.53, zero fabrications, zero FAILED gate
 0 for holds on answerable ones; an **abstention guard** (no band reachable without a minimum of answered
 targets); thresholds restated against the floor — then a **fresh, uncontaminated session** re-runs arm ②.
 Nothing is recomputed retroactively; the v1 run stands as recorded, void.
+
+
+---
+
+# ARM ② · RUBRIC v2 · RUN `2026-08-27` — mechanical verdict **FAILS**, and the instrument is the bound
+
+**Runner:** a fresh subagent (id `a763d362968919d48`), zero inherited context, launched with the task and
+the exclusion list only. **Its disclosure is clean** — nothing on the do-not-read list touched — and it
+flagged, unprompted, the one secondhand exposure nobody had listed: the top-level README and two docstrings
+mention the v1 run's "11 rows and 9 holds" shape. Recorded; the ledger now includes it.
+
+**The candidate:** `fairbank.v2.patch.yml` — 11 rows + 9 holds, 20/20 accounted, all inverses null and
+verified, authors empty. **Gates: 0 FAILED at HEAD (16 gates) and at the pin `87c463d` (13 gates)** — the
+terminal honest state for a machine draft. It found all three planted contradictions, declined the
+unanswerable target, re-found both unplanted corpus defects, **and found a third nobody knew about**: the
+tape files do not reconcile as one funnel (288 workup cases vs 139 progressed referrals; 65/142 allocation
+and 19/96 recovery cases absent from authorization.csv). Instrument defect #3, recorded, corpus not edited.
+
+## The score, and the spread that matters
+
+> **Mechanical, rubric v2: `S = 0.28 · zero fabrications · answered 11 of 19 · FAILS`.**
+
+Per the pre-registration, **that is the verdict.** No regrade, no post-hoc adjustment. And per the same
+discipline, the instrument's measured error is published beside it:
+
+- **Four "no key matches" rows are the scorer's known key-matching crudeness**, already documented on the
+  v1 run — the candidate filed *richer per-hospital structures* (e.g. three OR windows with both bounds,
+  which is what fixture 14 teaches) and the flat key-match cannot see agreement.
+- **One is sharper than crudeness: `team_mobilisation` filed `128`, which is the answer key's own stored
+  `p90_minutes` EXACTLY — and the scorer ignores that field**, because `truth_numbers()` reads only keys
+  prefixed `value`. The candidate followed the kit's own percentile doctrine (*p90 where the figure feeds a
+  latest safe start*) more faithfully than the scorer did.
+- **Regrade ceiling, treating every known artifact as correct: `22/40 = 0.55`** — above the 0.475 floor.
+
+**So the spread `[0.28, 0.55]` straddles the floor, and the honest one-line summary is: the run is
+INSTRUMENT-LIMITED.** The mechanical verdict FAILS stands and is published as such; whether the kit
+actually beats the floor on this corpus is **undecidable at this scorer's resolution**, and that — not the
+number — is the finding. **Rubric v3's mandate is now measured, not argued:** grade against the stated
+grain (the key stores p75 *and* p90; the scorer must read the one the kit's doctrine calls for), and match
+structured values semantically, not by flat keys.
+
+## What the run established regardless of score
+
+The abstention guard worked (answered 11 ≥ 8, no ABSTAINED verdict-gaming); zero fabrications for a second
+independent run; the seed's own drift was caught by its completer (`elicit/method.md` said "nineteen
+variation points", `REJECTED.md` said 19 — the seed declares 20; both now fixed); and the disqualification
+protocol held end to end — **the candidate never saw the key, and the scorer never touched the candidate's
+reasoning.**

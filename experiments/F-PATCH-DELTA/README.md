@@ -102,3 +102,9 @@ A candidate is valid only from a session that has seen **none** of the spoilers.
 The spoiler surface **grows**: every analysis of the run adds to it. An eligible runner is a fresh session
 given only the repository and `site/`, per the protocol above — and after the QC's F1 finding, only under
 **rubric v2** once it is pre-registered.
+
+**v2 run addendum (`2026-08-27`):** the v2 runner (subagent `a763d362968919d48`) is now spent. It also
+disclosed an exposure nobody had listed: the top-level `README.md` and two docstrings carry the v1 run's
+"11 rows and 9 holds" shape secondhand. Future runner briefs must add those to the do-not-read list or
+accept the anchoring risk knowingly — the v2 run accepted it, disclosed it, and its structure was
+independently derived from the stated replay-surface rule.
