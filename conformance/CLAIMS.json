@@ -56,7 +56,7 @@
       "pattern": "· (\\d+) F\\b"
     },
     "adversarial_fixtures": {
-      "value": 22,
+      "value": 28,
       "pattern": "(\\d+) adversarial fixtures"
     },
     "mutation_score_pct": {

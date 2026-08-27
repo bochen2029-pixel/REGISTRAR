@@ -17,6 +17,20 @@ Three results here are findings rather than tests, and they are marked:
     structurally entangled with a gate that fires first.
   · `signature` never returns FAILED, and that is correct: an unsigned row is a
     legal draft, so its witness asserts the MIDDLE state.
+
+AND ONE MORE, ADDED `2026-08-27` — THE WELL-FORMED CARRIERS
+
+The retained `*-UNCAUGHT` exposures are deliberately-minimal FRAGMENTS, so since
+gates 14 and 15 landed they trip the FLOOR **for being fragments**. That says
+nothing about whether the semantic hole each one records is still open, and a
+reader who ran one and saw a refusal could conclude it had closed.
+
+So each is carried again on a COMPLETE patch — the worked example, twenty of
+twenty targets answered or declined, one defect planted and nothing else
+touched. **All six ride straight through: every carrier reports the same state
+on all sixteen gates as `northlake.patch.json` itself.** The battery cannot
+distinguish a patch that repoints the national allocation system from the one it
+ships as the example to copy. Measured, not intuited — see `WELLFORMED` below.
 """
 
 from __future__ import annotations
@@ -254,6 +268,235 @@ def test_every_uncaught_fixture_explains_itself():
         check(f"{f[:30]} says FICTIONAL", "FICTIONAL" in doc.get("$comment", ""), True)
 
 
+# ── the well-formed carriers ────────────────────────────────────────────────
+# THE ROADMAP'S STANDING INSTRUCTION, EXECUTED. `2026-08-27`.
+#
+#   "The next move is a well-formed variant of each of the six: if one passes
+#    clean, that is the highest-priority gate in the project, identified by
+#    MEASUREMENT rather than intuition."
+#
+# The six retained exposures are deliberately-minimal FRAGMENTS. Since gates 14
+# and 15 landed they trip the FLOOR — schema conformance, accountability — **for
+# being fragments**, and a reader who runs one and sees a refusal could conclude
+# the hole had closed. It has not. A floor refusal says nothing about whether the
+# SEMANTIC hole is still open, and the only way to answer that is to carry the
+# same defect on a patch the floor has no quarrel with.
+#
+# So each carrier below is `examples/worked/northlake.patch.json` — complete,
+# schema-valid, twenty of twenty declared targets answered or declined — with
+# EXACTLY ONE semantic defect planted and everything else left as the worked
+# example wrote it. **Same defect, no fragment to blame.**
+WELLFORMED = {
+    "24-silent-partial-WELLFORMED.json":     "14-silent-partial-UNCAUGHT.json",
+    "25-credentials-WELLFORMED.json":        "15-credentials-UNCAUGHT.json",
+    "26-expired-on-arrival-WELLFORMED.json": "16-expired-on-arrival-UNCAUGHT.json",
+    "27-not-a-person-WELLFORMED.json":       "17-not-a-person-UNCAUGHT.json",
+    "28-contradiction-WELLFORMED.json":      "18-contradiction-UNCAUGHT.json",
+    "29-partial-bypass-WELLFORMED.json":     "19-partial-bypass-UNCAUGHT.json",
+}
+
+WORKED = os.path.join(ROOT, "examples", "worked", "northlake.patch.json")
+
+
+def _states(patch: dict) -> dict[str, str]:
+    return {g: s for s, g, _ in validate(patch, load_targets()).rows}
+
+
+def test_wellformed_carriers_are_not_fragments():
+    """
+    **The premise of the whole exercise, asserted rather than assumed.**
+
+    If a carrier tripped a floor gate it would prove nothing the fragment did
+    not already prove — the refusal would be about its shape, and the semantic
+    question would stay unanswered. So: no FLOOR gate may refuse a carrier.
+    """
+    print("\nthe carriers are complete patches, not fragments")
+    for f in sorted(WELLFORMED):
+        p = load_patch(os.path.join(REJECTED, f))
+        rows = {g: (s, d) for s, g, d in validate(p, load_targets()).rows}
+        for g in sorted(FLOOR):
+            check(f"{f[:30]} {g} GREEN", rows[g][0], GREEN)
+        check(f"{f[:30]} accounts for all 20 targets",
+              "20 declared; nothing silent" in rows["accountability"][1], True)
+
+
+def test_wellformed_carriers_are_indistinguishable_from_the_accepted_patch():
+    """
+    **THE FINDING, stated as strongly as it can be stated.**
+
+    Not merely "nothing FAILED". The carriers report the SAME STATE ON EVERY
+    GATE as `northlake.patch.json` — the patch this repository ships as the one
+    to copy. Sixteen gates, and the battery cannot tell a patch that repoints
+    the national allocation system from the teaching example.
+    """
+    print("\nevery gate says the same thing about a carrier as about the accepted patch")
+    want = _states(load_patch(WORKED))
+    for f in sorted(WELLFORMED):
+        got = _states(load_patch(os.path.join(REJECTED, f)))
+        check(f"{f[:30]} same state vector", got, want)
+
+
+def test_the_semantic_holes_ride_a_complete_patch_through():
+    """
+    Each carrier fires NOTHING beyond the ambience a clean patch also produces —
+    shadow-run fidelity and totality on provision, both PASS-UNVERIFIED on the
+    worked example too.
+
+    Fails in both directions, like its fragment counterpart:
+
+      · if a carrier starts being caught, the hole CLOSED — promote it to a
+        witness and say which gate closed it.
+      · if the file disappears, someone deleted an exposure rather than fixing
+        one.
+    """
+    print("\nthe planted defects ride a well-formed patch straight through")
+    from witness import ambient, fired_by
+    noise, T = ambient(), load_targets()
+    for f, fragment in sorted(WELLFORMED.items()):
+        p = os.path.join(REJECTED, f)
+        check(f"{f[:30]} retained", os.path.exists(p), True)
+        check(f"   its fragment {fragment[:22]} retained",
+              os.path.exists(os.path.join(REJECTED, fragment)), True)
+        fired, why = fired_by(load_patch(p), T, ignore=noise)
+        check(f"   nothing refuses {f[:26]}", fired, [])
+
+
+def test_partiality_is_a_self_report_not_a_property():
+    """
+    PARTIALLY CAUGHT, and the phrasing that catches it is the one no real defect
+    produces.
+
+    `totality on provision` refuses `24`'s row the moment a TOP-LEVEL truthy
+    `__partial__` is added — i.e. the moment the author annotates their own
+    omission. Nothing about the row changes; the confession does. Take it away,
+    set it to `false`, or nest it one key down (`29`) and the same partial row
+    passes.
+
+    **The gate does not detect partiality. It detects a self-report, and a
+    self-report can be absent, false, or in the wrong place.**
+    """
+    print("\nthe totality gate catches a confession, not a partial row")
+    T = load_targets()
+    gate = "totality on provision"
+
+    def state_of(patch):
+        return {g: (s, d) for s, g, d in validate(patch, T).rows}[gate]
+
+    p = load_patch(os.path.join(REJECTED, "24-silent-partial-WELLFORMED.json"))
+    check("as authored, the partial row is not refused", state_of(p)[0], UNVERIFIED)
+
+    for row in p["rows"]:
+        if row["target"] == "recovery.or_availability":
+            row["value"]["__partial__"] = True
+    st, detail = state_of(p)
+    check("annotate the SAME row and it is refused", st, FAILED)
+    check("   and the refusal names the defect",
+          "partial application" in detail and "recovery.or_availability" in detail, True)
+
+    # 29 carries the two phrasings that defeat it
+    q = load_patch(os.path.join(REJECTED, "29-partial-bypass-WELLFORMED.json"))
+    check("__partial__: false is a BYPASS", state_of(q)[0], UNVERIFIED)
+    for row in q["rows"]:
+        if row.get("id") == "nl-004-bypass":
+            row["value"]["__partial__"] = True
+    check("   flip that one marker and the same file is refused", state_of(q)[0], FAILED)
+
+
+def test_the_signature_gate_counts_non_empty_strings():
+    """
+    CONFIRMED OPEN, under every phrasing tried.
+
+    `AGENTS.md` has a machine leave `author` EMPTY so the middle state can mean
+    *not yet signed*. Every non-empty string turns that PASS-UNVERIFIED into
+    GREEN — and GREEN on a gate whose text reads *"every row carries a named
+    human"*. **The gate that makes the signature the output commit is defeated
+    by a hyphen.**
+    """
+    print("\nthe signature gate is defeated by any non-empty string")
+    T = load_targets()
+    base = load_patch(os.path.join(REJECTED, "27-not-a-person-WELLFORMED.json"))
+
+    def signature(author):
+        p = json.loads(json.dumps(base))
+        for row in p["rows"]:
+            row["author"] = author
+        return {g: (s, d) for s, g, d in validate(p, T).rows}["signature"]
+
+    for a in ("AI assistant (automated patch generation)", "system", "-", "n/a"):
+        check(f"author={a[:26]!r} → GREEN", signature(a)[0], GREEN)
+    for a in ("", "   "):
+        check(f"author={a!r} → the honest middle state", signature(a)[0], UNVERIFIED)
+
+
+def test_the_expiry_gate_has_no_clock():
+    """
+    CONFIRMED OPEN, under every phrasing tried.
+
+    `gates/` and `core/` contain no `date.today`, no `.now(`, no `utcnow`. The
+    gate parses the string and compares it to **nothing**, so a row that expired
+    in 2019 and a row that expires in the year 9999 are equally acceptable —
+    while the field's entire purpose is that *nothing is permanent by default*.
+
+    What it DOES catch is a malformed field, which is a different defect.
+    """
+    print("\nthe expiry gate checks the FORM of a date and never reads it")
+    T = load_targets()
+    base = load_patch(os.path.join(REJECTED, "26-expired-on-arrival-WELLFORMED.json"))
+
+    def expiry(value):
+        p = json.loads(json.dumps(base))
+        p["rows"][0]["expiry"] = value
+        return {g: (s, d) for s, g, d in validate(p, T).rows}["expiry"]
+
+    for e in ("2019-01-01", "9999-12-31", "1970-01-01", "2026-08-26"):
+        check(f"expiry={e} → GREEN", expiry(e)[0], GREEN)
+    st, detail = expiry("when reviewed")
+    check("a non-date IS refused — a different defect", st, FAILED)
+    check("   and it names it", "is not a date" in detail, True)
+
+
+def test_the_credential_near_miss_is_not_a_security_check():
+    """
+    CONFIRMED OPEN — and this is the one where a battery could most easily be
+    trusted for something it never did.
+
+    `25`'s row repoints the national allocation system at an arbitrary host,
+    ships a live-looking key, and sets `verify_tls: false`. Nothing refuses it.
+    Put a DIGIT in the key and `divergence` does refuse the file — **on the
+    digit, as an unaccounted quantity.** That is tokenisation noise, not a
+    security check, and the refusal names an arithmetic complaint rather than
+    the defect. Mistaking one for the other is how a battery acquires a
+    reputation it has not earned.
+    """
+    print("\nthe credentials row is refused only by accident, and for the wrong reason")
+    T = load_targets()
+    p = load_patch(os.path.join(REJECTED, "25-credentials-WELLFORMED.json"))
+    d0 = {g: (s, d) for s, g, d in validate(p, T).rows}["divergence"]
+    check("as authored, divergence is GREEN", d0[0], GREEN)
+
+    for row in p["rows"]:
+        if row["target"] == "allocation.credentials":
+            row["value"]["api_key"] = "sk-live-8f2b1"
+    st, detail = {g: (s, d) for s, g, d in validate(p, T).rows}["divergence"]
+    check("one digit in the key and it FAILS", st, FAILED)
+    check("   but the refusal is about a QUANTITY, not a credential",
+          "8.0" in detail and "endpoint" not in detail and "tls" not in detail.lower(), True)
+
+
+def test_every_wellformed_carrier_explains_itself():
+    """A carrier nobody can read is a carrier nobody will act on."""
+    print("\nand each carrier says what it is, and what it is a carrier OF")
+    for f, fragment in sorted(WELLFORMED.items()):
+        with open(os.path.join(REJECTED, f), encoding="utf-8") as fh:
+            doc = json.load(fh)
+        check(f"{f[:30]} says FICTIONAL", "FICTIONAL" in doc.get("$comment", ""), True)
+        check(f"{f[:30]} declares UNCAUGHT-WELLFORMED",
+              "UNCAUGHT-WELLFORMED" in doc.get("$status", ""), True)
+        check(f"{f[:30]} names its finder",
+              doc.get("$found_by", "").startswith("fork/witnesses"), True)
+        check(f"{f[:30]} names its fragment", doc.get("$carrier_of"), fragment)
+
+
 def test_coverage_is_reported_not_asserted():
     """The battery's own coverage is a number this repository must print, not a
     property it may assume."""
@@ -276,6 +519,14 @@ if __name__ == "__main__":
               test_the_uncaught_fixture_is_retained_and_uncaught,
               test_uncaught_fixtures_are_still_uncaught,
               test_every_uncaught_fixture_explains_itself,
+              test_wellformed_carriers_are_not_fragments,
+              test_wellformed_carriers_are_indistinguishable_from_the_accepted_patch,
+              test_the_semantic_holes_ride_a_complete_patch_through,
+              test_partiality_is_a_self_report_not_a_property,
+              test_the_signature_gate_counts_non_empty_strings,
+              test_the_expiry_gate_has_no_clock,
+              test_the_credential_near_miss_is_not_a_security_check,
+              test_every_wellformed_carrier_explains_itself,
               test_coverage_is_reported_not_asserted):
         t()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")

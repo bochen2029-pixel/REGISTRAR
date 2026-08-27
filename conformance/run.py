@@ -185,8 +185,18 @@ def check_gates() -> None:
     from validate_patch import GREEN as GG
     rejected = sorted(f for f in os.listdir(os.path.join(worked, "rejected"))
                       if f.endswith((".json", ".yml", ".yaml")))
-    must_refuse = [f for f in rejected if "UNCAUGHT" not in f]
-    uncaught = [f for f in rejected if "UNCAUGHT" in f]
+    # *WELLFORMED* joins *UNCAUGHT* as a known-exposure marker, 2026-08-27.
+    # `fork/witnesses` carried each retained exposure onto a COMPLETE patch —
+    # every declared target answered or declined — to answer a question the
+    # fragments cannot: is the SEMANTIC hole still open once the floor has no
+    # quarrel with the file? It is. Those carriers must therefore be counted as
+    # exposures rather than as drafts this battery refuses. Counting them the
+    # other way would have printed "21/21 adversarial drafts refused" while six
+    # of the twenty-one were refused by nothing at all — a claim about a check
+    # that never ran, which is the one thing this repository refuses to print.
+    KNOWN_EXPOSURE = ("UNCAUGHT", "WELLFORMED")
+    must_refuse = [f for f in rejected if not any(k in f for k in KNOWN_EXPOSURE)]
+    uncaught = [f for f in rejected if any(k in f for k in KNOWN_EXPOSURE)]
 
     passed_through = []
     for f in must_refuse:
