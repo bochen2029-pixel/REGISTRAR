@@ -621,6 +621,196 @@ same commit as the thing it describes. **The second is what this project already
 changes first and the prose follows* — and it has now failed three times, which is the argument for the
 first.**
 
+### 2026-08-26 · the history rewrite — the one act of erasure, logged in the log that never erases
+
+**Published git history carried ~859 KB of verbatim OPTN Policy and Texas statute text** (55 smoke-test
+chunks swept by the staging collision) **and the completion falsifier's answer key** — , the
+extractor and builder whose comments name every trap, and the arm-① result file. The hygiene gates are
+structurally blind to history (they ask .gitignore
+AGENTS.md
+CHASSIS.pin.json
+FORKS.md
+LICENSE
+PROVENANCE.md
+README.md
+ROADMAP.md
+SPEC.md
+VISION.md
+adapters/CONTRACT.md
+adapters/conformance.py
+adapters/lab/adapter.yml
+clinical/donor_testing.yml
+conformance/CLAIMS.json
+conformance/claims.py
+conformance/run.py
+core/algebra.py
+core/authority/chain.yml
+core/authorization/PROCEDURE.md
+core/authorization/fetch_states.py
+core/authorization/jurisdiction.yml
+core/authorization/state_sources.json
+core/case.py
+core/lifecycle/gen_targets.py
+core/lifecycle/lifecycle.json
+core/lifecycle/lifecycle.yml
+core/lifecycle/targets.json
+core/profile.py
+core/tape.py
+core/test_algebra.py
+core/test_core.py
+corpus/MANIFEST.json
+corpus/README.md
+corpus/citations.json
+elicit/method.md
+elicit/questions.yml
+examples/worked/REJECTED.md
+examples/worked/northlake.patch.json
+examples/worked/rejected/01-off-surface.json
+examples/worked/rejected/02-ungrounded.json
+examples/worked/rejected/03-no-inverse.json
+examples/worked/rejected/04-partial.json
+examples/worked/rejected/05-target-syntax.json
+examples/worked/rejected/06-unsigned.json
+examples/worked/rejected/07-generality.json
+examples/worked/rejected/08-no-denominator.json
+examples/worked/rejected/09-permanent.json
+examples/worked/rejected/10-no-way-back.json
+examples/worked/rejected/11-undeclared-target.json
+examples/worked/rejected/12-divergence.json
+examples/worked/rejected/14-silent-partial-UNCAUGHT.json
+examples/worked/rejected/15-credentials-UNCAUGHT.json
+examples/worked/rejected/16-expired-on-arrival-UNCAUGHT.json
+examples/worked/rejected/17-not-a-person-UNCAUGHT.json
+examples/worked/rejected/18-contradiction-UNCAUGHT.json
+examples/worked/rejected/19-partial-bypass-UNCAUGHT.json
+examples/worked/rejected/20-adverse-replay-UNCAUGHT.json
+examples/worked/rejected/21-partial-isolated.json
+examples/worked/rejected/22-no-value.json
+examples/worked/rejected/23-superseded-evidence.json
+experiments/F-BATTERY-STRENGTH/ATTRIBUTION.md
+experiments/F-BATTERY-STRENGTH/AUDIT.md
+experiments/F-BATTERY-STRENGTH/LOG.md
+experiments/F-BATTERY-STRENGTH/PLAN_attribution.md
+experiments/F-BATTERY-STRENGTH/RESULTS.md
+experiments/F-BATTERY-STRENGTH/attribute.py
+experiments/F-BATTERY-STRENGTH/mutate.py
+experiments/F-PATCH-DELTA/PREREGISTRATION.md
+experiments/F-PATCH-DELTA/README.md
+experiments/F-PATCH-DELTA/RESULTS.md
+experiments/F-PATCH-DELTA/arm1_template_prior.py
+experiments/F-PATCH-DELTA/audit_public_material.py
+experiments/F-PATCH-DELTA/candidate_arm1.json
+experiments/F-PATCH-DELTA/score.py
+experiments/F-PATCH-DELTA/site/README.md
+experiments/F-PATCH-DELTA/site/contracts/reference-lab-2025.md
+experiments/F-PATCH-DELTA/site/contracts/transport-2025.md
+experiments/F-PATCH-DELTA/site/interfaces/inventory.md
+experiments/F-PATCH-DELTA/site/ops/PROTOCOL-donor-management.md
+experiments/F-PATCH-DELTA/site/ops/SOP-03-referral-intake.md
+experiments/F-PATCH-DELTA/site/ops/SOP-11-triage.md
+experiments/F-PATCH-DELTA/site/ops/SOP-18-authorization.md
+experiments/F-PATCH-DELTA/site/ops/SOP-24-escalation.md
+experiments/F-PATCH-DELTA/site/rota/call-schedule.md
+experiments/F-PATCH-DELTA/site/servicedesk/tickets.csv
+experiments/F-PATCH-DELTA/site/tape/allocation.csv
+experiments/F-PATCH-DELTA/site/tape/authorization.csv
+experiments/F-PATCH-DELTA/site/tape/recovery.csv
+experiments/F-PATCH-DELTA/site/tape/referrals.csv
+experiments/F-PATCH-DELTA/site/tape/workup.csv
+fixtures/README.md
+fixtures/cases/infeasible-transport.json
+fixtures/cases/morning-or-window.json
+fixtures/tapes/clean-case.jsonl
+fixtures/tapes/violating-case.jsonl
+floor/closure.py
+floor/parity.py
+floor/test_closure.py
+floor/tropical.cu
+forge/PLUGINS.md
+forge/SURVEY.md
+forge/conformance.py
+forge/plugins.yml
+forge/plugins/chunk/LICENSE
+forge/plugins/chunk/PROVENANCE.md
+forge/plugins/chunk/src/chunk.py
+forge/plugins/chunk/test_chunk.py
+forge/plugins/phi_scan/LICENSE
+forge/plugins/phi_scan/PROVENANCE.md
+forge/plugins/phi_scan/src/phi_scan.py
+forge/plugins/phi_scan/test_phi_scan.py
+forge/test_conformance.py
+gates/accountability.py
+gates/attest.py
+gates/divergence.py
+gates/test_divergence.py
+gates/test_gates.py
+gates/test_witness.py
+gates/validate_patch.py
+gates/witness.py
+logs/SESSION-LOG.md
+percepts/collect.py
+percepts/stream.py
+percepts/switch.py
+percepts/test_percepts.py
+plans/FORK-A_plugins.md
+plans/FORK-C_witnesses.md
+plans/MAINLINE_f-patch-delta.md
+plans/PROPOSAL_read-and-reach.md
+plans/QC_BRIEF.md
+profiles/README.md
+profiles/edr.yml
+profiles/forge.yml
+schema/patch.schema.json
+schema/validate.py
+tools/cite.py
+tools/pin_chassis.py
+tools/test_cite.py
+tools/worktree.py), so this stood GREEN until the QC session probed
+commit c363609489b43ad53bffc76036c8c4611d341298
+Author: Bo Chen <bochen2029@gmail.com>
+Date:   Wed Aug 26 21:52:49 2026 -0500
+
+    Regenerate CLAIMS.json on the merged tree
+    
+    fork/battery's claims join the file; the totals are re-derived rather than
+    hand-merged, per the file's own rule.
+    
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+
+diff --git a/conformance/CLAIMS.json b/conformance/CLAIMS.json
+index b973d06..a38992d 100644
+--- a/conformance/CLAIMS.json
++++ b/conformance/CLAIMS.json
+@@ -44,11 +44,11 @@
+       "value": "default — no REGISTRAR_SURFACE set"
+     },
+     "battery_green": {
+-      "value": 46,
++      "value": 50,
+       "pattern": "(\d+) G ·"
+     },
+     "battery_unverified": {
+-      "value": 11,
++      "value": 9,
+       "pattern": "· (\d+) PU"
+     },
+     "battery_failed": { directly.
+
+**Rewritten with , force-pushed, while the repository had zero known external clones — the
+cheapest moment there will ever be.** Six paths purged; the working tree untouched (the vault was already
+untracked; the smoke output already ignored).
+
+**Every SHA cited in the documents changed.** The translation is committed at
+ — 69 commits, old → new. The one that load-bears:
+**the F-PATCH-DELTA pre-registration pinned the gate battery at , which is now .** The
+pin's meaning is unchanged; its name is translated by a committed map rather than lost.
+
+**Why rewriting history is consistent with an append-only culture:** this log records that it happened, what
+was removed, and why — the erasure is of *redistributed text and spoilers*, not of the record of our own
+conduct. The mirror backup taken immediately before the rewrite is retained offline. What force-push cannot
+do: purge caches GitHub may hold server-side; with no forks and no PRs, nothing public reaches them, and
+that limit is stated here rather than assumed away.
+
 ---
 
 ### Design choices, marked as such
