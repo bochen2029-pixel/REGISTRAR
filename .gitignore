@@ -16,7 +16,15 @@ internal/
 # tape is a record of real cases. Both belong to the site, in the site's own
 # version control. Nothing of the kind is ever committed here.
 *.patch.yml
+# EXPERIMENT EVIDENCE IS TRACKED — a published S nobody can recompute from a
+# clone is prose, not a measurement (QC-2 G1). Site fits stay untracked; these
+# are synthetic-corpus candidates and their mechanical grades.
+!experiments/F-PATCH-DELTA/candidates/*.patch.yml
 !examples/worked/*.patch.yml
+# EXPERIMENT EVIDENCE IS TRACKED — a published S nobody can recompute from a
+# clone is prose, not a measurement (QC-2 G1). Site fits stay untracked; these
+# are synthetic-corpus candidates and their mechanical grades.
+!experiments/F-PATCH-DELTA/candidates/*.patch.yml
 *.tape/
 *.jsonl
 # ...except the synthetic teaching tapes, which carry no real data and are

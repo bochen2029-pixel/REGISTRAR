@@ -465,8 +465,7 @@ number shipped; the scorer now takes `--floor` and marks any band computed witho
 
 # CORPUS v4 · `2026-08-27` — **COVERS, on the knife-edge: `S = 0.70 · 0 fabrications · 0 gate-FAILED`**
 
-Corpus v4 built per `CORPUS_v4_DESIGN.md` (design frozen first; builder in the vault; **all three
-construction invariants asserted by the builder itself** — funnel reconciliation, clock-derived flags,
+Corpus v4 built per `CORPUS_v4_DESIGN.md` (design frozen first; builder in the vault; **invariants I1 and I2 asserted by the builder; I3 held by construction but NOT asserted at the time (QC-2 G5 caught the over-claim; the builder now asserts I3 as well)** — funnel reconciliation, clock-derived flags,
 documents printed *from* the tape). Honest ceiling now `0.975`. **Floor measured before the runner
 launched: `0.47`, 1 fabrication.** Fresh runner (subagent `a17186d3cfeb0fb3c`), airtight disclosure — its
 search commands were scoped so sibling grading files were never even enumerated.
@@ -546,3 +545,43 @@ knife-edge stated; one cheap replication resolved what the caveat flagged. A thi
 interval; a real site would change the question. **The synthetic programme closes here — floor-clearance
 and zero-fabrication are established properties; the band is bounded honestly; nothing further about a real
 OPO can be learned from Fairbank.**
+
+
+---
+
+# RUBRIC v3.1 · `2026-08-27` — **COVERS evaporates under the sound matcher. The headline is `S = 0.54 ± 0.04 · SHAPED`.**
+
+QC round two measured the defect (its G2): v3's leaf matcher used both-ways substring containment, so a
+candidate stating the CONTRADICTION of a truth leaf scored as matching it — after the identical defect had
+already been ordered out of the flat matcher once. **v3.1 was frozen in `PREREGISTRATION_v3.md` before any
+total was computed** (the QC's partial counts were known; the totals were not), changing exactly one thing:
+string leaves match by normalized equality, never containment. Every recorded candidate re-scored, keys
+named explicitly, results tracked in `results/`:
+
+| candidate (key) | v3 | **v3.1 (operative)** | verdict @ floor |
+|---|---|---|---|
+| floor — arm ① (v4 key) | 0.47 | **0.35** | (the null) |
+| run A — `fairbank.v4` | 0.70 · COVERS | **0.50** | **SHAPED** |
+| run B — `fairbank.v4b` | 0.62 | **0.57** | **SHAPED** |
+| v2-corpus candidate (v1 key) | 0.38 | **0.28** | FAILS (historical) |
+| v1 candidate (v1 key) | 0.45 | **0.38** | FAILS (historical) |
+
+> **Corpus v4, rubric v3.1, n = 2: `S = 0.54 ± 0.04 · SHAPED · floor 0.35 cleared decisively both runs ·
+> zero fabrications ever · COVERS not reached under the corrected instrument.`**
+
+**What the correction reveals, stated plainly:**
+
+- **The knife-edge COVERS was the bug's artifact.** Run A lost 8 of its 28 points to containment-only
+  credit — its richer structured answers had benefited *most* from the loose matcher — and **the run
+  ordering inverts: B (0.57) now outscores A (0.50).** The n=1 COVERS was withdrawn by replication within
+  hours and is now refuted by instrument correction as well. Both safeguards worked; neither was optional.
+- **What does not move, for the third time: zero fabrications**, floor-clearance by a wide margin, both
+  planted contradictions surfaced, the unanswerable target declined — every run, every corpus, every rubric.
+- **Three instrument corrections, each lowering the number** (ambiguous holds → strict; grain-blind →
+  grain-aware; containment → equality). The direction is not an accident: **every defect found so far
+  inflated scores**, which is exactly why the falsifier needed its own falsifiers.
+
+**The instrument's bookkeeping is also repaired (QC-2 G1):** the scorer now REQUIRES `--delta` (the
+ambiguous vault `DELTA.json` is deleted), prints rubric + key digest + candidate sha on every run, records
+them in every result file, and **the four candidates and all result files are now TRACKED** — a published S
+is recomputable from a clone, which is the difference between a measurement and prose.

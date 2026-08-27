@@ -1,0 +1,634 @@
+# fairbank.v4b.patch.yml — candidate site patch, Fairbank Donor Network (FICTIONAL)
+# ─────────────────────────────────────────────────────────────────────────────
+# MACHINE-AUTHORED DRAFT. Every `author` field is empty on purpose (AGENTS.md §5):
+# this file is a candidate, and only a named human signature makes it mountable.
+# Every figure below was COMPUTED from the raw event extracts in site_v4/tape/,
+# not quoted from any document's summary; where a document and the tape disagree,
+# the row encodes the tape and cites both. Percentiles are nearest-rank
+# (smallest observed value with at least p% of observations at or below it).
+# The tape extracts carry no dates, so no shadow_run states a `window`.
+
+schema_version: "0.1"
+
+site:
+  id: "fairbank"
+  name: "Fairbank Donor Network (FICTIONAL — completion exercise)"
+
+$comment: >
+  16 rows and 4 holds account for all 20 declared variation points. The holds
+  carry two sources_contradict findings (judgment-ruleout authority overnight,
+  and the escalation ladder as practised); those are findings about the
+  organisation, deliberately not smoothed into rows.
+
+rows:
+
+  # ── tier 1 · the constraints that bind the schedule ────────────────────────
+
+  - id: "fb-001"
+    target: "recovery.or_availability"
+    layer: "L2"
+    value:
+      hospital: "H-1207"
+      cross_clamp_window:
+        opens: "19:00"
+        closes: "23:00"
+    inverse: null
+    derived_from: >
+      min-max of the 13 observed cross-clamp times at H-1207 (19:10 earliest,
+      22:45 latest), rounded outward to whole hours.
+    evidence:
+      - kind: "config"
+        source: "interfaces/inventory.md, H-1207 row"
+        says: "H-1207 is annotated 'evening OR block'"
+      - kind: "tape"
+        source: "tape/recovery.csv, cross-clamp times at H-1207, n=13"
+        says: >
+          all 13 recovery cross-clamps at H-1207 fell between 19:10 and 22:45;
+          none outside that band
+    shadow_run:
+      cases: 13
+      would_have_matched: 13
+      would_have_missed: 0
+      notes: >
+        matched = cross-clamps inside 19:00-23:00. The extract is undated, so no
+        replay window is stated.
+    expiry: "2027-03-01"
+    author: ""
+    $note: >
+      Only H-1207 shows a block that both a document and the tape support. The
+      other hospitals' cross-clamps are spread across the day (H-1102 n=32,
+      07:00-16:50; H-1355 n=12, 08:45-17:00; H-1490 n=2 only), no document names
+      a window for them, and deriving one from a wide min-max would invent a
+      constraint the material does not state. They are deliberately not encoded.
+
+  - id: "fb-002"
+    target: "intake.timely_referral_definition"
+    layer: "L3"
+    value:
+      H-1102:
+        notification_minutes: 60
+      H-1355:
+        notification_minutes: 90
+    inverse: null
+    evidence:
+      - kind: "document"
+        source: "contracts/agreements/H-1102.md §4"
+        says: "notification to the Network within sixty (60) minutes of a patient meeting clinical triggers"
+      - kind: "document"
+        source: "contracts/agreements/H-1355.md §4"
+        says: "notification within ninety (90) minutes of a patient meeting clinical triggers"
+      - kind: "document"
+        source: "ops/SOP-03-referral-intake.md"
+        says: "timely referral is defined per participating-hospital agreement"
+      - kind: "tape"
+        source: "tape/referrals.csv, referral counts by hospital, n=400"
+        says: >
+          261 of 400 referrals on the extract arrived from H-1102 (182) or
+          H-1355 (79), the two hospitals whose agreements are present; 139
+          arrived from H-1207 (105) or H-1490 (34)
+    shadow_run:
+      cases: 400
+      would_have_matched: 261
+      would_have_missed: 139
+      notes: >
+        matched = referrals from a hospital whose agreement is present and
+        defines the term. The extract carries no notification-latency field, so
+        conformance to the definitions themselves is not replayable from this
+        corpus; this replay measures coverage, and its missed count is the
+        finding in the $note.
+    expiry: "2027-03-01"
+    author: ""
+    $note: >
+      The agreements for H-1207 and H-1490 are absent from the corpus. SOP-03
+      defers to the agreements, 42 CFR 486.322(a) sets no federal figure to fall
+      back on, and H-1207 is the second-largest referral source on the tape.
+      No figure is encoded for those two hospitals — a plausible one would be
+      exactly the fabrication this exercise exists to refuse. Obtaining the two
+      agreements closes the gap; this is the first deadline on every case there.
+
+  - id: "fb-003"
+    target: "evaluation.reference_lab"
+    layer: "L3"
+    value:
+      lab: "fairbank-reference"
+      panel: "standard-serology"
+      turnaround_minutes: 284
+    inverse: null
+    derived_from: >
+      p90 (nearest-rank) of drawn-to-resulted minutes over the 149-panel
+      extract; p90 chosen over p75 because serology gates the match run and
+      this figure feeds latest-safe-start arithmetic.
+    evidence:
+      - kind: "document"
+        source: "contracts/reference-lab-2026.md"
+        says: "standard serology panel reported within four (4) hours (240 minutes) of receipt, 24/7"
+      - kind: "document"
+        source: "contracts/reference-lab-2026.md, QA line"
+        says: "the laboratory's own report claims a p75 of ~234 minutes on 149 panels, within contract"
+      - kind: "tape"
+        source: "tape/workup.csv, minutes_drawn_to_resulted, n=149"
+        says: >
+          computed from the raw events: p75 was 234 minutes, p90 was 284
+          minutes, worst was 346; 32 of 149 panels (21%) exceeded the 240-minute
+          contractual bound
+    shadow_run:
+      cases: 149
+      would_have_matched: 136
+      would_have_missed: 13
+      notes: "matched = panels resulted within the encoded 284 minutes."
+    expiry: "2027-03-01"
+    author: ""
+    $note: >
+      The laboratory's QA line is arithmetically honest — the tape reproduces
+      its p75 of 234 exactly — and still flatters: the contract's term is an
+      absolute four-hour bound, and one panel in five exceeded it. A fit
+      planning at the contract's 240, or at the QA's 234, computes deadlines
+      optimistic in the direction that loses organs; the row carries the
+      observed p90 and cites both documents so the gap stays visible.
+
+  - id: "fb-004"
+    target: "recovery.team_mobilisation"
+    layer: "L3"
+    value:
+      in_house:
+        or_scheduled_to_incision_minutes: 104
+      contracted:
+        or_scheduled_to_incision_minutes: 144
+    inverse: null
+    derived_from: >
+      p75 (nearest-rank) of OR-scheduled-to-incision minutes, computed per team
+      as the question requires — one number for both would be the number for
+      the easier team.
+    evidence:
+      - kind: "tape"
+        source: "tape/recovery.csv, minutes_or_scheduled_to_incision by team, n=59 (50 in-house, 9 contracted)"
+        says: >
+          in-house p75 was 104 minutes (worst 154); contracted p75 was 144
+          minutes (worst 154)
+      - kind: "document"
+        source: "rota/call-schedule.md"
+        says: "recovery teams in-house, contracted overflow only"
+    shadow_run:
+      cases: 59
+      would_have_matched: 45
+      would_have_missed: 14
+      notes: >
+        matched = recoveries at or under their team's p75 figure. A p75 lead
+        time is exceeded a quarter of the time by construction; the misses are
+        printed rather than hidden so the signer can argue with the percentile.
+    expiry: "2027-03-01"
+    author: ""
+
+  - id: "fb-005"
+    target: "allocation.offer_window_practice"
+    layer: "L2"
+    value:
+      budget_minutes: 240
+    inverse: null
+    derived_from: >
+      p90 (nearest-rank, 237 minutes) of match-run-to-primary-acceptance,
+      rounded up to a 240-minute planning budget; p90 because this figure feeds
+      a latest-safe-start, which must assume the worst case or it is no
+      guarantee.
+    evidence:
+      - kind: "tape"
+        source: "tape/allocation.csv, minutes_matchrun_to_primary_acceptance, n=94"
+        says: >
+          p90 elapsed was 237 minutes; 86 of 94 primary acceptances landed
+          within 240 minutes, and the worst was 335
+    shadow_run:
+      cases: 94
+      would_have_matched: 86
+      would_have_missed: 8
+      notes: "matched = acceptances within the encoded 240-minute budget."
+    expiry: "2027-03-01"
+    author: ""
+
+  - id: "fb-006"
+    target: "transport.providers"
+    layer: "L3"
+    value:
+      ground:
+        provider: "meridian_courier"
+        response_minutes_p90: 43
+        door_to_door_minutes_p90: 279
+      fixed_wing:
+        provider: "northline_air"
+        response_minutes_p90: 44
+        door_to_door_minutes_p90: 260
+    inverse: null
+    derived_from: >
+      p90 (nearest-rank) of response and door-to-door minutes per provider over
+      the dispatch extract.
+    evidence:
+      - kind: "document"
+        source: "contracts/transport-2026.md"
+        says: >
+          ground is Meridian Medical Courier, contracted response to pickup 45
+          minutes, 24/7; fixed wing is Northline Air Charter, wheels-up 90
+          minutes; no standing rotor; commercial carriage for tissue only
+      - kind: "tape"
+        source: "tape/dispatch.csv, per-movement response and door-to-door, n=124 (92 ground, 32 fixed wing)"
+        says: >
+          ground response p90 was 43 minutes and door-to-door p90 was 279
+          minutes (worst 429); the contracted 45-minute response was met on 86
+          of 92 ground movements; fixed-wing response p90 was 44 minutes and
+          door-to-door p90 was 260 minutes (worst 302)
+    shadow_run:
+      cases: 124
+      would_have_matched: 112
+      would_have_missed: 12
+      notes: "matched = movements at or under their provider's door-to-door p90."
+    expiry: "2027-03-01"
+    author: ""
+    $note: >
+      The extract carries no destination field, so door-to-door BY DESTINATION —
+      the grain the seed's note asks for — is not computable from this corpus;
+      the row carries the per-provider grain and says so. The six ground
+      movements over the contracted 45-minute response (worst 53) are a
+      contract-management item, not a fit parameter.
+
+  # ── tier 2 · whether a case is caught in time ──────────────────────────────
+
+  - id: "fb-007"
+    target: "intake.after_hours_owner"
+    layer: "L2"
+    value: "house_coordinator"
+    inverse: null
+    evidence:
+      - kind: "document"
+        source: "ops/SOP-03-referral-intake.md rev 7 (2026-02)"
+        says: "after-hours referrals route to the House Coordinator"
+      - kind: "tape"
+        source: "tape/referrals.csv, after_hours=1, worked_by, n=215"
+        says: >
+          202 of 215 after-hours referrals were worked by the house coordinator;
+          the other 13 were worked by the on-call supervisor
+      - kind: "document"
+        source: "rota/call-schedule.md"
+        says: "House Coordinator 19:00-07:00 on site; On-call Supervisor 24/7 remote (frequently engaged)"
+    shadow_run:
+      cases: 215
+      would_have_matched: 202
+      would_have_missed: 13
+    expiry: "2027-03-01"
+    author: ""
+    $note: >
+      Binder and behaviour agree here: rev 7 of SOP-03 moved ownership to the
+      house coordinator and the tape shows 94% of after-hours referrals worked
+      accordingly. The 13 supervisor-worked referrals are the residue, printed
+      rather than absorbed.
+
+  - id: "fb-008"
+    target: "triage.callback_practice"
+    layer: "L2"
+    value:
+      second_attempt_within_minutes: 20
+    inverse: null
+    derived_from: >
+      p75 (nearest-rank) of observed minutes-to-second-contact where the first
+      contact reached no decision-maker; a threshold set at the median is
+      breached half the time by construction.
+    evidence:
+      - kind: "document"
+        source: "ops/SOP-03-referral-intake.md"
+        says: "where first contact does not reach a decision-maker, a second attempt is made within thirty (30) minutes"
+      - kind: "tape"
+        source: "tape/referrals.csv, minutes_to_second_contact where first_contact_no_answer=1, n=117"
+        says: >
+          median was 15 minutes, p75 was 20 minutes, p90 was 25 minutes; 115 of
+          117 second attempts were inside the SOP's 30 minutes, and the two
+          breaches were 37 and 49 minutes
+    shadow_run:
+      cases: 117
+      would_have_matched: 88
+      would_have_missed: 29
+      notes: "matched = second attempts within the encoded 20 minutes."
+    expiry: "2027-03-01"
+    author: ""
+    $note: >
+      Practice is tighter than the binder: the SOP allows 30 minutes, the
+      observed p75 is 20. Encoding the observed figure keeps the surface honest
+      about what this team actually does; the SOP's 30 stays cited as the
+      outer bound it is.
+
+  - id: "fb-009"
+    target: "lapse.threshold"
+    layer: "L2"
+    value:
+      minutes_without_progression: 90
+    inverse: null
+    derived_from: >
+      p25 (nearest-rank, 92 minutes) of stall durations among non-converted
+      referrals, rounded down to 90 so roughly three-quarters of losses would
+      have been surfaced before closure; for a lapse threshold, earlier-firing
+      is the safe direction — a longer threshold surfaces fewer stalled
+      referrals.
+    evidence:
+      - kind: "tape"
+        source: "tape/referrals.csv, minutes_stalled_before_closed where progressed=0, n=251"
+        says: >
+          192 of 251 non-converted referrals showed no progression for more
+          than 90 minutes before they closed; at the SOP's 120-minute review
+          point only 109 of 251 would have been surfaced before closure
+      - kind: "document"
+        source: "ops/SOP-03-referral-intake.md"
+        says: "a referral with no progression for two hours (120 minutes) is reviewed at handover"
+    shadow_run:
+      cases: 251
+      would_have_matched: 192
+      would_have_missed: 59
+      notes: >
+        matched = non-converted referrals that would have been surfaced while
+        still open at a 90-minute threshold.
+    expiry: "2027-03-01"
+    author: ""
+    $note: >
+      The SOP's handover review at 120 minutes is a batch process that would
+      have caught 43% of the tape's losses; a 90-minute surfacing threshold
+      catches 76%. The binder figure is cited, the behaviourally useful one is
+      encoded, and the direction-of-safety here is inverted from most timing
+      rows: smaller is safer.
+
+  # ── tier 3 · operational shape ─────────────────────────────────────────────
+
+  - id: "fb-010"
+    target: "authorization.approach_sequence"
+    layer: "L2"
+    value:
+      first_approach_default: "in_person"
+      telephonic_exception: "delay_would_jeopardise_opportunity"
+    inverse: null
+    evidence:
+      - kind: "document"
+        source: "ops/SOP-18-authorization.md"
+        says: "approaches are in person wherever the family is present; telephonic only where delay would jeopardise the opportunity"
+      - kind: "tape"
+        source: "tape/authorization.csv, first_approach_mode, n=94"
+        says: "88 of 94 first approaches were in person; 6 were telephonic"
+    shadow_run:
+      cases: 94
+      would_have_matched: 88
+      would_have_missed: 6
+      notes: >
+        matched = in-person first approaches; the six telephonic cases are the
+        exception the SOP itself provides for, counted as misses of the default
+        rather than hidden inside it.
+    expiry: "2027-09-01"
+    author: ""
+    $note: >
+      Sequence and mode only, per the elicitation method: nothing about what
+      was said, to whom, or how any family responded is collected or encoded.
+
+  - id: "fb-011"
+    target: "authorization.second_person_rule"
+    layer: "L2"
+    value:
+      required_when: "donor_under_eighteen"
+    inverse: null
+    evidence:
+      - kind: "document"
+        source: "ops/SOP-18-authorization.md"
+        says: "a second requester is present for donors under eighteen"
+      - kind: "tape"
+        source: "tape/authorization.csv, approaches with donor_under_18=1, n=18"
+        says: "a second requester was present in 18 of 18 under-eighteen approaches"
+    shadow_run:
+      cases: 18
+      would_have_matched: 18
+      would_have_missed: 0
+    expiry: "2027-09-01"
+    author: ""
+    $note: >
+      Written down AND universally followed — rarer than either alone. Three
+      adult approaches also had a second requester present (C-0079, C-0094,
+      C-0143 in the extract); practice exceeding the rule is not a
+      contradiction and no broader trigger is derivable from three cases.
+
+  - id: "fb-012"
+    target: "management.protocol_variant"
+    layer: "L2"
+    value:
+      protocol: "standard_adult"
+      variant: "none"
+      map_target: 65
+      deviation_authority: "physician_on_call"
+    inverse: null
+    evidence:
+      - kind: "document"
+        source: "ops/PROTOCOL-donor-management.md rev 3"
+        says: >
+          standard adult targets are used and the Network maintains no variant;
+          MAP target 65; deviations require the physician on call and are
+          recorded per case
+      - kind: "tape"
+        source: "tape/management.csv, target_set and map_target, n=94"
+        says: >
+          all 94 managed cases ran the standard_adult target set at MAP target
+          65; 12 carried a physician-flagged deviation, consistent with the
+          standing orders' own deviation path
+    shadow_run:
+      cases: 94
+      would_have_matched: 94
+      would_have_missed: 0
+    expiry: "2027-09-01"
+    author: ""
+    $note: >
+      Clinical territory: this row records WHICH protocol is in use and who may
+      deviate, nothing more, and per the question set it should be read by a
+      clinician before anyone signs it.
+
+  - id: "fb-013"
+    target: "evaluation.on_site_vs_remote"
+    layer: "L2"
+    value:
+      workup_default: "on_site"
+    inverse: null
+    evidence:
+      - kind: "tape"
+        source: "tape/workup.csv, workup_location, n=149"
+        says: "111 of 149 workups were conducted on site and 38 remotely"
+    shadow_run:
+      cases: 149
+      would_have_matched: 111
+      would_have_missed: 38
+      notes: "matched = on-site workups; the 38 remote workups are the counted residue of the default."
+    expiry: "2027-09-01"
+    author: ""
+    $note: >
+      The extract records where the workup ran, not which role ran it — the
+      by-role half of the seed's question is not answerable from this corpus
+      and is deliberately not encoded.
+
+  # ── tier 4 · integrations ──────────────────────────────────────────────────
+
+  - id: "fb-014"
+    target: "intake.channel"
+    layer: "L3"
+    value:
+      H-1102: "interfaced_hl7_adt"
+      H-1207: "interfaced_hl7_adt"
+      H-1355: "telephone"
+      H-1490: "telephone"
+    inverse: null
+    evidence:
+      - kind: "config"
+        source: "interfaces/inventory.md, referral channel column"
+        says: >
+          H-1102 and H-1207 (both Epic) refer via interfaced HL7 ADT; H-1355
+          (Meditech Expanse) and H-1490 (Cerner) refer by telephone
+      - kind: "tape"
+        source: "tape/referrals.csv, hospital column, n=400"
+        says: >
+          every one of the 400 referrals on the extract arrived from one of the
+          four inventoried hospitals; the inventory's own note of 34 referrals
+          for H-1490 matches the tape count exactly
+    shadow_run:
+      cases: 400
+      would_have_matched: 400
+      would_have_missed: 0
+      notes: >
+        matched = referrals whose hospital has a declared channel. The extract
+        carries no per-referral channel field, so this replay verifies coverage
+        of the map, not the channel of each arrival.
+    expiry: "2027-09-01"
+    author: ""
+    $note: >
+      Half the referral volume arrives hand-keyed: H-1355 and H-1490 are
+      telephone-only, and the hand-keyed lane is where intake hours disappear.
+      The per-hospital grain is the point — an aggregate would hide exactly
+      which hospitals cost the time.
+
+  - id: "fb-015"
+    target: "evaluation.imaging_route"
+    layer: "L3"
+    value:
+      H-1102: "pacs_share_link"
+      H-1207: "disc_courier"
+      H-1355: "disc_courier"
+      H-1490: "disc_courier"
+    inverse: null
+    evidence:
+      - kind: "config"
+        source: "interfaces/inventory.md, imaging line"
+        says: "no imaging interface exists; routes are whatever each hospital supports"
+      - kind: "tape"
+        source: "tape/imaging_requests.csv, route by hospital, n=63"
+        says: >
+          all 31 H-1102 requests travelled by PACS share link; all 32 requests
+          from H-1207, H-1355 and H-1490 travelled by couriered disc; request-
+          to-receipt p75 was 231 minutes on the share link (worst 493) and 207
+          minutes by disc (worst 297)
+    shadow_run:
+      cases: 63
+      would_have_matched: 63
+      would_have_missed: 0
+      notes: "matched = requests whose observed route agrees with the encoded map; the map held on every request."
+    expiry: "2027-09-01"
+    author: ""
+    $note: >
+      The digital route is not the fast one: the H-1102 share link's p75 is 24
+      minutes SLOWER than the couriered discs and its worst case (493 minutes)
+      is the worst in the extract. Whatever intuition says about links versus
+      couriers, the tape says otherwise here.
+
+  - id: "fb-016"
+    target: "authorization.esignature_vendor"
+    layer: "L3"
+    value:
+      vendor: "docusign"
+      capture: "electronic"
+      attach_method: "manual_download"
+    inverse: null
+    evidence:
+      - kind: "config"
+        source: "interfaces/inventory.md, e-signature line"
+        says: "DocuSign; the signed artifact is downloaded and attached manually"
+      - kind: "tape"
+        source: "tape/esign.csv, vendor/capture/attach_method, n=94"
+        says: >
+          all 94 signed authorizations were captured electronically in DocuSign
+          and attached by manual download; signed-to-attached p75 was 21
+          minutes, worst 42
+    shadow_run:
+      cases: 94
+      would_have_matched: 94
+      would_have_missed: 0
+    expiry: "2027-09-01"
+    author: ""
+    $note: >
+      The manual download-and-attach step is the classic workaround shape — a
+      person substituting for an interface, twenty-one minutes at p75 on the
+      authorization artifact every downstream step depends on. Encoded as
+      found; automating it is an improvement proposal, not a patch row.
+
+holds:
+
+  - target: "triage.ruleout_authority"
+    tier: 6
+    class: "sources_contradict"
+    reason: "SOP-11 requires the physician on call for every judgment ruleout; the tape shows the deep-night ones decided by the house coordinator."
+    searched: "ops/SOP-11-triage.md; rota/call-schedule.md; tape/ruleouts.csv (n=99, by basis, decided_by and hour)"
+    detail: >
+      Appendix-A ruleouts behave exactly as written: 69 of 69 were decided by
+      clinical coordinators on enumerated criteria. Judgment ruleouts do not:
+      of 30, 20 were decided by the physician on call (13 by day, 5 in the
+      evening, 2 deep-night) and 10 by the house coordinator — every one of
+      those ten between 01:00 and 06:00, hours at which two other judgment
+      ruleouts did still reach the physician. The rota lists a physician on
+      call 24/7, so coverage exists on paper. A ruleout is terminal. There is
+      no clean role-by-hour rule in this tape: encoding the SOP would encode
+      fiction, and encoding the practice would ratify an undocumented
+      delegation of a terminal decision. This needs the medical director and
+      the SOP owner, not a completion.
+
+  - target: "management.escalation_ladder"
+    tier: 6
+    class: "sources_contradict"
+    reason: "The written ladder, the escalation threads and the call rota describe three different operations."
+    searched: "ops/SOP-24-escalation.md; rota/call-schedule.md; tape/escalations.csv (n=140, by hour, first responder and ack minutes)"
+    detail: >
+      SOP-24 ladders clinical coordinator, house coordinator, on-call
+      supervisor, Director of Clinical Operations, medical director, with the
+      next level engaged after twenty unacknowledged minutes. The threads show
+      something else: overnight the first responder is the Director in 79 of 91
+      threads — levels two and three skipped — and the house coordinator, the
+      one role on site 19:00-07:00, never responds first overnight at all. By
+      day the first responder splits between the supervisor (31) and the house
+      coordinator (18), and every house-coordinator acknowledgment sits at
+      10:00-15:00, hours the rota does not staff that role. The twenty-minute
+      rung was met in 7 of 140 threads (acknowledgment p75 is 41 minutes), and
+      all 140 threads are raised by clinical coordinators, 91 of them at
+      22:00-04:00, outside that role's rota hours. Either the rota is stale or
+      the extract's role labels are unreliable; no ladder derivable from this
+      material is trustworthy enough to mount, and the reconciliation belongs
+      to someone who works those shifts.
+
+  - target: "allocation.credentials"
+    tier: 6
+    class: "phi_adjacent_declined"
+    reason: "The mechanism is documented; a credential inventory is deliberately not, and no extract exists to replay a row against."
+    searched: "interfaces/inventory.md; every tape extract (no authentication or allocation-access events anywhere)"
+    detail: >
+      The inventory states the mechanism plainly — individual named accounts,
+      no federation, reviewed annually by the Director of Clinical Operations —
+      and states that no credential inventory is published in site material,
+      deliberately. A row would add nothing to that sentence and could not
+      carry an honest shadow run, since no extract records access events.
+      Access arrangements are the site's own IT function's to record directly;
+      a completion enumerating them would be handling exactly what it should
+      not. The mechanism note above is preserved here so the reviewer has the
+      documented fact without a row pretending it was replayed.
+
+  - target: "transport.perfusion"
+    tier: 6
+    class: "no_evidence"
+    reason: "No machine-perfusion arrangement appears anywhere in the material reviewed."
+    searched: "contracts/transport-2026.md; contracts/reference-lab-2026.md; interfaces/inventory.md; tape/dispatch.csv and tape/recovery.csv (no perfusion columns or events)"
+    detail: >
+      The transport arrangement enumerates ground courier, fixed wing and
+      commercial carriage for tissue, and stops there; no perfusion contract,
+      perfusion event or perfusion column exists in any extract. Either the
+      Network does not use machine perfusion, or the arrangement lives outside
+      this corpus. Nothing to encode, and no ischemia-budget adjustment is
+      derivable here.

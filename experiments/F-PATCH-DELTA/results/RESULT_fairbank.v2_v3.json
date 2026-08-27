@@ -1,0 +1,115 @@
+{
+  "arm": null,
+  "candidate": "fairbank.v2.patch.yml",
+  "score": 15,
+  "max": 40,
+  "S": 0.375,
+  "fabrications": 0,
+  "verdict": "FAILS",
+  "per_target": [
+    {
+      "target": "allocation.credentials",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "allocation.offer_window_practice",
+      "score": 2,
+      "why": "correct — 192 against 192 (0%)"
+    },
+    {
+      "target": "authorization.approach_sequence",
+      "score": 1,
+      "why": "shaped — 1/2 truth leaves matched"
+    },
+    {
+      "target": "authorization.esignature_vendor",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "authorization.second_person_rule",
+      "score": 0,
+      "why": "wrong — 0/1 truth leaves matched"
+    },
+    {
+      "target": "evaluation.imaging_route",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "evaluation.on_site_vs_remote",
+      "score": 1,
+      "why": "shaped — a row exists with evidence, but is not mechanically comparable"
+    },
+    {
+      "target": "evaluation.reference_lab",
+      "score": 2,
+      "why": "correct — 450 against 451 (0%)"
+    },
+    {
+      "target": "intake.after_hours_owner",
+      "score": 2,
+      "why": "correct — 'house_coordinator' (pre-v3.1 containment)"
+    },
+    {
+      "target": "intake.channel",
+      "score": 2,
+      "why": "correct — 4/4 truth leaves matched"
+    },
+    {
+      "target": "intake.timely_referral_definition",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "lapse.threshold",
+      "score": 1,
+      "why": "shaped — 90 against 129 (30% out)"
+    },
+    {
+      "target": "management.escalation_ladder",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "management.protocol_variant",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "recovery.or_availability",
+      "score": 0,
+      "why": "wrong — 1/3 truth leaves matched"
+    },
+    {
+      "target": "recovery.team_mobilisation",
+      "score": 2,
+      "why": "correct — 128 against 128 (0%)"
+    },
+    {
+      "target": "transport.perfusion",
+      "score": 1,
+      "why": "CORRECT DECLINE — nothing in the corpus supports this, and it said so"
+    },
+    {
+      "target": "transport.providers",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "triage.callback_practice",
+      "score": 1,
+      "why": "shaped — 12 against 10 (20% out)"
+    },
+    {
+      "target": "triage.ruleout_authority",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    }
+  ],
+  "rubric": "v3",
+  "key": "DELTA_v1.json",
+  "key_sha256_12": "2d3f02fd6d31",
+  "floor": null
+}

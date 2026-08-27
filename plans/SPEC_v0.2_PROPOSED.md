@@ -124,13 +124,15 @@ row must carry all of the following, or it does not validate:
 | `shadow_run` | a replay against the site's historical cases, with counts at both grains |
 | `expiry` | a date. Rows re-earn their place; **nothing is permanent by default.** |
 | `author` | a named human. The signature is on the tape, forever. |
-| `holds` | **targets considered and declined**, each with what was searched and why it came back empty. **Silence is not an answer**: a declared target with neither a row nor a hold is refused (the accountability gate), because an unanswered target is indistinguishable from one nobody looked at. A hold is finished work, not a STOP. |
+| *(patch-level, not a row field — see below)* `holds` | **targets considered and declined**, each with what was searched and why it came back empty. **Silence is not an answer**: a declared target with neither a row nor a hold is refused (the accountability gate), because an unanswered target is indistinguishable from one nobody looked at. A hold is finished work, not a STOP. |
 
 **One boundary this contract deliberately leaves to judgment, named rather than hidden:** on a
 *split-answerable* target (part documented, part deliberately absent) the row-versus-hold choice is
 under-specified — **measured**: two honest fresh completions landed on opposite sides of it and the variance
 moved a verdict band. `[M — F-PATCH-DELTA runs A/B, 2026-08-27]` A future revision either states the rule or
 keeps this sentence.
+
+**Placement, per the shipped schema (QC-2 G4):** `holds` is a PATCH-level array, not a row field — `$defs/row` sets `additionalProperties: false`, so a row carrying `holds` is refused by gate 14. The row above sits in this table for visibility; the contract binds it at patch level.
 
 **Drift demotes. Retirement unwinds through the inverse, in reverse dependency order** — and §3 shows why that
 order is forced rather than chosen.

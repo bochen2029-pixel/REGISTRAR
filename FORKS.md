@@ -87,7 +87,7 @@ Each fork **owns** its directories and **does not write** outside them without s
 |---|---|---|
 | **mainline** — F-PATCH-DELTA | `experiments/` **except** `experiments/F-BATTERY-STRENGTH/` | everything |
 | **A** — sub-repo fold + plugins | `forge/plugins/`, `forge/dsh/`, `forge/plugins.yml` | the chassis, **read-only** |
-| **C** — witnesses per gate | `examples/worked/rejected/`, `gates/test_*.py`, `fixtures/` | `gates/` |
+| **C** — witnesses per gate | `examples/worked/rejected/`, `gates/` *(full — reconciled 2026-08-27: this table said `gates/test_*.py` while `tools/worktree.py` granted `gates/`; two sources of truth must not disagree. Gate-LOGIC edits are sanctioned only in the strengthening direction, reason in the commit)*, `fixtures/` | `gates/` |
 | **battery** — F-BATTERY-STRENGTH | `experiments/F-BATTERY-STRENGTH/` | `gates/`, `examples/worked/`, **`internal/` never** |
 
 **On the `experiments/` carve-out, and why it is written as an exception rather than assumed.**

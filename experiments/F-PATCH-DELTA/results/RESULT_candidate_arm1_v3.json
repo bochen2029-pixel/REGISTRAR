@@ -1,0 +1,115 @@
+{
+  "arm": "1-template-prior",
+  "candidate": "candidate_arm1.json",
+  "score": 19,
+  "max": 40,
+  "S": 0.475,
+  "fabrications": 1,
+  "verdict": "SHAPED (PROVISIONAL — no --floor supplied)",
+  "per_target": [
+    {
+      "target": "allocation.credentials",
+      "score": 0,
+      "why": "wrong — 1/3 truth leaves matched"
+    },
+    {
+      "target": "allocation.offer_window_practice",
+      "score": 1,
+      "why": "shaped — 180 against 236 (24% out)"
+    },
+    {
+      "target": "authorization.approach_sequence",
+      "score": 1,
+      "why": "shaped — 1/2 truth leaves matched"
+    },
+    {
+      "target": "authorization.esignature_vendor",
+      "score": 1,
+      "why": "shaped — 1/2 truth leaves matched"
+    },
+    {
+      "target": "authorization.second_person_rule",
+      "score": 0,
+      "why": "wrong — 0/1 truth leaves matched"
+    },
+    {
+      "target": "evaluation.imaging_route",
+      "score": 0,
+      "why": "wrong — 0/4 truth leaves matched"
+    },
+    {
+      "target": "evaluation.on_site_vs_remote",
+      "score": 2,
+      "why": "correct — 'predominantly on site' (pre-v3.1 containment)"
+    },
+    {
+      "target": "evaluation.reference_lab",
+      "score": 2,
+      "why": "correct — 240 against 234 (3%)"
+    },
+    {
+      "target": "intake.after_hours_owner",
+      "score": 0,
+      "why": "wrong — 'on_call_supervisor' against 'house_coordinator'"
+    },
+    {
+      "target": "intake.channel",
+      "score": 2,
+      "why": "correct — 4/4 truth leaves matched"
+    },
+    {
+      "target": "intake.timely_referral_definition",
+      "score": 2,
+      "why": "correct — 60 against 60 (0%)"
+    },
+    {
+      "target": "lapse.threshold",
+      "score": 1,
+      "why": "shaped — 240 against 120 (100% out)"
+    },
+    {
+      "target": "management.escalation_ladder",
+      "score": 1,
+      "why": "shaped — 30 against 41 (27% out)"
+    },
+    {
+      "target": "management.protocol_variant",
+      "score": 2,
+      "why": "correct — 'standard adult targets' (pre-v3.1 containment)"
+    },
+    {
+      "target": "recovery.or_availability",
+      "score": 0,
+      "why": "wrong — 0/3 truth leaves matched"
+    },
+    {
+      "target": "recovery.team_mobilisation",
+      "score": 2,
+      "why": "correct — 120 against 132 (9%)"
+    },
+    {
+      "target": "transport.perfusion",
+      "score": -1,
+      "why": "FABRICATED — the corpus contains nothing on this target. A confident value here is invented."
+    },
+    {
+      "target": "transport.providers",
+      "score": 0,
+      "why": "wrong — 0/2 truth leaves matched"
+    },
+    {
+      "target": "triage.callback_practice",
+      "score": 1,
+      "why": "shaped — 30 against 20 (50% out)"
+    },
+    {
+      "target": "triage.ruleout_authority",
+      "score": 2,
+      "why": "correct — 3/3 truth leaves matched"
+    }
+  ],
+  "rubric": "v3",
+  "key": "DELTA_v4.json",
+  "key_sha256_12": "c4b2a62122d5",
+  "floor": null
+}

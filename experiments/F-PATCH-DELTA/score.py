@@ -47,7 +47,17 @@ VAULT = os.path.join(ROOT, "internal", "f-patch-delta")
 
 
 def load_delta() -> dict:
-    p = os.path.join(VAULT, "DELTA.json")
+    # THE KEY IS NAMED, NEVER ASSUMED — QC-2 G1: the scorer read whichever bytes
+    # sat at DELTA.json (the v4 key, at HEAD) and silently mis-graded a
+    # v2-corpus candidate. A scorer that cannot say which corpus it graded is
+    # not an instrument.
+    if not DELTA_PATH:
+        raise SystemExit(
+            "no --delta given. The vault holds multiple answer keys; name the one\n"
+            "  matching the candidate's corpus:\n"
+            "    --delta internal/f-patch-delta/DELTA_v1.json   (site/,   corpus v1)\n"
+            "    --delta internal/f-patch-delta/DELTA_v4.json   (site_v4, corpus v4)")
+    p = DELTA_PATH
     if not os.path.exists(p):
         raise SystemExit(
             "no answer key at " + p + "\n"
@@ -103,6 +113,10 @@ def _leaves(v, out=None):
     return out
 
 
+def _norm_leaf(x) -> str:
+    return " ".join(str(x).strip().casefold().split())
+
+
 def _leaf_match(truth_leaf, cand_leaves) -> bool:
     if isinstance(truth_leaf, (int, float)) and not isinstance(truth_leaf, bool):
         for c in cand_leaves:
@@ -110,15 +124,21 @@ def _leaf_match(truth_leaf, cand_leaves) -> bool:
                 if truth_leaf and abs(c - truth_leaf) / abs(truth_leaf) <= TOL:
                     return True
         return False
-    t = str(truth_leaf).strip().lower()
+    t = _norm_leaf(truth_leaf)
     for c in cand_leaves:
-        cs = str(c).strip().lower()
-        if t and cs and (t in cs or cs in t):
+        cs = _norm_leaf(c)
+        if not t or not cs:
+            continue
+        if RUBRIC == "v3":               # the leaf-matcher era, archived
+            if t in cs or cs in t:
+                return True
+        elif t == cs:                    # v3.1: equality, never containment
             return True
     return False
 
 
-RUBRIC = "v3"   # v1 reproduces the void run · v2 the recorded FAILS · v3 is PREREGISTRATION_v3.md
+RUBRIC = "v3.1"  # v1 void run · v2 FAILS · v3 leaf-matcher era · v3.1 strict leaves (operative)
+DELTA_PATH = None   # --delta <file>; REQUIRED, since the vault holds multiple keys
 
 
 def score_target(target: str, row: dict | None, hold: dict | None, t: dict) -> tuple[int, str]:
@@ -163,7 +183,15 @@ def score_target(target: str, row: dict | None, hold: dict | None, t: dict) -> t
     tv = t.get("value")
     rv = row.get("value")
     if isinstance(tv, str) and isinstance(rv, str):
-        if tv.lower() in rv.lower() or rv.lower() in tv.lower():
+        # v3.1: EQUALITY, normalized — never containment. Both-ways substring
+        # scored "not house_coordinator" as house_coordinator (QC-2 G2), after
+        # the same defect had already been ordered out of this matcher once.
+        # Pre-v3.1 rubrics reproduce the old behaviour for the archive.
+        if RUBRIC in ("v1", "v2", "v3"):
+            if tv.lower() in rv.lower() or rv.lower() in tv.lower():
+                return 2, f"correct — {rv!r} (pre-v3.1 containment)"
+            return 0, f"wrong — {rv!r} against {tv!r}"
+        if _norm_leaf(tv) == _norm_leaf(rv):
             return 2, f"correct — {rv!r}"
         return 0, f"wrong — {rv!r} against {tv!r}"
     if isinstance(tv, dict) and isinstance(rv, dict):
@@ -197,7 +225,11 @@ def main(argv: list[str]) -> int:
         print(__doc__)
         return 2
 
-    global RUBRIC
+    global RUBRIC, DELTA_PATH
+    if "--delta" in argv:
+        i = argv.index("--delta")
+        DELTA_PATH = argv[i + 1]
+        argv = argv[:i] + argv[i + 2:]
     if "--floor" in argv:
         i = argv.index("--floor")
         argv = argv[:i] + argv[i + 2:]
@@ -230,8 +262,11 @@ def main(argv: list[str]) -> int:
     holds = {h.get("target"): h
              for h in (patch.get("holds") or patch.get("$holds") or [])}
 
+    import hashlib
+    key_digest = hashlib.sha256(open(DELTA_PATH, "rb").read()).hexdigest()[:12]
     print(f"F-PATCH-DELTA · scoring {os.path.basename(path)}")
-    print(f"arm: {patch.get('arm', '?')}\n")
+    print(f"rubric {RUBRIC} · key {os.path.basename(DELTA_PATH)} ({key_digest}) · "
+          f"candidate sha {hashlib.sha256(open(path, 'rb').read()).hexdigest()[:12]}\n")
 
     total = 0
     fabrications = 0
@@ -285,7 +320,13 @@ def main(argv: list[str]) -> int:
         "verdict": verdict,
         "per_target": [{"target": t, "score": s, "why": w} for s, t, w in detail],
     }
-    rp = os.path.join(HERE, f"RESULT_{patch.get('arm', 'unknown')}.json")
+    out["rubric"] = RUBRIC
+    out["key"] = os.path.basename(DELTA_PATH)
+    out["key_sha256_12"] = key_digest
+    out["floor"] = floor_s
+    stem = os.path.splitext(os.path.splitext(os.path.basename(path))[0])[0]
+    rp = os.path.join(HERE, "results", f"RESULT_{stem}_{RUBRIC}.json")
+    os.makedirs(os.path.dirname(rp), exist_ok=True)
     with open(rp, "w", encoding="utf-8") as fh:
         json.dump(out, fh, indent=2, ensure_ascii=False)
         fh.write("\n")

@@ -386,9 +386,9 @@ re-derive them rather than trusting this file.**
 
 | | | how to check |
 |---|---|---|
-| Tracked files | **133** | `git ls-files \| wc -l` |
+| Tracked files | **182** | `git ls-files \| wc -l` |
 | Assertions | **396** across 11 test modules | run each `test_*.py` |
-| Conformance | **51 GREEN · 9 PASS-UNVERIFIED · 0 FAILED** — *exits non-zero, deliberately* | `python conformance/run.py` |
+| Conformance | **53 GREEN · 9 PASS-UNVERIFIED · 0 FAILED** — *exits non-zero, deliberately* | `python conformance/run.py` |
 | Gates | **16**, each naming its defect in words | `python gates/validate_patch.py …` |
 | Citations byte-exact | **44 / 44** | `python tools/cite.py --check` |
 | Public sources pinned by sha256 | **5** | `corpus/MANIFEST.json` |

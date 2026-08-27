@@ -103,6 +103,8 @@ The spoiler surface **grows**: every analysis of the run adds to it. An eligible
 given only the repository and `site/`, per the protocol above — and after the QC's F1 finding, only under
 **rubric v2** once it is pre-registered.
 
+**Corpus-v4 runners, recorded (QC-2 caught the ledger gap):** run A = `a17186d3cfeb0fb3c`, run B = `a061c6936fc8b2a9d`, both spent. **QC-2 itself is disqualified on every Fairbank corpus under any rubric** (read both keys, the builder, all results — disclosed). **`CORPUS_v4_DESIGN.md` is a TRACKED SPOILER** and joins every future runner brief's do-not-read list.
+
 **v2 run addendum (`2026-08-27`):** the v2 runner (subagent `a763d362968919d48`) is now spent. It also
 disclosed an exposure nobody had listed: the top-level `README.md` and two docstrings carry the v1 run's
 "11 rows and 9 holds" shape secondhand. Future runner briefs must add those to the do-not-read list or

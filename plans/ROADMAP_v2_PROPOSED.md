@@ -32,7 +32,7 @@ wins, the funeral prints and that rung dies. A roadmap that cannot lose is a bro
 
 **`52 GREEN · 9 PASS-UNVERIFIED · 0 FAILED` · 16 gates · 11 suites, 396 assertions · CI on every push ·
 44 citations byte-exact against 5 pinned sources · chassis pinned 7,895/7,895 and boots in one command ·
-claims gate holding two public surfaces GREEN.**
+claims gate: both public surfaces verified GREEN by explicit `--surface` runs (2026-08-27); the battery default with no surface configured honestly prints PASS-UNVERIFIED.**
 
 | The three sentences that summarise the project | status |
 |---|---|
@@ -145,6 +145,8 @@ worthless to anyone else; a jurisdiction row is valuable to all fifty-four.
 rejected. The first real-site `[M]` this project will own, and the first time the fence is tested by someone
 who did not build it. **Not an engineering rung; every centre item above is preparation for the
 conversation that opens it.**
+
+**The resident's emission rule, carried forward verbatim because dropping it would be a doctrine deletion (QC-2 G4):** *the resident may escalate the SHAPE of a problem, never the MATERIAL — every payload constructible from the public seed plus its own prose, checkable.*
 
 **Self-extension** — the instance authors a plugin, shadow-runs it, **proposes** it; one yes mounts it
 hash-pinned; retirement unwinds through the disposer. Affordable at the forge radius (a wrong forge plugin

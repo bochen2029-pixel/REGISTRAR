@@ -34,5 +34,23 @@ Only the **v2-run candidate** (`fairbank.v2.patch.yml`) carries a verdict — it
 arm-② artifact. The v1 candidate and the floor are re-scored as **calibration**. Verdict bands are v2's,
 including `answered ≥ 8` and *SHAPED requires exceeding the same-rubric floor*.
 
-*Pre-registered before any v3 score existed. Where this document and a dated receipt disagree, the receipt
-wins.*
+---
+
+## v3.1 · the strict-leaf correction — `2026-08-27`, frozen before any v3.1 score is computed
+
+QC round two measured a defect in change 2's matcher: `_leaf_match` used both-ways substring containment,
+so a candidate stating the CONTRADICTION of a truth leaf scored as matching it (`not house_coordinator`
+matched `house_coordinator`; 4 of run A's 16 matched leaves and 2 of run B's 13 matched by containment only).
+The first QC's remediation had ordered exactly this removed from the flat matcher; v3 propagated it into the
+leaf matcher instead.
+
+**v3.1 changes exactly one thing: string leaves match by exact normalized equality (casefold, strip,
+collapse inner whitespace) — never by containment.** Numeric leaves are unchanged (TOL). Everything else —
+hold credit, abstention guard, thresholds, floors, grain-aware numerics — is inherited from v3 untouched.
+
+**Per the v2→v3 precedent: recorded runs are re-scored mechanically under v3.1 and published beside their
+v3 numbers; the v3.1 column is the operative one, the v3 column is history.** The scorer records rubric,
+key file, and key digest in every result so this class of ambiguity cannot recur unrecorded.
+
+*Frozen before computation; the QC's partial counts (which leaves matched by containment) were known when
+this was written — the totals were not.*

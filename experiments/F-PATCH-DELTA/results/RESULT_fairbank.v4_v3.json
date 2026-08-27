@@ -1,0 +1,115 @@
+{
+  "arm": null,
+  "candidate": "fairbank.v4.patch.yml",
+  "score": 28,
+  "max": 40,
+  "S": 0.7,
+  "fabrications": 0,
+  "verdict": "COVERS",
+  "per_target": [
+    {
+      "target": "allocation.credentials",
+      "score": 1,
+      "why": "shaped — 2/3 truth leaves matched"
+    },
+    {
+      "target": "allocation.offer_window_practice",
+      "score": 2,
+      "why": "correct — 240 against 236 (2%)"
+    },
+    {
+      "target": "authorization.approach_sequence",
+      "score": 1,
+      "why": "shaped — 1/2 truth leaves matched"
+    },
+    {
+      "target": "authorization.esignature_vendor",
+      "score": 2,
+      "why": "correct — 2/2 truth leaves matched"
+    },
+    {
+      "target": "authorization.second_person_rule",
+      "score": 2,
+      "why": "correct — 1/1 truth leaves matched"
+    },
+    {
+      "target": "evaluation.imaging_route",
+      "score": 2,
+      "why": "correct — 4/4 truth leaves matched"
+    },
+    {
+      "target": "evaluation.on_site_vs_remote",
+      "score": 0,
+      "why": "wrong — 74 against 26"
+    },
+    {
+      "target": "evaluation.reference_lab",
+      "score": 2,
+      "why": "correct — 234 against 234 (0%)"
+    },
+    {
+      "target": "intake.after_hours_owner",
+      "score": 2,
+      "why": "correct — 'house_coordinator' (pre-v3.1 containment)"
+    },
+    {
+      "target": "intake.channel",
+      "score": 2,
+      "why": "correct — 4/4 truth leaves matched"
+    },
+    {
+      "target": "intake.timely_referral_definition",
+      "score": 2,
+      "why": "correct — 60 against 60 (0%)"
+    },
+    {
+      "target": "lapse.threshold",
+      "score": 1,
+      "why": "shaped — 90 against 115 (22% out)"
+    },
+    {
+      "target": "management.escalation_ladder",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    },
+    {
+      "target": "management.protocol_variant",
+      "score": 1,
+      "why": "shaped — a row exists with evidence, but is not mechanically comparable"
+    },
+    {
+      "target": "recovery.or_availability",
+      "score": 1,
+      "why": "shaped — 2/3 truth leaves matched"
+    },
+    {
+      "target": "recovery.team_mobilisation",
+      "score": 2,
+      "why": "correct — 105 against 108 (3%)"
+    },
+    {
+      "target": "transport.perfusion",
+      "score": 1,
+      "why": "CORRECT DECLINE — nothing in the corpus supports this, and it said so"
+    },
+    {
+      "target": "transport.providers",
+      "score": 2,
+      "why": "correct — 43 against 39 (10%)"
+    },
+    {
+      "target": "triage.callback_practice",
+      "score": 2,
+      "why": "correct — 20 against 20 (0%)"
+    },
+    {
+      "target": "triage.ruleout_authority",
+      "score": 0,
+      "why": "declined with a hold — honest, and worth nothing: the material has an answer"
+    }
+  ],
+  "rubric": "v3",
+  "key": "DELTA_v4.json",
+  "key_sha256_12": "c4b2a62122d5",
+  "floor": null
+}
