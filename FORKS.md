@@ -27,6 +27,12 @@ forking.* A plugin that must live inside the tree it extends is not a plugin.
 
 `conformance/run.py` fails if any of it is ever staged. Do not work around that check; it is the fence.
 
+**The one carve-out, stated precisely `[2026-08-27, F-BOOT]`:** the read-only rule protects **sources**.
+`pnpm install` and `pnpm run build` generate artifacts *inside* the tree (`node_modules/`, `dist/`) — both
+are excluded from the pin's digests and from git, so **the pin re-verifies byte-identical after every
+install and build**, and `forge/boot.py` re-proves that on each run rather than assuming it. Generating
+artifacts is composition; touching a source is a fork. The distinction is checked, not remembered.
+
 ---
 
 ## ONE WORKING TREE PER SESSION — the structural fix `[2026-08-26]`
