@@ -15,8 +15,9 @@ Three results here are findings rather than tests, and they are marked:
     living in a patch validator. Witnessed with a synthetic target table.
   · `target syntax` and `inverse declared` CANNOT be isolated — each is
     structurally entangled with a gate that fires first.
-  · `signature` never returns FAILED, and that is correct: an unsigned row is a
-    legal draft, so its witness asserts the MIDDLE state.
+  · `signature` never returns FAILED **for an unsigned row**, and that is
+    correct: an unsigned row is a legal draft, so its witness asserts the MIDDLE
+    state. It does now FAIL a MACHINE-SHAPED author — see below.
 
 AND ONE MORE, ADDED `2026-08-27` — THE WELL-FORMED CARRIERS
 
@@ -27,10 +28,16 @@ reader who ran one and saw a refusal could conclude it had closed.
 
 So each is carried again on a COMPLETE patch — the worked example, twenty of
 twenty targets answered or declined, one defect planted and nothing else
-touched. **All six ride straight through: every carrier reports the same state
-on all sixteen gates as `northlake.patch.json` itself.** The battery cannot
+touched. **All six rode straight through: every carrier reported the same state
+on all sixteen gates as `northlake.patch.json` itself.** The battery could not
 distinguish a patch that repoints the national allocation system from the one it
 ships as the example to copy. Measured, not intuited — see `WELLFORMED` below.
+
+**Then one of them was closed.** `27` — a machine filling in `author` — was the
+only defect that made a patch MORE green than an honest draft, so it was ranked
+first and fixed: the signature gate now refuses a MACHINE-SHAPED author, `27` is
+a witness rather than a hole, and the mutation score moved 74.8% → 81.9% on the
+same change. Five carriers remain open, and each says so in its own `$status`.
 """
 
 from __future__ import annotations
@@ -122,15 +129,29 @@ def test_isolated_means_isolated():
 def test_signature_never_fails_and_that_is_correct():
     """
     `AGENTS.md`: a machine leaves `author` empty, and the signature is the
-    output commit. So unsigned is *not yet*, never *wrong* — and a gate that
-    FAILED here would refuse the very artifact a harness is meant to produce.
+    output commit. So UNSIGNED is *not yet*, never *wrong* — and a gate that
+    FAILED there would refuse the very artifact a harness is meant to produce.
+
+    NARROWED `2026-08-27`, and narrowed rather than weakened. The gate now
+    FAILS a MACHINE-SHAPED author, so "signature never fails" is no longer true
+    as a sentence about the gate — it is true, and load-bearing, about the
+    EMPTY field, which is the only case this test was ever about. The contrast
+    is asserted below rather than left implied: an empty field is an honest
+    draft, and a machine's name in that field is a manufactured signature. **The
+    two must not report the same state**, and before this they did not report
+    the same state as each other either — the machine's name reported GREEN,
+    which was better than honest.
     """
-    print("\nsignature refuses in the MIDDLE state, deliberately")
+    print("\nsignature refuses an UNSIGNED row in the MIDDLE state, deliberately")
     st, detail = verdict("06-unsigned.json", "signature")
     check("unsigned is PASS-UNVERIFIED", st, UNVERIFIED)
-    check("never FAILED", st != FAILED, True)
+    check("never FAILED for an unsigned row", st != FAILED, True)
     check("and it says why it is not fatal yet",
           "draft" in detail.lower() and "mount" in detail.lower(), True)
+
+    mst, _ = verdict("27-not-a-person-WELLFORMED.json", "signature")
+    check("a MACHINE-SHAPED author is a different state", mst, FAILED)
+    check("   and it is not the honest middle state", mst != st, True)
 
 
 def test_immutability_is_unreachable_from_a_patch():
@@ -234,22 +255,43 @@ def test_uncaught_fixtures_are_still_uncaught():
     # against patch.schema.json until that gate existed — which is precisely why
     # the hole was open.
     #
-    # ONE OF THE SEVEN EXPOSURES IS CLOSED. Recorded here rather than by quietly
-    # deleting the fixture: it is now a WITNESS for gate 14 instead of a hole,
-    # and the filename still says UNCAUGHT because renaming it belongs to
-    # whoever owns this battery.
-    CLOSED = {"20-adverse-replay-UNCAUGHT.json": "schema conformance"}
+    # TWO OF THE SEVEN EXPOSURES ARE CLOSED. Recorded here rather than by quietly
+    # deleting either fixture: each is now a WITNESS instead of a hole, and the
+    # filenames still say UNCAUGHT because renaming them belongs to whoever owns
+    # this battery.
+    #
+    # `17-not-a-person` closed 2026-08-27, and it closed BY MEASUREMENT rather
+    # than by inspection. The fragment had been sitting here since the sweep; what
+    # moved was carrying the same defect on a COMPLETE patch
+    # (27-not-a-person-WELLFORMED.json) and finding that it reported the same
+    # state on all sixteen gates as the accepted worked example — the only defect
+    # in the battery that made a patch MORE green than an honest draft. The
+    # signature gate now refuses a MACHINE-SHAPED author. The fragment is
+    # retained unedited so the exposure it recorded stays legible.
+    CLOSED = {
+        "20-adverse-replay-UNCAUGHT.json": "schema conformance",
+        "17-not-a-person-UNCAUGHT.json": "signature",
+    }
 
     for f in found:
         r = validate(load_patch(os.path.join(REJECTED, f)), load_targets())
         tripped = [g for s, g, _ in r.rows if s != GREEN and g not in ambient]
-        if f in CLOSED:
+        if f == "20-adverse-replay-UNCAUGHT.json":
             # gate 14 is a FLOOR and so filtered from `tripped`; assert the
             # closure where the catch actually lives — the schema validator.
             import subprocess as _sp
             _r = _sp.run([sys.executable, os.path.join(ROOT, "schema", "validate.py"),
                           os.path.join(REJECTED, f)], capture_output=True, text=True)
             check(f"{f[:34]} NOW CAUGHT by {CLOSED[f]}", _r.returncode, 1)
+        elif f in CLOSED:
+            # a SEMANTIC gate catches it, so the closure is visible in `tripped`
+            # itself — and the refusal must still teach.
+            st, detail = verdict(f, CLOSED[f])
+            check(f"{f[:34]} NOW CAUGHT by {CLOSED[f]}", st, FAILED)
+            check("   and the refusal names the defect",
+                  "machine-shaped" in detail.lower(), True)
+            check("   and it is the ONLY semantic gate that catches it",
+                  tripped, [CLOSED[f]])
         else:
             check(f"{f[:34]} still silent", tripped, [])
 
@@ -295,6 +337,20 @@ WELLFORMED = {
     "29-partial-bypass-WELLFORMED.json":     "19-partial-bypass-UNCAUGHT.json",
 }
 
+# ONE OF THE SIX IS CLOSED, `2026-08-27` — and closing it was the point.
+#
+# The measurement identified `27` as the highest-priority hole for one reason:
+# it was the only defect in the battery that made a patch **more green than an
+# honest draft.** Leave `author` empty and the gate says *not yet signed*; write
+# a machine's own name in it and the gate said *a named human*. The gate now
+# refuses a machine-shaped author, so `27` has been promoted from exposure to
+# WITNESS and is asserted here as a catch rather than as a hole.
+#
+# **What it deliberately does not close**: a machine that types a plausible human
+# name still passes, and nothing readable from a file can tell that from a human
+# typing it. That residue is why the mount ceremony exists.
+CLOSED_CARRIERS = {"27-not-a-person-WELLFORMED.json": "signature"}
+
 WORKED = os.path.join(ROOT, "examples", "worked", "northlake.patch.json")
 
 
@@ -328,12 +384,22 @@ def test_wellformed_carriers_are_indistinguishable_from_the_accepted_patch():
     GATE as `northlake.patch.json` — the patch this repository ships as the one
     to copy. Sixteen gates, and the battery cannot tell a patch that repoints
     the national allocation system from the teaching example.
+
+    A CLOSED carrier must differ on EXACTLY the gate that closed it, and agree
+    everywhere else. That is what makes it a witness rather than a second
+    defect: if it diverged on two gates, the fix reached further than the hole.
     """
     print("\nevery gate says the same thing about a carrier as about the accepted patch")
     want = _states(load_patch(WORKED))
     for f in sorted(WELLFORMED):
         got = _states(load_patch(os.path.join(REJECTED, f)))
-        check(f"{f[:30]} same state vector", got, want)
+        if f in CLOSED_CARRIERS:
+            g = CLOSED_CARRIERS[f]
+            check(f"{f[:30]} differs ONLY on {g}",
+                  [k for k in got if got[k] != want[k]], [g])
+            check(f"   and {g} is the closure, not the ambience", got[g], FAILED)
+        else:
+            check(f"{f[:30]} same state vector", got, want)
 
 
 def test_the_semantic_holes_ride_a_complete_patch_through():
@@ -345,7 +411,8 @@ def test_the_semantic_holes_ride_a_complete_patch_through():
     Fails in both directions, like its fragment counterpart:
 
       · if a carrier starts being caught, the hole CLOSED — promote it to a
-        witness and say which gate closed it.
+        witness and say which gate closed it. `27` went that way on
+        2026-08-27 and is asserted below as a catch, not deleted.
       · if the file disappears, someone deleted an exposure rather than fixing
         one.
     """
@@ -358,7 +425,13 @@ def test_the_semantic_holes_ride_a_complete_patch_through():
         check(f"   its fragment {fragment[:22]} retained",
               os.path.exists(os.path.join(REJECTED, fragment)), True)
         fired, why = fired_by(load_patch(p), T, ignore=noise)
-        check(f"   nothing refuses {f[:26]}", fired, [])
+        if f in CLOSED_CARRIERS:
+            g = CLOSED_CARRIERS[f]
+            check(f"   {g} ALONE refuses {f[:22]}", fired, [g])
+            check("   and the refusal teaches",
+                  "machine-shaped" in why[g].lower() and "empty" in why[g].lower(), True)
+        else:
+            check(f"   nothing refuses {f[:26]}", fired, [])
 
 
 def test_partiality_is_a_self_report_not_a_property():
@@ -402,17 +475,37 @@ def test_partiality_is_a_self_report_not_a_property():
     check("   flip that one marker and the same file is refused", state_of(q)[0], FAILED)
 
 
-def test_the_signature_gate_counts_non_empty_strings():
+def test_the_signature_gate_refuses_a_machine_and_not_a_person():
     """
-    CONFIRMED OPEN, under every phrasing tried.
+    **CLOSED `2026-08-27` — the hole this fork ranked first, and the table that
+    keeps the fix from becoming a new hole.**
 
-    `AGENTS.md` has a machine leave `author` EMPTY so the middle state can mean
-    *not yet signed*. Every non-empty string turns that PASS-UNVERIFIED into
-    GREEN — and GREEN on a gate whose text reads *"every row carries a named
-    human"*. **The gate that makes the signature the output commit is defeated
-    by a hyphen.**
+    Before: every non-empty string turned PASS-UNVERIFIED into GREEN, on a gate
+    whose text read *"every row carries a named human"*. It was counting
+    non-empty strings, and it was the only defect in the battery that made a
+    patch MORE green than an honest draft.
+
+    After: a MACHINE-SHAPED author is FAILED. Three states, and all three are
+    asserted here, because a fix that collapsed any two of them would be a
+    different defect wearing the costume of a repair —
+
+        ''  '   '      PASS-UNVERIFIED   an honest draft. Unchanged, and it must
+                                         not change: AGENTS.md has a machine
+                                         leave this empty.
+        'system' '-'   FAILED            a manufactured signature.
+        'A. Reviewer'  GREEN             present and not machine-shaped. **Not
+                                         "a human" — the gate cannot decide
+                                         that, and no longer says it does.**
+
+    THE FALSE-POSITIVE HALF IS THE HARD HALF, and it is why `ai`, `bot` and
+    `system` match as WHOLE WORDS. `Aisha Botha` and `M. Santos-Systema` are
+    exactly the names a substring matcher eats, and **a signature gate that
+    cries wolf on a real name is worse than the hole it closes** — the same
+    reasoning that deleted the fourth check in `gates/attest.py`. Both are
+    asserted GREEN below, and they are the assertions to run first if anyone
+    widens the token list.
     """
-    print("\nthe signature gate is defeated by any non-empty string")
+    print("\nthe signature gate refuses a machine, and never a person")
     T = load_targets()
     base = load_patch(os.path.join(REJECTED, "27-not-a-person-WELLFORMED.json"))
 
@@ -422,8 +515,21 @@ def test_the_signature_gate_counts_non_empty_strings():
             row["author"] = author
         return {g: (s, d) for s, g, d in validate(p, T).rows}["signature"]
 
-    for a in ("AI assistant (automated patch generation)", "system", "-", "n/a"):
-        check(f"author={a[:26]!r} → GREEN", signature(a)[0], GREEN)
+    for a in ("AI assistant (automated patch generation)", "system", "n/a", "-",
+              "automated-pipeline", "LLM", "the harness", "TBD", "none"):
+        st, detail = signature(a)
+        check(f"author={a[:30]!r} → FAILED", st, FAILED)
+        check("   and the refusal teaches",
+              "machine-shaped" in detail.lower() and "empty" in detail.lower(), True)
+
+    for a in ("A. Reviewer", "Aisha Botha", "M. Santos-Systema",
+              "M. Okonkwo — Quality Director", "Ravi Modelli", "Sgt. Sargent"):
+        st, detail = signature(a)
+        check(f"author={a[:30]!r} → GREEN", st, GREEN)
+        check("   and the gate no longer claims to have verified a human",
+              "named human" not in detail.lower() and "attested at mount" in detail.lower(),
+              True)
+
     for a in ("", "   "):
         check(f"author={a!r} → the honest middle state", signature(a)[0], UNVERIFIED)
 
@@ -484,14 +590,30 @@ def test_the_credential_near_miss_is_not_a_security_check():
 
 
 def test_every_wellformed_carrier_explains_itself():
-    """A carrier nobody can read is a carrier nobody will act on."""
+    """
+    A carrier nobody can read is a carrier nobody will act on.
+
+    And a carrier whose label has gone stale is worse than one nobody reads:
+    `27` closed, so it must no longer call itself an open exposure. **A caught
+    fixture still labelled UNCAUGHT is a standing lie about coverage** — the
+    same rule the fragment test applies, applied here.
+    """
     print("\nand each carrier says what it is, and what it is a carrier OF")
     for f, fragment in sorted(WELLFORMED.items()):
         with open(os.path.join(REJECTED, f), encoding="utf-8") as fh:
             doc = json.load(fh)
         check(f"{f[:30]} says FICTIONAL", "FICTIONAL" in doc.get("$comment", ""), True)
-        check(f"{f[:30]} declares UNCAUGHT-WELLFORMED",
-              "UNCAUGHT-WELLFORMED" in doc.get("$status", ""), True)
+        if f in CLOSED_CARRIERS:
+            check(f"{f[:30]} declares itself CLOSED",
+                  doc.get("$status", "").startswith("CLOSED"), True)
+            check(f"{f[:30]} names the gate it witnesses",
+                  CLOSED_CARRIERS[f] in doc.get("$witnesses", ""), True)
+            check(f"{f[:30]} says what the fix does NOT close",
+                  "does not close" in doc.get("$comment", "").lower()
+                  and "plausible human name" in doc.get("$comment", "").lower(), True)
+        else:
+            check(f"{f[:30]} declares UNCAUGHT-WELLFORMED",
+                  "UNCAUGHT-WELLFORMED" in doc.get("$status", ""), True)
         check(f"{f[:30]} names its finder",
               doc.get("$found_by", "").startswith("fork/witnesses"), True)
         check(f"{f[:30]} names its fragment", doc.get("$carrier_of"), fragment)
@@ -523,7 +645,7 @@ if __name__ == "__main__":
               test_wellformed_carriers_are_indistinguishable_from_the_accepted_patch,
               test_the_semantic_holes_ride_a_complete_patch_through,
               test_partiality_is_a_self_report_not_a_property,
-              test_the_signature_gate_counts_non_empty_strings,
+              test_the_signature_gate_refuses_a_machine_and_not_a_person,
               test_the_expiry_gate_has_no_clock,
               test_the_credential_near_miss_is_not_a_security_check,
               test_every_wellformed_carrier_explains_itself,

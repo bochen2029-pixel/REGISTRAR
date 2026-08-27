@@ -52,6 +52,39 @@ WEASEL = (
     "best practice", "industry standard", "generally", "in general", "as expected",
 )
 
+# ── author strings that name a MACHINE rather than a person ─────────────────
+#
+# WHOLE WORDS for the ambiguous tokens, and this is the whole design. A
+# signature gate that cries wolf on a real name is worse than the hole it
+# closes — the next real alarm gets discounted, which is the reasoning that
+# DELETED the fourth check in gates/attest.py. So `Aisha Botha` must not fire on
+# `ai` or `bot`, and `M. Santos-Systema` must not fire on `system`; only the
+# standalone words do. `automat` and `generat` are stems rather than words
+# (`automated-pipeline`, `patch generation`) and have no plausible collision
+# with a human name.
+#
+# KNOWN RESIDUE, recorded rather than pretended away: `Harness` is a real
+# surname, and this gate would refuse it. That is a false positive a human can
+# see and argue with in one line, which is the tolerable direction — unlike the
+# failure it replaces, which was silent.
+MACHINE_WORDS = ("ai", "bot", "system", "assistant", "llm", "model", "agent", "harness")
+MACHINE_STEMS = ("automat", "generat")
+MACHINE_EXACT = {"-", "n/a", "na", "none", "unknown", "tbd", "test"}
+MACHINE_RE = re.compile(
+    r"\b(?:" + "|".join(MACHINE_WORDS) + r")\b|\b(?:" + "|".join(MACHINE_STEMS) + r")",
+    re.I)
+
+
+def machine_shaped(author) -> str:
+    """The token that makes this author a machine, or '' if it names someone."""
+    a = str(author or "").strip()
+    if not a:
+        return ""                      # empty is *not yet signed*, never *wrong*
+    if a.lower() in MACHINE_EXACT:
+        return a.lower()
+    m = MACHINE_RE.search(a)
+    return m.group(0).lower() if m else ""
+
 
 class Result:
     def __init__(self) -> None:
@@ -271,12 +304,54 @@ def validate(patch: dict, targets: dict) -> Result:
         r.add(UNVERIFIED, "attest", f"unavailable: {_exc}")
 
     # 12 · signature — the output commit
-    unsigned = [row.get("target") for row in rows if not str(row.get("author") or "").strip()]
-    if unsigned:
+    #
+    # THREE STATES, AND THE MIDDLE ONE IS LOAD-BEARING. `AGENTS.md` has a machine
+    # leave `author` EMPTY: a machine's output is a candidate, and the signature
+    # is what makes the mount legitimate. So an unsigned row is *not yet*, never
+    # *wrong*, and this gate reports PASS-UNVERIFIED for it. That has not changed.
+    #
+    # WHAT CHANGED, 2026-08-27 — AND IT IS A FIX, NOT A TIGHTENING.
+    # The gate tested the field for NON-EMPTINESS and reported "every row carries
+    # a named human". Measured against a well-formed carrier
+    # (examples/worked/rejected/27-not-a-person-WELLFORMED.json — a complete,
+    # schema-valid patch, twenty of twenty targets accounted for), `system`, `-`,
+    # `n/a` and `AI assistant (automated patch generation)` all reported GREEN.
+    # It was the only defect in the whole battery that made a patch MORE green
+    # than an honest draft: leave the field empty and the gate says *not yet
+    # signed*; write a machine's own name in it and the gate says *a named
+    # human*.
+    #
+    # **That is not evading a check. It is manufacturing a signature on a
+    # human's behalf**, and it defeats the gate whose entire purpose is that the
+    # signature is the output commit.
+    #
+    # WHAT THIS DELIBERATELY DOES NOT CLOSE, stated so nobody reads more into it:
+    # a machine that types a PLAUSIBLE HUMAN NAME still passes, and no check on a
+    # file can distinguish that from a human typing it. That residue is exactly
+    # why the mount ceremony exists and why this gate can never be the last word.
+    # Closing the overt case still matters, because it converts a SILENT FORGERY
+    # into a DELIBERATE DECEPTION — a different act, and one a reviewer can name.
+    unsigned = [row.get("target") for row in rows
+                if not str(row.get("author") or "").strip()]
+    machine = [(row.get("target"), machine_shaped(row.get("author")))
+               for row in rows if machine_shaped(row.get("author"))]
+    if machine:
+        who = "; ".join(f"{t} signed by {tok!r}" for t, tok in machine[:3])
+        more = f" (+{len(machine) - 3} more)" if len(machine) > 3 else ""
+        also = f"; {len(unsigned)} further row(s) are correctly unsigned" if unsigned else ""
+        r.add(FAILED, "signature",
+              f"{len(machine)} row(s) carry a MACHINE-SHAPED author rather than a person: "
+              f"{who}{more}{also} — AGENTS.md has a machine leave `author` EMPTY, because "
+              f"the signature IS the output commit. Filling it does not evade the check, it "
+              f"manufactures a signature on a human's behalf. Leave it empty; a human signs "
+              f"at mount.")
+    elif unsigned:
         r.add(UNVERIFIED, "signature",
               f"{len(unsigned)} row(s) unsigned — legal in a draft, fatal at mount")
     else:
-        r.add(GREEN, "signature", "every row carries a named human")
+        r.add(GREEN, "signature",
+              f"{len(rows)} row(s) carry an author string that is present and not "
+              f"machine-shaped — PERSONHOOD IS ATTESTED AT MOUNT, never verified from a file")
 
     return r
 

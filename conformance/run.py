@@ -217,17 +217,36 @@ def check_gates() -> None:
         sys.path.insert(0, os.path.join(ROOT, "gates"))
         from witness import FLOOR
         from validate_patch import GREEN as _G
+        #
+        # AND A SECOND WAY THIS LINE COULD LIE, closed 2026-08-27. A fixture
+        # retained here can also stop being an exposure by being FIXED — gate 14
+        # closed `20-adverse-replay`, and the signature gate closed
+        # `17-not-a-person` / `27-not-a-person` once a machine-shaped author
+        # became a refusal. Counting those in the same total would assert that
+        # nothing catches something a gate now catches, which is the exact
+        # inversion of the mistake above. They are partitioned and both halves
+        # are printed: a closed exposure is a WITNESS awaiting promotion, not a
+        # hole, and saying so is how the promotion gets done rather than
+        # forgotten.
         ambient = {"shadow-run fidelity", "totality on provision"}
-        floored = 0
+        floored, still_open, closed = 0, [], []
         for f in uncaught:
             rr = validate(load_patch(os.path.join(worked, "rejected", f)), load_targets())
+            caught_by = [g for st, g, _ in rr.rows
+                         if st != _G and g not in FLOOR and g not in ambient]
+            if caught_by:
+                closed.append(f"{f} (by {', '.join(caught_by)})")
+                continue
+            still_open.append(f)
             if any(st != _G and g in FLOOR for st, g, _ in rr.rows):
                 floored += 1
         record(UNVERIFIED, "gates · known exposures",
-               f"{len(uncaught)} hole(s) no SEMANTIC gate catches, retained deliberately"
+               f"{len(still_open)} hole(s) no SEMANTIC gate catches, retained deliberately"
                + (f" ({floored} also trip a floor gate for being minimal — that is "
                   f"not closure)" if floored else "")
-               + f": {', '.join(uncaught)}")
+               + f": {', '.join(still_open)}"
+               + (f" · {len(closed)} CLOSED and awaiting promotion to witnesses: "
+                  f"{', '.join(closed)}" if closed else ""))
 
     record(UNVERIFIED, "gates · undecidable from a file",
            "local invertibility, shadow-run fidelity, totality — need a runtime and the site's tape")
