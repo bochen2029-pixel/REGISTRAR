@@ -22,6 +22,10 @@ import os
 import re
 import shutil
 import subprocess
+
+# The CLIs are forge-fenced (require_forge); tests exercise forge machinery
+# and say so, instead of the fence being weakened to let them through.
+os.environ.setdefault("REGISTRAR_PROFILE", "forge")
 import sys
 import tempfile
 

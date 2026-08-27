@@ -226,7 +226,11 @@ def main(argv: list[str]) -> int:
     path = argv[0]
     with open(path, encoding="utf-8") as fh:
         if path.endswith((".yml", ".yaml")):
-            import yaml
+            try:
+                import yaml
+            except ImportError:
+                raise SystemExit("this input is YAML and pyyaml is absent — "
+                                 "install pyyaml, or supply the JSON form")
             patch = yaml.safe_load(fh)
         else:
             patch = json.load(fh)

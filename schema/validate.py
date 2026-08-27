@@ -156,7 +156,11 @@ def validate(value, node: dict, root: dict, path: str = "") -> list[str]:
 def load(path: str):
     with open(path, encoding="utf-8") as fh:
         if path.endswith((".yml", ".yaml")):
-            import yaml
+            try:
+                import yaml
+            except ImportError:
+                raise SystemExit("this input is YAML and pyyaml is absent — "
+                                 "install pyyaml, or supply the JSON form")
             return yaml.safe_load(fh)
         return json.load(fh)
 

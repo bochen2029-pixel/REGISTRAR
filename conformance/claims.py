@@ -247,8 +247,9 @@ def derive(with_battery: bool = True) -> dict:
             "$note": "Claims a surface may carry that this file cannot check, listed so "
                      "their absence is not read as coverage.",
             "items": [
-                "the F-PATCH-DELTA result — it lives in internal/, gitignored, and a "
-                "clone does not receive it",
+                "the F-PATCH-DELTA verdict — VOID-BY-AMBIGUITY, dual-printed (0.57 ∥ 0.375) on the "
+                "surfaces; the answer key is vaulted in internal/ and the prose verdicts in the "
+                "tracked RESULTS.md are not parseable by this file's numeric patterns",
                 "every substrate row — measured in another domain, on another bench",
                 "anything about a real OPO, because nothing has run inside one",
             ],
@@ -345,9 +346,12 @@ def surface(path: str) -> int:
         blob = text
         suppressed = 0
         for ex in c.get("exclude") or []:
-            blob, n = re.subn(ex, " ", blob)  # a phrasing that only looks like this claim
+            blob, n = re.subn(ex, " ", blob, flags=re.I)  # a phrasing that only looks like this claim
             suppressed += n
-        found = {_int(m) for m in re.findall(pat, blob)}
+        # re.I: the founding stale number lived in a CAPS fineprint ("41 CITATIONS")
+        # and the case-sensitive matcher blessed it — QC F2. A claim is a claim
+        # in any case the page chooses to shout it in.
+        found = {_int(m) for m in re.findall(pat, blob, re.I)}
         found.discard(None)
         if not found:
             # THREE STATES, NEVER TWO — enforced here, in the file that enforces it.

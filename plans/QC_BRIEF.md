@@ -218,3 +218,25 @@ Write **`C:\REGISTRAR\qc\QC_REPORT_<date>.md`** (create `qc/`), structured exact
 
 *One last framing, from the operator's own laws: the central risk is not a wrong patch — it is a weak
 battery. You are the battery's battery. Act accordingly.*
+
+
+---
+
+## CORRECTIONS · appended `2026-08-26` late, after the QC ran
+
+The QC's meta-section found this brief stale in six places. Confirmed, and corrected here rather than
+silently rewritten above:
+
+- **There were FOUR forks, not three** — `fork/battery` (mutation testing of the gate battery; its own
+  83.8% claim was withdrawn to a measured basis by its own audit) was live when this brief said three. It
+  is now **merged**; the worktrees are `main`, `fork/plugins`, `fork/witnesses`.
+- **The battery runs in ~3 s, not ~2 min** — the ">100 s observed" dated from the claims-gate recursion bug,
+  already fixed when the brief shipped. True when measured, stale when published: the drift class, in the
+  brief about the drift class.
+- **11 test modules / 396 assertions**, not "8 suites / ~280" — the brief's run list predated Fork A's.
+- **The §1 state block is superseded** — treat `conformance/CLAIMS.json` as the state block; it is derived,
+  the prose was not.
+- **§6 omitted the published-history leak** — since **resolved**: history rewritten via filter-repo,
+  force-pushed, proven clean from a fresh clone; map at `provenance/history-rewrite-2026-08-26.commit-map`.
+- The scoring dispute the QC raised (F1) is now the **VOID-BY-AMBIGUITY** revision in the experiment's
+  RESULTS.md — a future QC should treat v1 scoring as historical, not current.

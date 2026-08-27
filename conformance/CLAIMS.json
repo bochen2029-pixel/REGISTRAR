@@ -44,7 +44,7 @@
       "value": "default — no REGISTRAR_SURFACE set"
     },
     "battery_green": {
-      "value": 50,
+      "value": 51,
       "pattern": "(\\d+) G ·"
     },
     "battery_unverified": {
@@ -75,7 +75,7 @@
   "not_derivable_here": {
     "$note": "Claims a surface may carry that this file cannot check, listed so their absence is not read as coverage.",
     "items": [
-      "the F-PATCH-DELTA result — it lives in internal/, gitignored, and a clone does not receive it",
+      "the F-PATCH-DELTA verdict — VOID-BY-AMBIGUITY, dual-printed (0.57 ∥ 0.375) on the surfaces; the answer key is vaulted in internal/ and the prose verdicts in the tracked RESULTS.md are not parseable by this file's numeric patterns",
       "every substrate row — measured in another domain, on another bench",
       "anything about a real OPO, because nothing has run inside one"
     ]

@@ -383,4 +383,11 @@ def main(argv: list[str]) -> int:
 
 
 if __name__ == "__main__":
+    # The forge fence, wired — QC F5 found require_forge() with zero callers,
+    # and a fence nobody invokes is law 9 verbatim. A deployed record must
+    # not carry completion machinery that RUNS; the guard names the escape.
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    "..", "..", "..", "..", "core"))
+    from profile import require_forge
+    require_forge("forge/plugins/phi_scan/src/phi_scan.py")
     raise SystemExit(main(sys.argv[1:]))

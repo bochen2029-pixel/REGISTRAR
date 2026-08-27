@@ -208,16 +208,30 @@ def check_gates() -> None:
         from witness import FLOOR
         from validate_patch import GREEN as _G
         ambient = {"shadow-run fidelity", "totality on provision"}
+        # MEASURED, NOT COUNTED BY FILENAME — QC F4. The old line derived its
+        # number from `"UNCAUGHT" in filename`, so it would have printed the
+        # same sentence if every hole had quietly closed. Now each fixture is
+        # actually run: a semantic (non-floor) FAILED means the hole is CLOSED
+        # and the label is stale — which is drift, and fails loudly.
+        from validate_patch import FAILED as _F
         floored = 0
+        caught = []
         for f in uncaught:
             rr = validate(load_patch(os.path.join(worked, "rejected", f)), load_targets())
             if any(st != _G and g in FLOOR for st, g, _ in rr.rows):
                 floored += 1
+            if any(st == _F and g not in FLOOR for st, g, _ in rr.rows):
+                caught.append(f)
+        live = [f for f in uncaught if f not in caught]
+        if caught:
+            record(FAILED, "gates · exposure labels current",
+                   f"labelled UNCAUGHT but a semantic gate now refuses: {', '.join(caught)} "
+                   f"— rename the fixture or record the closure; a stale label is drift")
         record(UNVERIFIED, "gates · known exposures",
-               f"{len(uncaught)} hole(s) no SEMANTIC gate catches, retained deliberately"
-               + (f" ({floored} also trip a floor gate for being minimal — that is "
-                  f"not closure)" if floored else "")
-               + f": {', '.join(uncaught)}")
+               f"{len(live)} hole(s) MEASURED open — no semantic gate refuses them "
+               f"(run per fixture, not counted by filename)"
+               + (f"; {floored} trip a floor gate for being minimal — not closure" if floored else "")
+               + (f": {', '.join(live)}" if live else ""))
 
     record(UNVERIFIED, "gates · undecidable from a file",
            "local invertibility, shadow-run fidelity, totality — need a runtime and the site's tape")
@@ -778,6 +792,43 @@ def check_claims() -> None:
                f"{len(stale)} stale: " + "; ".join(stale)[:120])
 
 
+# ── 6m · no YAML file carries the reserved-key trap ─────────────────────────
+def check_yaml_nulls() -> None:
+    """
+    A bare `null:` key parses as the None KEY and the field silently vanishes.
+    Third live instance found by the QC in profiles/edr.yml — after the adapter
+    checker had refused the class and the ROADMAP had declared it gated. The
+    adapter gate only saw adapters/; this sweeps EVERY tracked YAML, so the
+    class dies instead of its instances.
+    """
+    try:
+        import yaml
+    except ImportError:
+        record(UNVERIFIED, "hygiene · yaml reserved keys", "pyyaml unavailable — not swept")
+        return
+    r = subprocess.run(["git", "ls-files", "*.yml", "*.yaml"],
+                       capture_output=True, text=True, cwd=ROOT)
+    hits = []
+    def walk(node, path, fn):
+        if isinstance(node, dict):
+            for k, v in node.items():
+                if k is None:
+                    hits.append(f"{fn}:{path or '(root)'}")
+                walk(v, f"{path}.{k}" if path else str(k), fn)
+        elif isinstance(node, list):
+            for i, v in enumerate(node):
+                walk(v, f"{path}[{i}]", fn)
+    for fn in [f for f in r.stdout.splitlines() if f.strip()]:
+        try:
+            with open(os.path.join(ROOT, fn), encoding="utf-8") as fh:
+                walk(yaml.safe_load(fh), "", fn)
+        except Exception:
+            pass
+    record(FAILED if hits else GREEN, "hygiene · yaml reserved keys",
+           f"None key at {', '.join(hits[:4])} — a `null:` key swallows its field silently"
+           if hits else "no tracked YAML carries a None key")
+
+
 # ── 7 · nothing site-specific is in the repository ──────────────────────────
 def check_no_site_data() -> None:
     # ASK GIT, NOT THE FILESYSTEM. The check is named "committed" and walked the
@@ -833,6 +884,7 @@ def main() -> int:
         ("redistribution", check_no_redistribution),
         ("the schema", check_schema),
         ("the claims", check_claims),
+        ("yaml hygiene", check_yaml_nulls),
         ("hygiene", check_no_site_data),
     ):
         print(f"{section}")

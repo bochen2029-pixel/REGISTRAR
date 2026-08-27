@@ -66,7 +66,7 @@ mounts:
 
   - id: gates
     path: gates/
-    what: The gate battery. Twelve gates; three states, never two.
+    what: The gate battery — three states, never two. (Counted by CLAIMS.json, not prose.)
     immutable_to_agent: true
 
   - id: schema
@@ -148,7 +148,7 @@ interval:
     path: core/resident/
     what: The trained judge at radius 1 — surfaces, never acts.
     at_off: Absent. The floor is the judge.
-    null: floor
+    beats: floor   # `null:` is the YAML None-key trap — QC F-finding, swept by 6m
     status: SPEC
     note: >
       Mounted in the edr profile because attending a case IS the product. The
