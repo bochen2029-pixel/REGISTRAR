@@ -27,6 +27,14 @@ forking.* A plugin that must live inside the tree it extends is not a plugin.
 
 `conformance/run.py` fails if any of it is ever staged. Do not work around that check; it is the fence.
 
+**The one carve-out, stated precisely and then narrowed by measurement `[2026-08-27, F-BOOT]`:** the
+read-only rule protects **sources**. `pnpm install` writes only `node_modules/`, which the pin excludes —
+**the pin re-verifies byte-identical after install**, proven each boot. **`pnpm run build` is NOT in the
+carve-out:** upstream commits its `lib/` artifacts, so building regenerates pinned files — measured at
+**+6,463 files**, caught by the pin, removed byte-verified. **And the build is unnecessary:** upstream ships
+prebuilt and `pnpm dsh web` runs from source via tsx. Install is composition; **build is a fork, and the
+boot never reaches it.**
+
 ---
 
 ## ONE WORKING TREE PER SESSION — the structural fix `[2026-08-26]`
