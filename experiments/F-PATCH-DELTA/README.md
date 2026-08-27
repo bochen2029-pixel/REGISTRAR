@@ -86,3 +86,19 @@ this is a FAILS regardless of the absolute score.
 
 **And the gates refused arm ① on their own, without the answer key** — *"asserts generality, not this site"*,
 and 20 of 20 shadow runs with no denominator.
+
+
+---
+
+## Disqualification ledger — who may never author an arm-② candidate
+
+A candidate is valid only from a session that has seen **none** of the spoilers. Permanently disqualified:
+
+- **the mainline session of 2026-08-26** — built the corpus and the answer key
+- **the QC session of 2026-08-26** — read `internal/f-patch-delta/DELTA.json` (disclosed in its report)
+- **any session that has read** `RESULTS.md`, `PREREGISTRATION.md` §3, `qc/QC_REPORT_2026-08-26.md`, or
+  anything under `internal/f-patch-delta/`
+
+The spoiler surface **grows**: every analysis of the run adds to it. An eligible runner is a fresh session
+given only the repository and `site/`, per the protocol above — and after the QC's F1 finding, only under
+**rubric v2** once it is pre-registered.

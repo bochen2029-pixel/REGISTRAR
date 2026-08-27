@@ -1,0 +1,111 @@
+{
+  "arm": null,
+  "candidate": "qc_cand_D.json",
+  "score": 20,
+  "max": 40,
+  "S": 0.5,
+  "fabrications": 0,
+  "verdict": "SHAPED",
+  "per_target": [
+    {
+      "target": "allocation.credentials",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "allocation.offer_window_practice",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "authorization.approach_sequence",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "authorization.esignature_vendor",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "authorization.second_person_rule",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "evaluation.imaging_route",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "evaluation.on_site_vs_remote",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "evaluation.reference_lab",
+      "score": 1,
+      "why": "shaped — 240 against 451 (47% out)"
+    },
+    {
+      "target": "intake.after_hours_owner",
+      "score": 2,
+      "why": "correct — 'house_coordinator'"
+    },
+    {
+      "target": "intake.channel",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "intake.timely_referral_definition",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "lapse.threshold",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "management.escalation_ladder",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "management.protocol_variant",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "recovery.or_availability",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "recovery.team_mobilisation",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "transport.perfusion",
+      "score": 1,
+      "why": "CORRECT DECLINE — nothing in the corpus supports this, and it said so"
+    },
+    {
+      "target": "transport.providers",
+      "score": 0,
+      "why": "wrong — no key matches"
+    },
+    {
+      "target": "triage.callback_practice",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    },
+    {
+      "target": "triage.ruleout_authority",
+      "score": 1,
+      "why": "declined with a hold (the material does support an answer, but a hold is honest)"
+    }
+  ]
+}

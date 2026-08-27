@@ -1,0 +1,176 @@
+{
+ "schema_version": "0.1",
+ "site": {
+  "id": "qc-probe-d"
+ },
+ "rows": [
+  {
+   "id": "qc-reference-la",
+   "target": "evaluation.reference_lab",
+   "value": {
+    "turnaround_minutes": 240
+   },
+   "inverse": null,
+   "evidence": [
+    {
+     "kind": "tape",
+     "source": "tape/referrals.csv filtered extract n=100",
+     "says": "the laboratory formerly known as Fairbank Regional reports the standard panel within four hours of receipt"
+    }
+   ],
+   "shadow_run": {
+    "cases": 100,
+    "would_have_matched": 90,
+    "would_have_missed": 10
+   },
+   "expiry": "2027-08-31",
+   "author": ""
+  },
+  {
+   "id": "qc-after-hours-",
+   "target": "intake.after_hours_owner",
+   "value": "house_coordinator",
+   "inverse": null,
+   "evidence": [
+    {
+     "kind": "tape",
+     "source": "tape/referrals.csv filtered extract n=100",
+     "says": "SOP-07 was not withdrawn and remains fully in force for after-hours coverage"
+    }
+   ],
+   "shadow_run": {
+    "cases": 100,
+    "would_have_matched": 90,
+    "would_have_missed": 10
+   },
+   "expiry": "2027-08-31",
+   "author": ""
+  },
+  {
+   "id": "qc-providers",
+   "target": "transport.providers",
+   "value": {
+    "dispatch_minutes": 20
+   },
+   "inverse": null,
+   "evidence": [
+    {
+     "kind": "tape",
+     "source": "tape/referrals.csv filtered extract n=100",
+     "says": "the courier contract sets no limit on nightly dispatch volume and dispatch is reliable"
+    }
+   ],
+   "shadow_run": {
+    "cases": 100,
+    "would_have_matched": 90,
+    "would_have_missed": 10
+   },
+   "expiry": "2027-08-31",
+   "author": ""
+  }
+ ],
+ "holds": [
+  {
+   "target": "triage.callback_practice",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "recovery.or_availability",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "recovery.team_mobilisation",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "allocation.offer_window_practice",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "lapse.threshold",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "authorization.second_person_rule",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "intake.channel",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "evaluation.imaging_route",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "authorization.esignature_vendor",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "allocation.credentials",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "evaluation.on_site_vs_remote",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "triage.ruleout_authority",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "authorization.approach_sequence",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "management.escalation_ladder",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "management.protocol_variant",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "intake.timely_referral_definition",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "transport.perfusion",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  }
+ ]
+}

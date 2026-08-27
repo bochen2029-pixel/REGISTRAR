@@ -1,0 +1,129 @@
+{
+ "schema_version": "0.1",
+ "site": {
+  "id": "qc-probe-a"
+ },
+ "rows": [],
+ "holds": [
+  {
+   "target": "intake.after_hours_owner",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "triage.callback_practice",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "evaluation.reference_lab",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "recovery.or_availability",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "recovery.team_mobilisation",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "allocation.offer_window_practice",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "lapse.threshold",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "authorization.second_person_rule",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "intake.channel",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "evaluation.imaging_route",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "authorization.esignature_vendor",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "allocation.credentials",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "evaluation.on_site_vs_remote",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "triage.ruleout_authority",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "authorization.approach_sequence",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "management.escalation_ladder",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "management.protocol_variant",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "transport.providers",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "intake.timely_referral_definition",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  },
+  {
+   "target": "transport.perfusion",
+   "searched": "site corpus reviewed end to end",
+   "reason": "declined pending human review",
+   "class": "no_evidence"
+  }
+ ]
+}
