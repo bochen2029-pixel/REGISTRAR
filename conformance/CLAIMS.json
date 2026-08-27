@@ -44,7 +44,7 @@
       "value": "default — no REGISTRAR_SURFACE set"
     },
     "battery_green": {
-      "value": 51,
+      "value": 52,
       "pattern": "(\\d+) G ·"
     },
     "battery_unverified": {
