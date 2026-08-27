@@ -114,7 +114,10 @@ def installed() -> bool:
 def built() -> bool:
     # upstream's build emits per-package dist/ trees; the web frontend's is the
     # one the launch needs, and its absence is the honest "not built" signal
-    for probe in ("packages/host/web/dist", "packages/web-frontend/dist"):
+    # real layout, mapped after install: the web host is packages/host/webserver
+    # and the static frontend packages/host/frontend-static
+    for probe in ("packages/host/webserver/dist", "packages/host/frontend-static/dist",
+                  "packages/host/webserver/lib"):
         if os.path.isdir(os.path.join(CHASSIS, probe)):
             return True
     return False
