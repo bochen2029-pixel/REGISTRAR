@@ -494,6 +494,20 @@ to it.**
 
 ---
 
+## The other half
+
+This is the **operational** side of organ donation — the OPO, the case under a clock, the record.
+
+[**transplant-peer-support**](https://github.com/bochen2029-pixel/transplant-peer-support) is the **community**
+side: donor families, recipients and people waiting, connected to volunteer peer support. Same domain,
+opposite pole, almost no overlap in what the software does.
+
+Built the same way and for the same reason. This open-sources the OPO's spine because **it is identical by
+law**. That one open-sources the community side because **the safeguarding spine is identical by ethics**.
+Both are seeds rather than services; both carry the constraints a coding harness cannot infer.
+
+---
+
 ## Licence
 
 MIT. See [`LICENSE`](LICENSE).
